@@ -1,0 +1,80 @@
+{
+  "default_profile": "energetic_english_coach",
+  "profiles": {
+    "energetic_english_coach": {
+      "display_name": "Energetic English Coach",
+      "inworld_character_id_env": "INWORLD_CHARACTER_ID",
+      "personality_traits": [
+        "enthusiastic and high-energy",
+        "clear and precise pronunciation",
+        "friendly and non-judgmental",
+        "confident authority on English",
+        "uses natural pauses for emphasis",
+        "never condescending",
+        "celebrates learner wins"
+      ],
+      "base_speech_parameters": {
+        "audioEncoding": "MP3",
+        "sampleRateHertz": 24000,
+        "speakingRate": 1.05,
+        "pitch": 0.5
+      },
+      "format_overrides": {
+        "fail_fix_stickman_skit": {
+          "description": "Slightly dramatic on the fail reveal, warm and clear on the fix, energetic on the CTA",
+          "scene_overrides": {
+            "hook": { "speakingRate": 1.15, "pitch": 1.0, "tone": "energetic" },
+            "fail_demo": { "speakingRate": 0.95, "pitch": -1.0, "tone": "dramatic" },
+            "explain": { "speakingRate": 1.0, "pitch": 0.0, "tone": "calm" },
+            "explain_rule": { "speakingRate": 1.0, "pitch": 0.0, "tone": "calm" },
+            "fix_demo": { "speakingRate": 1.1, "pitch": 1.5, "tone": "energetic" },
+            "memory_trick": { "speakingRate": 1.05, "pitch": 0.5, "tone": "warm" },
+            "cta": { "speakingRate": 1.2, "pitch": 1.0, "tone": "energetic" }
+          }
+        },
+        "word_explosion_visual_build": {
+          "description": "Excited and fast-paced, building intensity with each meaning reveal, explosive on the payoff",
+          "scene_overrides": {
+            "hook": { "speakingRate": 1.2, "pitch": 1.5, "tone": "energetic" },
+            "meaning_1": { "speakingRate": 1.05, "pitch": 0.5, "tone": "calm" },
+            "meaning_2": { "speakingRate": 1.05, "pitch": 0.5, "tone": "calm" },
+            "meaning_3": { "speakingRate": 1.05, "pitch": 0.5, "tone": "warm" },
+            "meaning_4": { "speakingRate": 1.1, "pitch": 1.0, "tone": "energetic" },
+            "explosion_reveal": { "speakingRate": 1.15, "pitch": 2.0, "tone": "dramatic" },
+            "mini_story": { "speakingRate": 1.0, "pitch": 0.5, "tone": "warm" },
+            "cta": { "speakingRate": 1.2, "pitch": 1.5, "tone": "energetic" }
+          }
+        },
+        "rule_as_superpower_metaphor": {
+          "description": "Heroic and inspiring throughout, building to triumphant payoff, motivational CTA",
+          "scene_overrides": {
+            "hook": { "speakingRate": 1.1, "pitch": 1.5, "tone": "dramatic" },
+            "hero_pose": { "speakingRate": 1.05, "pitch": 2.0, "tone": "dramatic" },
+            "villain": { "speakingRate": 0.95, "pitch": -1.0, "tone": "serious" },
+            "power_up": { "speakingRate": 1.1, "pitch": 2.0, "tone": "dramatic" },
+            "explain": { "speakingRate": 1.0, "pitch": 0.5, "tone": "calm" },
+            "contrast_examples": { "speakingRate": 1.0, "pitch": 0.0, "tone": "serious" },
+            "world_transformation": { "speakingRate": 1.15, "pitch": 2.0, "tone": "dramatic" },
+            "quick_wins": { "speakingRate": 1.05, "pitch": 0.5, "tone": "warm" },
+            "cta": { "speakingRate": 1.2, "pitch": 2.0, "tone": "energetic" },
+            "fly_off_cta": { "speakingRate": 1.25, "pitch": 2.5, "tone": "energetic" }
+          }
+        }
+      },
+      "tone_to_pitch_map": {
+        "energetic": 2.0,
+        "warm": 1.0,
+        "calm": 0.0,
+        "serious": -1.5,
+        "dramatic": -3.0
+      },
+      "tone_to_rate_map": {
+        "energetic": 1.2,
+        "warm": 1.05,
+        "calm": 1.0,
+        "serious": 0.95,
+        "dramatic": 1.1
+      }
+    }
+  }
+}

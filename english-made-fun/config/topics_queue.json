@@ -1,0 +1,182 @@
+[
+  {
+    "topic": "I have went vs I have gone",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 95,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "She go vs She goes — third person singular S rule",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 93,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "I am boring vs I am bored — adjective confusion",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 92,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "I have saw vs I have seen — irregular past participle",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 91,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "More tall vs Taller — comparative adjective rule",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 90,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "In the bus vs On the bus — prepositions of transport",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 88,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "You are coming? vs Are you coming? — question word order",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 87,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "I did not went vs I did not go — negative past simple",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 86,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "He told to me vs He told me — indirect object mistake",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 84,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "I will can vs I will be able to — modal verb stacking",
+    "format_suggestion": "fail_fix_stickman_skit",
+    "priority_score": 82,
+    "category": "grammar_mistake"
+  },
+  {
+    "topic": "The word SET — 4 completely different meanings",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 94,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "The word BREAK — 4 completely different meanings",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 92,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "The word RUN — 3 completely different meanings",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 91,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "The word MAKE — 3 completely different meanings",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 90,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "The word TAKE — 3 completely different meanings",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 89,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "The word TURN — 4 meanings: rotate, become, go sour, your turn",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 87,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "The word GET — 5 meanings: receive, become, understand, arrive, persuade",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 85,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "The word CATCH — 3 meanings: grab, get sick, understand",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 83,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "The word HOLD — 3 meanings: grip, wait, contain",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 81,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "The word KEEP — 3 meanings: continue doing, store, not give back",
+    "format_suggestion": "word_explosion_visual_build",
+    "priority_score": 79,
+    "category": "vocabulary_word"
+  },
+  {
+    "topic": "Present Perfect tense — the grammar bridge between past and now",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 96,
+    "category": "grammar_rule"
+  },
+  {
+    "topic": "Much vs Many — the countability superpower rule",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 94,
+    "category": "grammar_rule"
+  },
+  {
+    "topic": "Countable vs Uncountable nouns — the root of all article mistakes",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 93,
+    "category": "grammar_rule"
+  },
+  {
+    "topic": "Past Simple tense — your storytelling superpower",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 91,
+    "category": "grammar_rule"
+  },
+  {
+    "topic": "Articles A, AN, THE explained — when to use each one",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 89,
+    "category": "grammar_rule"
+  },
+  {
+    "topic": "Modal verbs CAN, COULD, SHOULD — the three power levels",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 87,
+    "category": "grammar_rule"
+  },
+  {
+    "topic": "If clauses — First conditional for real future possibilities",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 85,
+    "category": "grammar_rule"
+  },
+  {
+    "topic": "Passive voice — when to use it and when it sounds unnatural",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 83,
+    "category": "grammar_rule"
+  },
+  {
+    "topic": "Gerunds vs Infinitives — why I love swimming but I want to swim",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 81,
+    "category": "grammar_rule"
+  },
+  {
+    "topic": "Future tenses WILL vs GOING TO — the intention superpower",
+    "format_suggestion": "rule_as_superpower_metaphor",
+    "priority_score": 79,
+    "category": "grammar_rule"
+  }
+]

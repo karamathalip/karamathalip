@@ -1,0 +1,380 @@
+{
+  "day": 3,
+  "date_offset_days": 2,
+  "videos": [
+    {
+      "video_id": "vid_005",
+      "format": "fail_fix_stickman_skit",
+      "topic": "In the bus vs On the bus — prepositions of transport",
+      "hook": "You get IN a car but ON a bus. Here is why — and it changes everything.",
+      "total_duration_seconds": 38,
+      "scenes": [
+        {
+          "scene_id": "hook",
+          "start": 0,
+          "duration": 3,
+          "type": "hook",
+          "text": "IN the bus or ON the bus? Most learners get this wrong.",
+          "voice_line": "In the bus or on the bus? This tiny preposition mistake makes you sound unnatural — and almost nobody explains why.",
+          "tone": "energetic",
+          "stickman_action": "confused_look",
+          "stickman_emotion": "shocked",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#1a1a2e",
+            "text_color": "#ff4757",
+            "split_question": "IN ❓ ON",
+            "animation": { "in": "zoom_punch", "emphasis": "shake", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide", "fail_boop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "fail_demo",
+          "start": 3,
+          "duration": 5,
+          "type": "example",
+          "text": "❌ I am in the bus right now.",
+          "voice_line": "You wrote: I am in the bus right now. You sent that text. Your friend in England is confused.",
+          "tone": "serious",
+          "stickman_action": "trip_and_fall",
+          "stickman_emotion": "embarrassed",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#2d1b1b",
+            "text_color": "#ffffff",
+            "highlight_word": "in",
+            "highlight_color": "#ff4757",
+            "speech_bubble": "I am in the bus right now.",
+            "animation": { "in": "slide_up", "emphasis": "highlight_word", "out": "slide_left" }
+          },
+          "sfx_prompts": ["trip_whoosh", "fall_thud"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "explain_rule",
+          "start": 8,
+          "duration": 8,
+          "type": "explanation",
+          "text": "Big vehicle = ON. Small vehicle = IN.",
+          "voice_line": "Here is the rule. Big public vehicles — bus, train, plane, ship — you get ON them. Like you are on top of a platform. Small personal vehicles — car, taxi, helicopter — you get IN them. You are enclosed inside.",
+          "tone": "calm",
+          "stickman_action": "arms_spread_wide_then_small",
+          "stickman_emotion": "explaining",
+          "visual": {
+            "template": "stickman",
+            "background_color": "#16213e",
+            "text_color": "#ffffff",
+            "two_column": {
+              "left": { "label": "ON", "items": ["bus", "train", "plane", "ship"], "color": "#2ed573" },
+              "right": { "label": "IN", "items": ["car", "taxi", "helicopter"], "color": "#ffa502" }
+            },
+            "animation": { "in": "fade", "emphasis": "type_on", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "fix_demo",
+          "start": 16,
+          "duration": 5,
+          "type": "payoff",
+          "text": "✅ I am ON the bus right now.",
+          "voice_line": "Now say it right. I am ON the bus right now. I am ON the train. I am ON a plane. Perfect. Natural. Fluent.",
+          "tone": "energetic",
+          "stickman_action": "fist_pump",
+          "stickman_emotion": "triumphant",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0f3460",
+            "text_color": "#ffffff",
+            "highlight_word": "ON",
+            "highlight_color": "#2ed573",
+            "animation": { "in": "zoom_punch", "emphasis": "confetti_burst", "out": "fade" }
+          },
+          "sfx_prompts": ["victory_chime", "sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "examples",
+          "start": 21,
+          "duration": 6,
+          "type": "example",
+          "text": "ON the train. IN the car. ON the plane. IN the taxi.",
+          "voice_line": "Rapid fire: I am ON the train. She got IN the car. They were ON the plane for twelve hours. He jumped IN the taxi. You will never mix these up again.",
+          "tone": "energetic",
+          "stickman_action": "rapid_gestures",
+          "stickman_emotion": "focused",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#1a1a2e",
+            "text_color": "#ffffff",
+            "rapid_list": ["ON the train ✅", "IN the car ✅", "ON the plane ✅", "IN the taxi ✅"],
+            "animation": { "in": "slide_up", "emphasis": "rapid_reveal", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "memory_trick",
+          "start": 27,
+          "duration": 4,
+          "type": "explanation",
+          "text": "Memory: Big public transport = ON. Your own car = IN.",
+          "voice_line": "Memory trick: if it is big and public — like a bus or train — you ride ON it like a platform. If it is small and personal — your car — you sit IN it like a box.",
+          "tone": "warm",
+          "stickman_action": "thumbs_up",
+          "stickman_emotion": "happy",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#16213e",
+            "text_color": "#ffffff",
+            "animation": { "in": "slide_up", "emphasis": "wave", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "cta",
+          "start": 31,
+          "duration": 7,
+          "type": "cta",
+          "text": "Save this for your next trip. ✈️",
+          "voice_line": "Save this before your next trip. You will be ON the bus, ON the train, ON the plane — and you will get it right. Follow for a new English fix every day.",
+          "tone": "energetic",
+          "stickman_action": "wave_at_camera",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#ff4757",
+            "text_color": "#ffffff",
+            "animation": { "in": "zoom_punch", "emphasis": "pulse", "out": "fade" }
+          },
+          "sfx_prompts": ["ding"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        }
+      ],
+      "audio": {
+        "voice_profile": "Energetic English Coach",
+        "background_music": false,
+        "sfx_enabled": true,
+        "master_volume": 1.0,
+        "voice_volume": 0.9,
+        "sfx_volume": 0.7
+      },
+      "packaging": {
+        "titles": [
+          "IN the bus vs ON the bus — fixed forever ✈️",
+          "Why you say ON the bus but IN the car",
+          "The preposition mistake that confuses every English learner"
+        ],
+        "description": "In the bus or on the bus? There is a clear rule. Big public transport = ON. Small personal vehicles = IN. Never get this wrong again.",
+        "tags": ["prepositions english", "in the bus", "on the bus", "english prepositions", "ESL grammar", "learn english", "grammar mistakes", "travel english"],
+        "thumbnail_prompt": "Split image. Left side: cartoon stickman inside a small car (IN), label IN with green checkmark. Right side: stickman standing on top of a bus (ON), label ON with green checkmark. Center: confused stickman with question mark. Bold text: IN or ON? Dark background with clean illustration style."
+      },
+      "viral_triggers": [
+        "relatable_confusion_hook",
+        "logical_rule_revelation",
+        "rapid_fire_examples",
+        "travel_context_relevance",
+        "text_message_scenario"
+      ]
+    },
+    {
+      "video_id": "vid_006",
+      "format": "word_explosion_visual_build",
+      "topic": "The word RUN — 3 completely different meanings",
+      "hook": "RUN does not just mean moving your legs. Native speakers use it 3 completely different ways.",
+      "total_duration_seconds": 45,
+      "scenes": [
+        {
+          "scene_id": "hook",
+          "start": 0,
+          "duration": 3,
+          "type": "hook",
+          "text": "RUN means 3 things. Most learners only know 1.",
+          "voice_line": "You think RUN just means moving your legs fast. But native speakers use this word three completely different ways.",
+          "tone": "energetic",
+          "stickman_action": "running_pose_then_stop",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#0d0d1a",
+            "text_color": "#00d4ff",
+            "neon_word": "RUN",
+            "animation": { "in": "neon_flicker", "emphasis": "explosion_burst", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide", "explode_pop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "meaning_1",
+          "start": 3,
+          "duration": 8,
+          "type": "example",
+          "text": "1. RUN = move fast on foot",
+          "voice_line": "Meaning one — the one you know: to move fast on foot. I run every morning. She ran to catch the bus. Run! We are late. This is the basic one.",
+          "tone": "energetic",
+          "stickman_action": "running_fast",
+          "stickman_emotion": "focused",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "1",
+            "meaning_label": "MOVE FAST",
+            "meaning_color": "#ff2d78",
+            "example": "She ran to catch the bus.",
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "meaning_2",
+          "start": 11,
+          "duration": 8,
+          "type": "example",
+          "text": "2. RUN = manage or operate something",
+          "voice_line": "Meaning two: to manage or operate. She runs a restaurant. He runs the whole department. They run a successful blog. When someone runs something, they are in charge.",
+          "tone": "serious",
+          "stickman_action": "boss_gesture",
+          "stickman_emotion": "confident",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "2",
+            "meaning_label": "MANAGE",
+            "meaning_color": "#ffe600",
+            "example": "She runs a restaurant.",
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "meaning_3",
+          "start": 19,
+          "duration": 8,
+          "type": "example",
+          "text": "3. RUN = flow continuously or operate",
+          "voice_line": "Meaning three: to flow or continue operating. Hot water runs through the pipes. The program is running. Leave the engine running. My nose is running — that one is gross but common.",
+          "tone": "calm",
+          "stickman_action": "flowing_gesture",
+          "stickman_emotion": "explaining",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "3",
+            "meaning_label": "FLOW / OPERATE",
+            "meaning_color": "#39ff14",
+            "example": "The program is running.",
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "explosion_reveal",
+          "start": 27,
+          "duration": 6,
+          "type": "payoff",
+          "text": "One word. Three worlds. 💥",
+          "voice_line": "One word. Three completely different worlds. Move fast. Manage. Flow. RUN is everywhere in English and now you see all of it.",
+          "tone": "dramatic",
+          "stickman_action": "explosion_pose",
+          "stickman_emotion": "triumphant",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0d0d1a",
+            "explosion_labels": ["MOVE FAST", "MANAGE", "FLOW"],
+            "center_word": "RUN",
+            "center_color": "#00d4ff",
+            "animation": { "in": "zoom_punch", "emphasis": "neon_explosion_all_four", "out": "fade" }
+          },
+          "sfx_prompts": ["explode_pop", "victory_chime"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "mini_story",
+          "start": 33,
+          "duration": 5,
+          "type": "example",
+          "text": "All 3 in one sentence:",
+          "voice_line": "All three in one sentence: She runs — manages — a tech company, so she runs — exercises — every morning to stay sharp, while her systems run — operate — overnight automatically.",
+          "tone": "warm",
+          "stickman_action": "storytelling_pose",
+          "stickman_emotion": "happy",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "animation": { "in": "fade", "emphasis": "word_by_word_highlight", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "cta",
+          "start": 38,
+          "duration": 7,
+          "type": "cta",
+          "text": "Save this. Now you RUN this language. 🏃",
+          "voice_line": "Save this. Now you run this language — all three meanings. Follow for the next word explosion. Every single day.",
+          "tone": "energetic",
+          "stickman_action": "phone_screenshot_pose",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#bf00ff",
+            "text_color": "#ffffff",
+            "animation": { "in": "zoom_punch", "emphasis": "neon_pulse_rapid", "out": "fade" }
+          },
+          "sfx_prompts": ["ding"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        }
+      ],
+      "audio": {
+        "voice_profile": "Energetic English Coach",
+        "background_music": false,
+        "sfx_enabled": true,
+        "master_volume": 1.0,
+        "voice_volume": 0.9,
+        "sfx_volume": 0.75
+      },
+      "packaging": {
+        "titles": [
+          "RUN has 3 meanings and you only know the obvious one 🤯",
+          "The word RUN explained in 40 seconds",
+          "Why 'she runs a company' makes perfect sense in English"
+        ],
+        "description": "RUN is one of the most overloaded words in English. Move fast, manage something, or flow continuously — three completely different meanings, one tiny word.",
+        "tags": ["vocabulary", "word meanings", "run meaning", "english words", "word explosion", "learn english", "advanced vocabulary", "ESL"],
+        "thumbnail_prompt": "Dark neon background. Giant glowing word RUN in electric cyan at center with explosion effect. Three neon labels radiate out: MOVE FAST in hot pink with running figure, MANAGE in yellow with briefcase, FLOW in green with water wave. Bold text: 1 WORD. 3 MEANINGS. High contrast neon style."
+      },
+      "viral_triggers": [
+        "assumption_subversion_hook",
+        "mini_story_all_meanings",
+        "wordplay_cta",
+        "vocabulary_level_up",
+        "share_to_impress_friends"
+      ]
+    }
+  ]
+}

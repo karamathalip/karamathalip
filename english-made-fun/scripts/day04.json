@@ -1,0 +1,398 @@
+{
+  "day": 4,
+  "date_offset_days": 3,
+  "videos": [
+    {
+      "video_id": "vid_007",
+      "format": "fail_fix_stickman_skit",
+      "topic": "More tall vs Taller — comparative adjectives",
+      "hook": "You never say MORE tall. Here is the rule that makes comparatives automatic.",
+      "total_duration_seconds": 40,
+      "scenes": [
+        {
+          "scene_id": "hook",
+          "start": 0,
+          "duration": 3,
+          "type": "hook",
+          "text": "Nobody says MORE tall. Ever. Here is why.",
+          "voice_line": "Nobody — not a single native English speaker — says more tall. Ever. And here is the rule that will make comparatives automatic for you.",
+          "tone": "energetic",
+          "stickman_action": "wag_finger",
+          "stickman_emotion": "shocked",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#1a1a2e",
+            "text_color": "#ff4757",
+            "strikethrough_word": "MORE TALL",
+            "animation": { "in": "zoom_punch", "emphasis": "shake", "out": "fade" }
+          },
+          "sfx_prompts": ["fail_boop", "whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "fail_demo",
+          "start": 3,
+          "duration": 5,
+          "type": "example",
+          "text": "❌ He is more tall than me.",
+          "voice_line": "You wrote in your essay: He is more tall than me. Your teacher circled it in red. Here is why.",
+          "tone": "serious",
+          "stickman_action": "trip_and_fall",
+          "stickman_emotion": "embarrassed",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#2d1b1b",
+            "text_color": "#ffffff",
+            "highlight_phrase": "more tall",
+            "highlight_color": "#ff4757",
+            "red_circle": true,
+            "animation": { "in": "slide_up", "emphasis": "highlight_word", "out": "slide_left" }
+          },
+          "sfx_prompts": ["trip_whoosh", "fall_thud"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "explain_rule",
+          "start": 8,
+          "duration": 8,
+          "type": "explanation",
+          "text": "Short adjective (1-2 syllables): add -ER. Long adjective (3+ syllables): add MORE.",
+          "voice_line": "Here is the rule. Short adjectives — one or two syllables — add ER. Tall becomes taller. Fast becomes faster. Old becomes older. Long adjectives — three or more syllables — use MORE. More beautiful. More interesting. More comfortable. Count the syllables.",
+          "tone": "calm",
+          "stickman_action": "count_syllables",
+          "stickman_emotion": "explaining",
+          "visual": {
+            "template": "stickman",
+            "background_color": "#16213e",
+            "text_color": "#ffffff",
+            "two_column": {
+              "left": { "label": "SHORT → -ER", "items": ["tall → taller", "fast → faster", "old → older"], "color": "#2ed573" },
+              "right": { "label": "LONG → MORE", "items": ["beautiful → more beautiful", "interesting → more interesting"], "color": "#ffa502" }
+            },
+            "animation": { "in": "fade", "emphasis": "type_on", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "fix_demo",
+          "start": 16,
+          "duration": 5,
+          "type": "payoff",
+          "text": "✅ He is TALLER than me.",
+          "voice_line": "Now say it right. Tall — one syllable — so add ER. He is TALLER than me. Clean. Correct. Natural.",
+          "tone": "energetic",
+          "stickman_action": "fist_pump",
+          "stickman_emotion": "triumphant",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0f3460",
+            "text_color": "#ffffff",
+            "highlight_word": "TALLER",
+            "highlight_color": "#2ed573",
+            "animation": { "in": "zoom_punch", "emphasis": "confetti_burst", "out": "fade" }
+          },
+          "sfx_prompts": ["victory_chime", "sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "rapid_practice",
+          "start": 21,
+          "duration": 6,
+          "type": "example",
+          "text": "Quick: big → ? happy → ? expensive → ?",
+          "voice_line": "Quick practice. Big — one syllable — bigger. Happy — two syllables — happier. Expensive — three syllables — more expensive. You are getting it.",
+          "tone": "energetic",
+          "stickman_action": "rapid_quiz_pose",
+          "stickman_emotion": "focused",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#1a1a2e",
+            "text_color": "#ffffff",
+            "quiz_pairs": ["big → bigger", "happy → happier", "expensive → more expensive"],
+            "animation": { "in": "zoom_punch", "emphasis": "rapid_reveal", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop", "victory_chime"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "common_mistakes",
+          "start": 27,
+          "duration": 6,
+          "type": "explanation",
+          "text": "Never: more faster. Never: more bigger.",
+          "voice_line": "And one more thing. Never double up. Never say more faster or more bigger. That is called a double comparative and it is always wrong. Faster. Bigger. One method only.",
+          "tone": "serious",
+          "stickman_action": "x_arms_no",
+          "stickman_emotion": "serious",
+          "visual": {
+            "template": "stickman",
+            "background_color": "#16213e",
+            "text_color": "#ffffff",
+            "error_list": ["❌ more faster", "❌ more bigger", "❌ more taller"],
+            "error_color": "#ff4757",
+            "animation": { "in": "fade", "emphasis": "shake_each_error", "out": "fade" }
+          },
+          "sfx_prompts": ["fail_boop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "cta",
+          "start": 33,
+          "duration": 7,
+          "type": "cta",
+          "text": "Save this. Get comparatives right every time. 💾",
+          "voice_line": "Save this. Count the syllables. Short gets ER. Long gets MORE. You will never write more tall again. Follow for your next grammar rule.",
+          "tone": "energetic",
+          "stickman_action": "wave_at_camera",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#ff4757",
+            "text_color": "#ffffff",
+            "animation": { "in": "zoom_punch", "emphasis": "pulse", "out": "fade" }
+          },
+          "sfx_prompts": ["ding"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        }
+      ],
+      "audio": {
+        "voice_profile": "Energetic English Coach",
+        "background_music": false,
+        "sfx_enabled": true,
+        "master_volume": 1.0,
+        "voice_volume": 0.9,
+        "sfx_volume": 0.7
+      },
+      "packaging": {
+        "titles": [
+          "Nobody says MORE TALL. Here is the rule ❌",
+          "More tall vs Taller — the comparative rule explained",
+          "Stop saying MORE TALL — this fix takes 30 seconds"
+        ],
+        "description": "More tall vs taller — there is a clear rule. Short adjectives get -ER. Long adjectives get MORE. Count the syllables and you will never get this wrong again.",
+        "tags": ["comparatives english", "more tall taller", "adjective comparison", "english grammar", "ESL grammar", "grammar rules", "learn english fast", "grammar mistakes"],
+        "thumbnail_prompt": "Two stickmen of different heights. Short stickman looks up at taller stickman. Giant red X over text 'MORE TALL'. Giant green checkmark over text 'TALLER'. Bold text: COUNT THE SYLLABLES. Dark background, clean contrast."
+      },
+      "viral_triggers": [
+        "universal_mistake_hook",
+        "clear_rule_revelation",
+        "rapid_practice_element",
+        "double_comparative_bonus_tip",
+        "syllable_counting_trick"
+      ]
+    },
+    {
+      "video_id": "vid_008",
+      "format": "rule_as_superpower_metaphor",
+      "topic": "Past Simple tense — the completed action superpower",
+      "hook": "The Past Simple is not just about the past. It is your storytelling superpower.",
+      "total_duration_seconds": 52,
+      "scenes": [
+        {
+          "scene_id": "hook",
+          "start": 0,
+          "duration": 4,
+          "type": "hook",
+          "text": "Past Simple = your storytelling superpower. ⚡",
+          "voice_line": "The Past Simple is not just grammar. It is your storytelling superpower. And most learners are using it on autopilot without knowing how powerful it really is.",
+          "tone": "dramatic",
+          "stickman_action": "dramatic_point_at_camera",
+          "stickman_emotion": "intense",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#0a0a1a",
+            "text_color": "#f7c948",
+            "main_text": "PAST SIMPLE",
+            "sub_text": "Storytelling Superpower",
+            "animation": { "in": "lightning_strike", "emphasis": "shake", "out": "fade" }
+          },
+          "sfx_prompts": ["magic_whoosh", "whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "hero_pose",
+          "start": 4,
+          "duration": 5,
+          "type": "explanation",
+          "text": "The power: turn ANY action into a complete story.",
+          "voice_line": "Here is the power. The Past Simple turns any action into a complete, finished story. It happened. It ended. Done. Clean. Powerful.",
+          "tone": "dramatic",
+          "stickman_action": "hero_cape_pose",
+          "stickman_emotion": "heroic",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0a0a1a",
+            "formula": "verb + -ED  (or irregular form)",
+            "formula_color": "#f7c948",
+            "animation": { "in": "hero_landing", "emphasis": "cape_flutter", "out": "fade" }
+          },
+          "sfx_prompts": ["power_chime"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "regular_verbs",
+          "start": 9,
+          "duration": 7,
+          "type": "explanation",
+          "text": "Regular verbs: just add -ED",
+          "voice_line": "Regular verbs are easy. Just add ED. Walk — walked. Work — worked. Watch — watched. Finish — finished. Add ED and you are done.",
+          "tone": "energetic",
+          "stickman_action": "count_on_fingers",
+          "stickman_emotion": "focused",
+          "visual": {
+            "template": "stickman",
+            "background_color": "#0a0a1a",
+            "text_color": "#ffffff",
+            "list": ["walk → walked", "work → worked", "watch → watched", "finish → finished"],
+            "list_color": "#2ed573",
+            "animation": { "in": "fade", "emphasis": "line_by_line_reveal", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "irregular_verbs",
+          "start": 16,
+          "duration": 7,
+          "type": "explanation",
+          "text": "Irregular verbs: the wild ones you memorize",
+          "voice_line": "Then there are irregular verbs — the wild ones. Go became went. See became saw. Eat became ate. Buy became bought. These you memorize — but you use them every day so you learn them fast.",
+          "tone": "warm",
+          "stickman_action": "surprised_look",
+          "stickman_emotion": "explaining",
+          "visual": {
+            "template": "stickman",
+            "background_color": "#0a0a1a",
+            "text_color": "#ffffff",
+            "list": ["go → went", "see → saw", "eat → ate", "buy → bought"],
+            "list_color": "#ffa502",
+            "animation": { "in": "slide_up", "emphasis": "type_on", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "signal_words",
+          "start": 23,
+          "duration": 6,
+          "type": "example",
+          "text": "Signal words: yesterday, last week, ago, in 2020",
+          "voice_line": "Your signal words for Past Simple: yesterday, last week, last year, two hours ago, in 2020, when I was a child. See one of these? Past Simple is your weapon.",
+          "tone": "energetic",
+          "stickman_action": "radar_scan_pose",
+          "stickman_emotion": "focused",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#0a0a1a",
+            "text_color": "#f7c948",
+            "signal_words": ["yesterday", "last week", "ago", "in 2020", "when I was a child"],
+            "animation": { "in": "fade", "emphasis": "rapid_reveal", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "story_power",
+          "start": 29,
+          "duration": 6,
+          "type": "payoff",
+          "text": "Storytelling unleashed:",
+          "voice_line": "Now watch the power. I woke up late. I ran to the station. I missed the train. I called my boss. She laughed. Past Simple just told a complete story in five sentences. Compelling. Clear. Natural.",
+          "tone": "dramatic",
+          "stickman_action": "storytelling_dramatic",
+          "stickman_emotion": "triumphant",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0a0a1a",
+            "text_color": "#ffffff",
+            "story_sequence": ["I woke up late.", "I ran to the station.", "I missed the train.", "I called my boss.", "She laughed."],
+            "animation": { "in": "zoom_punch", "emphasis": "sequence_reveal", "out": "fade" }
+          },
+          "sfx_prompts": ["victory_chime", "sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "quick_wins",
+          "start": 35,
+          "duration": 6,
+          "type": "explanation",
+          "text": "3 stories to tell today:",
+          "voice_line": "Three stories to tell today using Past Simple. One: what you did this morning. Two: the last movie you watched. Three: your best travel memory. Tell them. Use Past Simple. Watch your English come alive.",
+          "tone": "warm",
+          "stickman_action": "write_on_board",
+          "stickman_emotion": "happy",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#0a0a1a",
+            "text_color": "#f7c948",
+            "list": ["What did you do this morning?", "The last movie you watched?", "Your best travel memory?"],
+            "animation": { "in": "fade", "emphasis": "line_by_line_reveal", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "cta",
+          "start": 41,
+          "duration": 11,
+          "type": "cta",
+          "text": "You just unlocked your storytelling superpower. 🚀",
+          "voice_line": "You just unlocked your storytelling superpower — see what I did there with Past Simple? Follow for your next superpower. And tell me in the comments: what did you do yesterday? Use Past Simple.",
+          "tone": "energetic",
+          "stickman_action": "rocket_fly_off_screen",
+          "stickman_emotion": "triumphant",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0a0a1a",
+            "text_color": "#f7c948",
+            "cta_text": "🚀 Follow + Comment your Past Simple story",
+            "animation": { "in": "zoom_punch", "emphasis": "rocket_trail", "out": "fly_off_top" }
+          },
+          "sfx_prompts": ["ding"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        }
+      ],
+      "audio": {
+        "voice_profile": "Energetic English Coach",
+        "background_music": false,
+        "sfx_enabled": true,
+        "master_volume": 1.0,
+        "voice_volume": 0.9,
+        "sfx_volume": 0.7
+      },
+      "packaging": {
+        "titles": [
+          "Past Simple is your storytelling superpower ⚡",
+          "Master the Past Simple tense in 45 seconds",
+          "Why native speakers love Past Simple — and how to use it"
+        ],
+        "description": "The Past Simple tense is how native English speakers tell every story. Learn the formula, the irregular verbs, the signal words, and how to string them into compelling stories.",
+        "tags": ["past simple", "english tenses", "storytelling english", "grammar superpower", "past tense", "learn english", "ESL grammar", "english fluency"],
+        "thumbnail_prompt": "Hero stickman with cape telling a story. Story panels around the stickman showing: woke up, ran, missed train, called boss. Lightning bolt through all panels. Bold text: PAST SIMPLE = STORYTELLING POWER. Dark background with golden yellow accents."
+      },
+      "viral_triggers": [
+        "reframe_familiar_grammar",
+        "storytelling_demonstration",
+        "signal_words_toolkit",
+        "comment_prompt_engagement",
+        "meta_cta_uses_grammar_taught"
+      ]
+    }
+  ]
+}

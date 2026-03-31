@@ -1,0 +1,355 @@
+{
+  "format": "fail_fix_stickman_skit",
+  "version": "1.0",
+  "topic": "I have went vs I have gone — present perfect grammar mistake",
+  "target_audience": "intermediate English learners, ESL students aged 18-35",
+  "video_duration_seconds": 47,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+
+  "hook_options": [
+    "99% of English learners say this wrong every single day.",
+    "This tiny grammar mistake makes you sound like a beginner — even if you're not.",
+    "Your English teacher never told you WHY this is wrong."
+  ],
+
+  "script_sentences": [
+    "You said: I have went to the store.",
+    "But wait — that's wrong, and here's exactly why.",
+    "WENT is the simple past. It already happened. Done. Over.",
+    "GONE needs HAVE. They're a team. You can't split them.",
+    "Try again: I have GONE to the store.",
+    "Or even better: I went to the store.",
+    "Now you'll never mix these up again."
+  ],
+
+  "packaging": {
+    "titles": [
+      "STOP saying 'I have went' 🚫",
+      "Have WENT vs Have GONE — fixed in 30 sec",
+      "The grammar mistake that follows you everywhere"
+    ],
+    "description": "One of the most common English grammar mistakes — using WENT with HAVE. In this short, you'll learn exactly why it's wrong and how to fix it in seconds. Perfect for ESL learners and anyone who wants to sound more fluent.",
+    "tags": ["english grammar", "ESL", "have went", "have gone", "present perfect", "common mistakes", "english tips", "learn english"],
+    "thumbnail": {
+      "text": "WENT ❌  GONE ✅",
+      "visual": "two stickmen side by side — one embarrassed with red X, one confident with green checkmark, bold white text on dark background"
+    }
+  },
+
+  "thumbnail_prompt": "Two cartoon stickmen on a split dark background. Left stickman: embarrassed, sweating, big red X above head, speech bubble says 'I have went'. Right stickman: confident, fist pump, green checkmark above head, speech bubble says 'I have gone'. Bold white sans-serif text overlay: WENT ❌ GONE ✅. High contrast, vibrant colors, YouTube Shorts thumbnail style.",
+
+  "scenes": [
+    {
+      "scene_id": "hook",
+      "start": 0,
+      "duration": 3,
+      "type": "hook",
+      "text": "99% of learners say this WRONG.",
+      "voice_line": "Ninety-nine percent of English learners say this wrong every single day.",
+      "tone": "energetic",
+      "stickman_action": "point_at_viewer",
+      "stickman_emotion": "shocked",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#1a1a2e",
+        "text_color": "#ff4757",
+        "font_size": 72,
+        "animation": {
+          "in": "zoom_punch",
+          "emphasis": "shake",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "dramatic whoosh sound effect",
+        "record scratch stop"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    },
+    {
+      "scene_id": "fail_demo",
+      "start": 3,
+      "duration": 5,
+      "type": "example",
+      "text": "❌ I have WENT to the store.",
+      "voice_line": "You said: I have went to the store. But wait — that is wrong.",
+      "tone": "serious",
+      "stickman_action": "face_palm",
+      "stickman_emotion": "embarrassed",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#2d1b1b",
+        "text_color": "#ffffff",
+        "highlight_color": "#ff4757",
+        "highlight_word": "WENT",
+        "speech_bubble": true,
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "highlight_word",
+          "out": "slide_left"
+        }
+      },
+      "sfx_prompts": [
+        "wrong answer buzzer sound effect",
+        "embarrassed groan sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "explain_went",
+      "start": 8,
+      "duration": 6,
+      "type": "explanation",
+      "text": "WENT = simple past. Done. Finished.",
+      "voice_line": "WENT is the simple past tense. It already happened. Done. Over. You do not pair it with HAVE.",
+      "tone": "calm",
+      "stickman_action": "arms_cross",
+      "stickman_emotion": "explaining",
+      "visual": {
+        "template": "stickman",
+        "background_color": "#16213e",
+        "text_color": "#ffffff",
+        "accent_color": "#ffa502",
+        "callout_box": {
+          "label": "SIMPLE PAST",
+          "color": "#ffa502"
+        },
+        "animation": {
+          "in": "fade",
+          "emphasis": "pulse_callout",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "pen writing on paper sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "explain_gone",
+      "start": 14,
+      "duration": 6,
+      "type": "explanation",
+      "text": "GONE needs HAVE. They're a team.",
+      "voice_line": "GONE needs HAVE. They are a team. You cannot split them. Have plus gone — always together.",
+      "tone": "warm",
+      "stickman_action": "thumbs_up",
+      "stickman_emotion": "happy",
+      "visual": {
+        "template": "stickman",
+        "background_color": "#16213e",
+        "text_color": "#ffffff",
+        "accent_color": "#2ed573",
+        "callout_box": {
+          "label": "PAST PARTICIPLE",
+          "color": "#2ed573"
+        },
+        "pair_visual": {
+          "word_a": "HAVE",
+          "word_b": "GONE",
+          "connector": "❤",
+          "color_a": "#2ed573",
+          "color_b": "#2ed573"
+        },
+        "animation": {
+          "in": "slide_right",
+          "emphasis": "bounce_pair",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "level up chime sound effect",
+        "heart pop sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "fix_demo",
+      "start": 20,
+      "duration": 5,
+      "type": "payoff",
+      "text": "✅ I have GONE to the store.",
+      "voice_line": "Try again. I have GONE to the store. Or even simpler: I WENT to the store. Both are correct now.",
+      "tone": "energetic",
+      "stickman_action": "fist_pump",
+      "stickman_emotion": "triumphant",
+      "visual": {
+        "template": "superpower",
+        "background_color": "#0f3460",
+        "text_color": "#ffffff",
+        "highlight_color": "#2ed573",
+        "highlight_word": "GONE",
+        "before_after": {
+          "before": "I have WENT ❌",
+          "after": "I have GONE ✅"
+        },
+        "animation": {
+          "in": "zoom_punch",
+          "emphasis": "confetti_burst",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "success fanfare short sound effect",
+        "crowd cheer small sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    },
+    {
+      "scene_id": "quick_rule",
+      "start": 25,
+      "duration": 5,
+      "type": "explanation",
+      "text": "Quick rule: HAVE + past participle. Always.",
+      "voice_line": "Here is your quick rule. Have plus past participle. Always. Eaten, gone, done, seen — these pair with have. Not went, eat, do, see.",
+      "tone": "serious",
+      "stickman_action": "write_on_board",
+      "stickman_emotion": "focused",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#1a1a2e",
+        "text_color": "#ffffff",
+        "rule_card": {
+          "formula": "HAVE + past participle",
+          "examples": ["have gone", "have eaten", "have seen", "have done"],
+          "color": "#a29bfe"
+        },
+        "animation": {
+          "in": "fade",
+          "emphasis": "type_on",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "marker writing sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "memory_trick",
+      "start": 30,
+      "duration": 5,
+      "type": "example",
+      "text": "Memory trick: WENT goes alone. GONE needs a friend.",
+      "voice_line": "Memory trick: WENT goes alone. I went. GONE always needs a friend — have gone, has gone, had gone.",
+      "tone": "warm",
+      "stickman_action": "walk_alone_then_with_friend",
+      "stickman_emotion": "happy",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#16213e",
+        "text_color": "#ffffff",
+        "memory_visual": {
+          "lonely_stickman": "WENT — walks alone",
+          "paired_stickman": "GONE + HAVE — best friends"
+        },
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "wave",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "walking footsteps sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "cta",
+      "start": 35,
+      "duration": 5,
+      "type": "cta",
+      "text": "Save this. You'll need it. 💾",
+      "voice_line": "Save this video right now. You will thank yourself next time you write an email. Follow for one grammar fix every day.",
+      "tone": "energetic",
+      "stickman_action": "wave_at_camera",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#ff4757",
+        "text_color": "#ffffff",
+        "cta_elements": {
+          "primary": "💾 SAVE THIS",
+          "secondary": "Follow for daily grammar fixes",
+          "arrow": true
+        },
+        "animation": {
+          "in": "zoom_punch",
+          "emphasis": "pulse",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "notification ping sound effect",
+        "upbeat short jingle sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion",
+      "reuse_key": null
+    },
+    {
+      "scene_id": "end_card",
+      "start": 40,
+      "duration": 7,
+      "type": "end_card",
+      "text": "Which mistake do YOU make most?",
+      "voice_line": "Which grammar mistake do you make the most? Tell me in the comments. I read every single one.",
+      "tone": "warm",
+      "stickman_action": "sit_and_wave",
+      "stickman_emotion": "curious",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#1a1a2e",
+        "text_color": "#ffffff",
+        "end_card_elements": {
+          "question": "Which mistake do YOU make most?",
+          "comment_prompt": "👇 Tell me below",
+          "channel_tag": "@EnglishMadeFun"
+        },
+        "animation": {
+          "in": "fade",
+          "emphasis": "gentle_pulse",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "gentle notification sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    }
+  ],
+
+  "viral_prediction": {
+    "score": 84,
+    "hook_score": 90,
+    "retention_score": 82,
+    "emotional_score": 80,
+    "clarity_score": 88,
+    "shareability_score": 85,
+    "novelty_score": 75,
+    "decision": "produce",
+    "notes": "Strong relatable hook. Memory trick device is highly shareable. Before/after structure maximizes retention drop."
+  },
+
+  "metadata": {
+    "format_type": "fail_fix_stickman_skit",
+    "grammar_point": "present perfect — have + past participle",
+    "mistake_shown": "I have went",
+    "correction": "I have gone / I went",
+    "difficulty_level": "intermediate",
+    "estimated_watch_time_seconds": 47,
+    "hook_style": "shocking_statistic",
+    "emotional_arc": "embarrassment → understanding → confidence",
+    "primary_cta": "save",
+    "secondary_cta": "follow"
+  }
+}

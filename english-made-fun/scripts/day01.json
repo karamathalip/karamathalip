@@ -1,0 +1,399 @@
+{
+  "day": 1,
+  "date_offset_days": 0,
+  "videos": [
+    {
+      "video_id": "vid_001",
+      "format": "fail_fix_stickman_skit",
+      "topic": "I have went vs I have gone — present perfect mistake",
+      "hook": "99% of English learners say this wrong every single day.",
+      "total_duration_seconds": 37,
+      "scenes": [
+        {
+          "scene_id": "hook",
+          "start": 0,
+          "duration": 3,
+          "type": "hook",
+          "text": "99% of learners say this WRONG.",
+          "voice_line": "Ninety-nine percent of English learners say this wrong every single day.",
+          "tone": "energetic",
+          "stickman_action": "point_at_viewer",
+          "stickman_emotion": "shocked",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#1a1a2e",
+            "text_color": "#ff4757",
+            "animation": { "in": "zoom_punch", "emphasis": "shake", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide", "fail_boop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "fail_demo",
+          "start": 3,
+          "duration": 5,
+          "type": "example",
+          "text": "❌ I have WENT to the store.",
+          "voice_line": "You said: I have went to the store. Wrong! That sounds terrible to a native speaker.",
+          "tone": "serious",
+          "stickman_action": "trip_and_fall",
+          "stickman_emotion": "embarrassed",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#2d1b1b",
+            "text_color": "#ffffff",
+            "highlight_word": "WENT",
+            "highlight_color": "#ff4757",
+            "animation": { "in": "slide_up", "emphasis": "highlight_word", "out": "slide_left" }
+          },
+          "sfx_prompts": ["trip_whoosh", "fall_thud"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "explain",
+          "start": 8,
+          "duration": 7,
+          "type": "explanation",
+          "text": "WENT = simple past. Alone. GONE needs HAVE.",
+          "voice_line": "Here is the rule. WENT is simple past — it stands completely alone. I went. Done. But GONE is a past participle. It always needs HAVE with it. They are a team.",
+          "tone": "calm",
+          "stickman_action": "write_on_board",
+          "stickman_emotion": "explaining",
+          "visual": {
+            "template": "stickman",
+            "background_color": "#16213e",
+            "text_color": "#ffffff",
+            "animation": { "in": "fade", "emphasis": "type_on", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "fix_demo",
+          "start": 15,
+          "duration": 5,
+          "type": "payoff",
+          "text": "✅ I have GONE to the store.",
+          "voice_line": "Now say it right. I have GONE to the store. Or just: I WENT to the store. Both are perfect. Never: I have WENT.",
+          "tone": "energetic",
+          "stickman_action": "fist_pump",
+          "stickman_emotion": "triumphant",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0f3460",
+            "text_color": "#ffffff",
+            "highlight_word": "GONE",
+            "highlight_color": "#2ed573",
+            "animation": { "in": "zoom_punch", "emphasis": "confetti_burst", "out": "fade" }
+          },
+          "sfx_prompts": ["victory_chime", "sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "memory_trick",
+          "start": 20,
+          "duration": 5,
+          "type": "explanation",
+          "text": "Memory trick: WENT goes alone. GONE needs a friend.",
+          "voice_line": "Memory trick. WENT is a loner — it goes alone. GONE always needs a friend called HAVE. Lonely WENT. Social GONE.",
+          "tone": "warm",
+          "stickman_action": "lonely_walk_then_hug",
+          "stickman_emotion": "happy",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#16213e",
+            "text_color": "#ffffff",
+            "animation": { "in": "slide_up", "emphasis": "wave", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "quick_test",
+          "start": 25,
+          "duration": 5,
+          "type": "example",
+          "text": "Quick test: Have you ___ to school today?",
+          "voice_line": "Quick test. Have you blank to school today? Went or gone? Three seconds. It is GONE. Have you GONE to school today. WENT is never allowed after HAVE.",
+          "tone": "energetic",
+          "stickman_action": "quiz_pose",
+          "stickman_emotion": "curious",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#1a1a2e",
+            "text_color": "#ffffff",
+            "animation": { "in": "zoom_punch", "emphasis": "countdown", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide", "victory_chime"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "cta",
+          "start": 30,
+          "duration": 7,
+          "type": "cta",
+          "text": "Save this. Never say it wrong again. 💾",
+          "voice_line": "Save this video right now. Send it to a friend who makes this mistake. And follow — I post one grammar fix every single day.",
+          "tone": "energetic",
+          "stickman_action": "wave_at_camera",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#ff4757",
+            "text_color": "#ffffff",
+            "animation": { "in": "zoom_punch", "emphasis": "pulse", "out": "fade" }
+          },
+          "sfx_prompts": ["ding"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        }
+      ],
+      "audio": {
+        "voice_profile": "Energetic English Coach",
+        "background_music": false,
+        "sfx_enabled": true,
+        "master_volume": 1.0,
+        "voice_volume": 0.9,
+        "sfx_volume": 0.7
+      },
+      "packaging": {
+        "titles": [
+          "STOP saying 'I have went' 🚫",
+          "Have WENT vs Have GONE — fixed in 30 sec",
+          "The grammar mistake that follows you everywhere"
+        ],
+        "description": "One of the most common English grammar mistakes fixed in under 40 seconds. Save this so you never mix up WENT and GONE again.",
+        "tags": ["english grammar", "have went", "have gone", "present perfect", "common mistakes", "learn english", "ESL", "grammar tips"],
+        "thumbnail_prompt": "Split cartoon image. Left side dark red: embarrassed stickman, giant red X, speech bubble 'I have went'. Right side dark green: confident stickman, giant green checkmark, speech bubble 'I have gone'. Bold white text dividing the halves: WENT ❌ GONE ✅. High contrast, YouTube Shorts style."
+      },
+      "viral_triggers": [
+        "shocking_statistic_hook",
+        "common_mistake_recognition",
+        "before_after_contrast",
+        "memory_trick_device",
+        "interactive_quiz_element",
+        "share_to_help_a_friend"
+      ]
+    },
+    {
+      "video_id": "vid_002",
+      "format": "word_explosion_visual_build",
+      "topic": "The word BREAK — 4 completely different meanings",
+      "hook": "You use this word every day and you only know ONE of its meanings.",
+      "total_duration_seconds": 50,
+      "scenes": [
+        {
+          "scene_id": "hook",
+          "start": 0,
+          "duration": 3,
+          "type": "hook",
+          "text": "BREAK has 4 meanings. You only know 1. 🤯",
+          "voice_line": "You use the word BREAK every single day. But I bet you only know one of its four meanings.",
+          "tone": "energetic",
+          "stickman_action": "hold_up_four_fingers",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#0d0d1a",
+            "text_color": "#00d4ff",
+            "neon_word": "BREAK",
+            "animation": { "in": "neon_flicker", "emphasis": "explosion_burst", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide", "explode_pop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "meaning_1",
+          "start": 3,
+          "duration": 7,
+          "type": "example",
+          "text": "1. BREAK = to damage or shatter",
+          "voice_line": "Meaning one: to damage or shatter something. I broke the cup. She broke her arm. Do not break the window. This is the one everyone knows.",
+          "tone": "calm",
+          "stickman_action": "smash_object",
+          "stickman_emotion": "focused",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "1",
+            "meaning_label": "DAMAGE",
+            "meaning_color": "#ff2d78",
+            "example": "I broke the cup.",
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["shatter_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "meaning_2",
+          "start": 10,
+          "duration": 7,
+          "type": "example",
+          "text": "2. BREAK = a pause or rest",
+          "voice_line": "Meaning two: a pause or rest. Lunch break. Coffee break. Take a break. I need a break. This one you hear in every office every single day.",
+          "tone": "warm",
+          "stickman_action": "sit_and_relax",
+          "stickman_emotion": "peaceful",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "2",
+            "meaning_label": "REST",
+            "meaning_color": "#ffe600",
+            "example": "I need a break.",
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "meaning_3",
+          "start": 17,
+          "duration": 7,
+          "type": "example",
+          "text": "3. BREAK = to violate a rule or law",
+          "voice_line": "Meaning three: to violate a rule. Break the law. Break the rules. Break a promise. Break the speed limit. Completely different from smashing things.",
+          "tone": "serious",
+          "stickman_action": "cross_arms_stern",
+          "stickman_emotion": "serious",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "3",
+            "meaning_label": "VIOLATE",
+            "meaning_color": "#ff6b35",
+            "example": "Do not break the rules.",
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "meaning_4",
+          "start": 24,
+          "duration": 7,
+          "type": "example",
+          "text": "4. BREAK = a lucky opportunity",
+          "voice_line": "Meaning four: a lucky opportunity. That was her big break. He got his break when a director noticed him. Give me a break — meaning give me a chance. Or give me a break meaning stop it.",
+          "tone": "energetic",
+          "stickman_action": "lucky_celebration",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "4",
+            "meaning_label": "OPPORTUNITY",
+            "meaning_color": "#39ff14",
+            "example": "That was her big break.",
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["victory_chime", "sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "explosion_reveal",
+          "start": 31,
+          "duration": 6,
+          "type": "payoff",
+          "text": "One word. Four worlds. 💥",
+          "voice_line": "One tiny word. Four completely different worlds. Damage. Rest. Violate. Opportunity. You just leveled up your English vocabulary.",
+          "tone": "dramatic",
+          "stickman_action": "rocket_launch_pose",
+          "stickman_emotion": "triumphant",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "explosion_labels": ["DAMAGE", "REST", "VIOLATE", "OPPORTUNITY"],
+            "center_word": "BREAK",
+            "center_color": "#00d4ff",
+            "animation": { "in": "zoom_punch", "emphasis": "neon_explosion_all_four", "out": "fade" }
+          },
+          "sfx_prompts": ["explode_pop", "victory_chime"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "mini_story",
+          "start": 37,
+          "duration": 6,
+          "type": "example",
+          "text": "All 4 in one sentence:",
+          "voice_line": "All four in one sentence: She got her big break — opportunity — when she refused to break — violate — the rules, took a coffee break — rest — and never broke — damaged — under pressure.",
+          "tone": "warm",
+          "stickman_action": "storytelling_pose",
+          "stickman_emotion": "happy",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "animation": { "in": "fade", "emphasis": "word_by_word_highlight", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "cta",
+          "start": 43,
+          "duration": 7,
+          "type": "cta",
+          "text": "Save this. Your vocab just exploded. 💥",
+          "voice_line": "Save this before you scroll. Send it to the person who thinks their English is advanced. Follow — next time I am blowing up another word you use every day.",
+          "tone": "energetic",
+          "stickman_action": "phone_screenshot_pose",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#bf00ff",
+            "text_color": "#ffffff",
+            "animation": { "in": "zoom_punch", "emphasis": "neon_pulse_rapid", "out": "fade" }
+          },
+          "sfx_prompts": ["ding"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        }
+      ],
+      "audio": {
+        "voice_profile": "Energetic English Coach",
+        "background_music": false,
+        "sfx_enabled": true,
+        "master_volume": 1.0,
+        "voice_volume": 0.9,
+        "sfx_volume": 0.75
+      },
+      "packaging": {
+        "titles": [
+          "BREAK has 4 meanings and you only know 1 🤯",
+          "The word BREAK explained in 45 seconds",
+          "1 word. 4 completely different meanings. #BREAK"
+        ],
+        "description": "The word BREAK means so much more than smashing things. Damage, rest, violate, opportunity — all in one tiny word. Level up your vocabulary right now.",
+        "tags": ["vocabulary", "word meanings", "break meaning", "english words", "ESL vocabulary", "learn english", "advanced english", "word of the day"],
+        "thumbnail_prompt": "Dark neon background. Giant glowing word BREAK in electric blue at center surrounded by explosion. Four neon labels radiate outward: DAMAGE in red, REST in yellow, VIOLATE in orange, OPPORTUNITY in green. Bold text top: '1 WORD. 4 MEANINGS.' Neon glow, high contrast."
+      },
+      "viral_triggers": [
+        "curiosity_gap_hook",
+        "knowledge_gap_revelation",
+        "mini_story_all_meanings",
+        "vocabulary_level_up",
+        "share_to_impress_friends"
+      ]
+    }
+  ]
+}

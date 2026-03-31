@@ -1,0 +1,62 @@
+[
+  {
+    "channel_name": "English with Lucy",
+    "youtube_id": "UCz4tgANd4yy8Oe0iXCdSWfA",
+    "channel_url": "https://www.youtube.com/@EnglishwithLucy",
+    "subscriber_tier": "mega",
+    "content_style": "Polished talking-head lessons with on-screen text overlays. Topics cover grammar, vocabulary, British pronunciation, and everyday idioms. Long-form videos dominate but Shorts are gaining traction. High production value, warm personal brand, strong female-demographic audience.",
+    "strengths": ["strong personal brand", "high production quality", "British accent authenticity", "very high subscriber loyalty"],
+    "weaknesses": ["long-form focus may miss short attention spans", "less animation/visual engagement", "limited interactive quiz elements"],
+    "hook_patterns": ["You have been saying this wrong your entire life", "Native speakers never say this", "The difference between British and American English is"],
+    "avg_views_per_short": 250000,
+    "posting_frequency": "3-4 per week"
+  },
+  {
+    "channel_name": "mmmEnglish",
+    "youtube_id": "UCrRiVfHqzi5v7a4wZZZOlTg",
+    "channel_url": "https://www.youtube.com/@mmmEnglish_Emma",
+    "subscriber_tier": "mega",
+    "content_style": "Emma-fronted lessons mixing grammar explanations with real-world conversation practice. Strong focus on confidence building and speaking naturally. Uses on-screen text, b-roll, and structured lesson format. Targets adult learners wanting real conversational fluency.",
+    "strengths": ["trusted educator persona", "strong conversational focus", "adult learner resonance", "excellent retention structure"],
+    "weaknesses": ["slower pace may not suit Shorts format", "less meme/viral hook reliance", "limited gamification"],
+    "hook_patterns": ["Stop making this mistake when you speak English", "Most English learners never learn this", "How to sound more natural in English"],
+    "avg_views_per_short": 180000,
+    "posting_frequency": "2-3 per week"
+  },
+  {
+    "channel_name": "English Addict with Mr Steve",
+    "youtube_id": "UC_OskgZBoS4dAnVUgJVexcw",
+    "channel_url": "https://www.youtube.com/@EnglishAddict",
+    "subscriber_tier": "large",
+    "content_style": "Live-stream-style lessons and Shorts with Mr Steve covering idioms, slang, phrasal verbs, and British culture. Very high engagement through interactive polls and audience participation. Conversational and informal tone appeals to fans who want entertainment alongside learning.",
+    "strengths": ["extremely high engagement rate", "community-first approach", "British cultural authenticity", "phrasal verb expertise"],
+    "weaknesses": ["informal style may reduce perceived educational authority", "live-stream origins can feel unpolished", "limited animation"],
+    "hook_patterns": ["Do you know what this British phrase means", "Your English level right now is", "This phrasal verb will confuse you"],
+    "avg_views_per_short": 95000,
+    "posting_frequency": "daily"
+  },
+  {
+    "channel_name": "Learn English with TV Series",
+    "youtube_id": "UCKgpamMohtkl5OqwKe5Y3Gg",
+    "channel_url": "https://www.youtube.com/@LearnEnglishWithTVSeries",
+    "subscriber_tier": "large",
+    "content_style": "Uses popular TV show clips (Friends, The Office, Breaking Bad) to teach idioms, expressions, and pronunciation in context. Extremely high virality due to recognizable clips. Audience is passionate fans of Western TV who want to understand native speech better.",
+    "strengths": ["TV clip virality", "real native speech context", "entertainment value", "strong shareability"],
+    "weaknesses": ["copyright restrictions limit clip use", "relies heavily on existing IP", "less original content creation"],
+    "hook_patterns": ["What did they actually say in this scene", "The English in this Friends scene is brilliant", "You will never watch this show the same way again"],
+    "avg_views_per_short": 320000,
+    "posting_frequency": "4-5 per week"
+  },
+  {
+    "channel_name": "EnglishClass101",
+    "youtube_id": "UCeTeSNGDyq3LQvKr1gB0zIA",
+    "channel_url": "https://www.youtube.com/@EnglishClass101",
+    "subscriber_tier": "mega",
+    "content_style": "Structured curriculum-style lessons across all levels covering vocabulary, grammar, conversation, and culture. Two-presenter format with native and non-native speaker dialogue builds authenticity. Known for vocabulary countdowns and cultural comparison content. High-volume posting with consistent quality.",
+    "strengths": ["structured curriculum credibility", "high posting volume", "dual-presenter format", "vocabulary countdown format virality"],
+    "weaknesses": ["corporate feel reduces personal connection", "formulaic structure can feel predictable", "less trendy hook writing"],
+    "hook_patterns": ["Top 10 English words you need to know", "How do you say this in American English", "Learn these 5 phrases and sound fluent"],
+    "avg_views_per_short": 140000,
+    "posting_frequency": "daily to twice daily"
+  }
+]

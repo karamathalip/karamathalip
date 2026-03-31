@@ -1,0 +1,415 @@
+{
+  "format": "rule_as_superpower_metaphor",
+  "version": "1.0",
+  "topic": "Present Perfect tense — the grammar superpower that connects past to now",
+  "target_audience": "beginner to intermediate English learners, grammar strugglers aged 16-40",
+  "video_duration_seconds": 55,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+
+  "hook_options": [
+    "There is one grammar tense that makes you sound instantly more fluent — and almost nobody teaches it right.",
+    "This grammar rule is a superpower. Once you get it, you can never go back.",
+    "Native speakers use this tense hundreds of times a day. Most learners avoid it because they think it is hard. It is not."
+  ],
+
+  "script_sentences": [
+    "What if one grammar rule could make you sound fluent overnight?",
+    "The Present Perfect is not just a tense. It is a superpower.",
+    "It connects the past to right now. Like a bridge through time.",
+    "I have lived here for five years — still living here now.",
+    "I lived here for five years — I moved away. Gone. Different meaning.",
+    "One word — HAVE — transforms everything.",
+    "Use it and watch people's faces change when you speak.",
+    "You have just unlocked the Present Perfect."
+  ],
+
+  "packaging": {
+    "titles": [
+      "The grammar rule that makes you sound FLUENT instantly",
+      "Present Perfect = Your English Superpower 🦸",
+      "Why 'I have done' hits different than 'I did'"
+    ],
+    "description": "The Present Perfect tense is the #1 grammar rule that separates intermediate learners from fluent speakers. In this Short, you will finally understand what it does, why it matters, and how to use it naturally. Once you feel it, you cannot un-feel it.",
+    "tags": ["present perfect", "english grammar", "tense", "fluent english", "ESL grammar", "english superpower", "learn english fast", "grammar tips"],
+    "thumbnail": {
+      "text": "HAVE + V3 = SUPERPOWER ⚡",
+      "visual": "heroic stickman in cape with lightning bolt emerging from fist, giant glowing formula HAVE + V3 in the sky, dramatic lighting, superhero comic style"
+    }
+  },
+
+  "thumbnail_prompt": "Comic-book style thumbnail. A confident stickman wearing a flowing cape stands in hero pose with fist raised. A lightning bolt explodes outward from the fist. In the sky above, the glowing formula 'HAVE + V3' crackles with electricity. Bold text at top: 'GRAMMAR SUPERPOWER'. Dramatic yellow and blue lighting, dark storm clouds in background, high contrast superhero style. YouTube Shorts thumbnail dimensions.",
+
+  "scenes": [
+    {
+      "scene_id": "hook",
+      "start": 0,
+      "duration": 4,
+      "type": "hook",
+      "text": "One grammar rule. Sounds fluent instantly. ⚡",
+      "voice_line": "What if one single grammar rule could make you sound instantly more fluent? It exists. And almost nobody teaches it right.",
+      "tone": "dramatic",
+      "stickman_action": "dramatic_point_at_camera",
+      "stickman_emotion": "intense",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#0a0a1a",
+        "text_color": "#f7c948",
+        "lightning_effect": true,
+        "main_text": "ONE rule.",
+        "sub_text": "FLUENT. Instantly.",
+        "font_style": "bold_impact",
+        "animation": {
+          "in": "lightning_strike",
+          "emphasis": "shake",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "thunder crack sound effect",
+        "electric power surge sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    },
+    {
+      "scene_id": "hero_pose",
+      "start": 4,
+      "duration": 5,
+      "type": "explanation",
+      "text": "Present Perfect = grammar superpower 🦸",
+      "voice_line": "The Present Perfect tense. It is not just grammar. It is a superpower. And you are about to get it.",
+      "tone": "dramatic",
+      "stickman_action": "hero_cape_pose",
+      "stickman_emotion": "heroic",
+      "visual": {
+        "template": "superpower",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "hero_visual": {
+          "stickman_size": "large",
+          "cape_color": "#f7c948",
+          "lightning_aura": true,
+          "background_rays": true,
+          "formula_display": "HAVE + past participle",
+          "formula_color": "#f7c948",
+          "formula_glow": true
+        },
+        "animation": {
+          "in": "hero_landing",
+          "emphasis": "cape_flutter",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "superhero swoosh sound effect",
+        "power charging hum sound effect"
+      ],
+      "use_image": true,
+      "image_prompt": "Cartoon superhero stickman with flowing yellow cape, standing in classic hero pose with hands on hips. Dramatic blue and yellow lighting from below. Lightning bolts surround the figure. Clean white background with radiating lines. The words PRESENT PERFECT glow above in electric yellow. Bold, dynamic, comic-book style illustration.",
+      "visual_priority": "high_emotion",
+      "reuse_key": "hero_stickman"
+    },
+    {
+      "scene_id": "villain",
+      "start": 9,
+      "duration": 6,
+      "type": "explanation",
+      "text": "The villain: using SIMPLE PAST when you mean NOW",
+      "voice_line": "But first — the villain. Most learners just use simple past for everything. I did. I went. I finished. And it sounds flat. Disconnected. Like you are reading from a list.",
+      "tone": "serious",
+      "stickman_action": "point_at_villain_stickman",
+      "stickman_emotion": "concerned",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#1a0a0a",
+        "text_color": "#ffffff",
+        "villain_visual": {
+          "stickman_expression": "flat",
+          "villain_label": "SIMPLE PAST only",
+          "speech_bubble_lines": ["I did.", "I went.", "I finished."],
+          "speech_bubble_color": "#444444",
+          "red_x_overlay": false,
+          "villain_aura": "#cc0000"
+        },
+        "caption": "Sounds robotic. Sounds incomplete.",
+        "caption_color": "#ff4757",
+        "animation": {
+          "in": "fade",
+          "emphasis": "villain_shadow",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "dark low drone sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "power_up",
+      "start": 15,
+      "duration": 6,
+      "type": "explanation",
+      "text": "The superpower: HAVE connects past → NOW ⚡",
+      "voice_line": "Here is the power. Present Perfect connects the past to right now. Like a bridge through time. One little word — HAVE — changes everything.",
+      "tone": "dramatic",
+      "stickman_action": "power_up_glowing",
+      "stickman_emotion": "powerful",
+      "visual": {
+        "template": "superpower",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "bridge_visual": {
+          "left_label": "PAST",
+          "left_color": "#888888",
+          "right_label": "NOW",
+          "right_color": "#f7c948",
+          "bridge_color": "#f7c948",
+          "bridge_glow": true,
+          "formula": "HAVE + V3",
+          "formula_position": "above_bridge"
+        },
+        "animation": {
+          "in": "power_surge_left_to_right",
+          "emphasis": "bridge_glow_pulse",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "energy power up sound effect",
+        "electric arc sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    },
+    {
+      "scene_id": "contrast_1",
+      "start": 21,
+      "duration": 7,
+      "type": "example",
+      "text": "I LIVED here. vs. I HAVE LIVED here.",
+      "voice_line": "Feel the difference. I lived here for five years. That is over. I moved away. Gone. But: I have lived here for five years — I am STILL here right now. Same words. Completely different meaning.",
+      "tone": "serious",
+      "stickman_action": "walk_away_then_stay",
+      "stickman_emotion": "focused",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "side_by_side": {
+          "left": {
+            "sentence": "I lived here for 5 years.",
+            "meaning": "I moved away. It is OVER.",
+            "color": "#888888",
+            "icon": "📦 (packed and gone)"
+          },
+          "right": {
+            "sentence": "I have lived here for 5 years.",
+            "meaning": "I am STILL here. ONGOING.",
+            "color": "#f7c948",
+            "icon": "🏠 (still home)"
+          },
+          "divider_color": "#ffffff"
+        },
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "highlight_difference",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "footsteps walking away sound effect",
+        "door closing sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    },
+    {
+      "scene_id": "contrast_2",
+      "start": 28,
+      "duration": 6,
+      "type": "example",
+      "text": "More examples: Have you eaten? vs Did you eat?",
+      "voice_line": "Have you eaten? — I might still need to feed you. Did you eat? — I am just curious about the past. Have you seen this movie? — Let us watch it together if not. Did you see it? — Just making conversation.",
+      "tone": "warm",
+      "stickman_action": "casual_conversation_pose",
+      "stickman_emotion": "friendly",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "example_pairs": [
+          {
+            "present_perfect": "Have you eaten?",
+            "simple_past": "Did you eat?",
+            "nuance": "Relevant NOW vs. Just curious"
+          },
+          {
+            "present_perfect": "Have you seen this?",
+            "simple_past": "Did you see it?",
+            "nuance": "Affects NOW vs. Just asking"
+          }
+        ],
+        "highlight_color": "#f7c948",
+        "animation": {
+          "in": "fade",
+          "emphasis": "pair_highlight",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "casual chat notification sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "world_transformation",
+      "start": 34,
+      "duration": 6,
+      "type": "payoff",
+      "text": "Use it and watch faces CHANGE when you speak.",
+      "voice_line": "Start using the Present Perfect. And watch what happens. People look at you differently. Your English sounds alive. Connected. Confident. Not a textbook. A real speaker.",
+      "tone": "dramatic",
+      "stickman_action": "world_transforms_around_hero",
+      "stickman_emotion": "triumphant",
+      "visual": {
+        "template": "superpower",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "transformation": {
+          "before_label": "Flat. Robotic.",
+          "after_label": "Alive. Fluent.",
+          "before_color": "#444444",
+          "after_color": "#f7c948",
+          "lightning_transition": true,
+          "faces_reacting": true
+        },
+        "animation": {
+          "in": "lightning_transform",
+          "emphasis": "world_glow_sweep",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "transformation power sound effect",
+        "crowd impressed reaction sound effect"
+      ],
+      "use_image": true,
+      "image_prompt": "Split-screen cartoon illustration. Left side is dark grey: a stickman speaking with flat grey speech bubbles containing 'I did. I went.' — listener looks bored. Right side is golden yellow glow: same stickman now glowing with power, speaking with bright golden speech bubbles containing 'I have done! I have been!' — listener looks amazed with stars in eyes. Dramatic lightning bolt divides the two sides. Bold text: BEFORE vs AFTER.",
+      "visual_priority": "high_emotion",
+      "reuse_key": null
+    },
+    {
+      "scene_id": "quick_wins",
+      "start": 40,
+      "duration": 6,
+      "type": "explanation",
+      "text": "Quick wins — say these TODAY:",
+      "voice_line": "Here are three quick wins to use today. One: I have just finished my homework. Two: I have never tried sushi. Three: Have you ever been to London? Start with these three. Get comfortable. Then expand.",
+      "tone": "energetic",
+      "stickman_action": "write_on_board_enthusiastic",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#0a0a1a",
+        "text_color": "#f7c948",
+        "quick_wins_list": [
+          "I have just finished my homework.",
+          "I have never tried sushi.",
+          "Have you ever been to London?"
+        ],
+        "list_icon": "⚡",
+        "list_color": "#f7c948",
+        "header": "SAY THESE TODAY:",
+        "animation": {
+          "in": "fade",
+          "emphasis": "line_by_line_reveal",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "pen writing on board sound effect",
+        "three tick checkmark sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "fly_off_cta",
+      "start": 46,
+      "duration": 9,
+      "type": "cta",
+      "text": "You have just unlocked the Present Perfect. 🚀",
+      "voice_line": "You have just unlocked the Present Perfect. Notice what I did there? I used it on purpose. You are already thinking in it. Follow for your next grammar superpower. And save this — future you will thank you.",
+      "tone": "energetic",
+      "stickman_action": "rocket_fly_off_screen",
+      "stickman_emotion": "triumphant",
+      "visual": {
+        "template": "superpower",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "fly_off_visual": {
+          "rocket_trail": true,
+          "trail_color": "#f7c948",
+          "stars_in_wake": true,
+          "formula_banner": "HAVE + V3 ⚡",
+          "formula_banner_color": "#f7c948"
+        },
+        "cta_overlay": {
+          "primary": "🚀 FOLLOW for next superpower",
+          "secondary": "💾 Save this to review later",
+          "color": "#f7c948"
+        },
+        "animation": {
+          "in": "zoom_punch",
+          "emphasis": "rocket_trail",
+          "out": "fly_off_top"
+        }
+      },
+      "sfx_prompts": [
+        "rocket launch sound effect",
+        "upbeat triumphant short jingle sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    }
+  ],
+
+  "viral_prediction": {
+    "score": 91,
+    "hook_score": 88,
+    "retention_score": 92,
+    "emotional_score": 95,
+    "clarity_score": 87,
+    "shareability_score": 90,
+    "novelty_score": 89,
+    "decision": "produce",
+    "notes": "Meta-hook is genius — using Present Perfect to describe the lesson itself in the CTA ('You have just unlocked'). Hero/villain metaphor sustains emotional engagement throughout. Side-by-side contrast scene is highly saveable. Expected strong completion rate due to clear narrative arc."
+  },
+
+  "metadata": {
+    "format_type": "rule_as_superpower_metaphor",
+    "grammar_topic": "present perfect tense",
+    "formula": "HAVE/HAS + past participle (V3)",
+    "key_insight": "connects past to present moment — relevant NOW",
+    "difficulty_level": "beginner_to_intermediate",
+    "visual_style": "dark_hero_lightning",
+    "estimated_watch_time_seconds": 55,
+    "hook_style": "rhetorical_question_promise",
+    "emotional_arc": "promise → reveal villain → unlock power → contrast → transform → triumph",
+    "narrative_structure": "hero_journey",
+    "scenes_count": 9,
+    "primary_cta": "follow",
+    "secondary_cta": "save",
+    "meta_device": "CTA uses the grammar rule being taught",
+    "quick_wins_count": 3,
+    "hero_pose_scene": "hero_pose",
+    "villain_scene": "villain",
+    "power_up_scene": "power_up",
+    "world_transformation_scene": "world_transformation",
+    "quick_wins_scene": "quick_wins",
+    "fly_off_cta_scene": "fly_off_cta"
+  }
+}

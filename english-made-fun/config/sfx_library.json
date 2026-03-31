@@ -1,0 +1,146 @@
+{
+  "version": "1.0",
+  "description": "SFX key-to-prompt map. Keys are used in script sfx_prompts arrays. Prompts are sent to ElevenLabs sound-generation API.",
+  "cues": {
+    "trip_whoosh": {
+      "prompt": "quick whooshing sound of someone tripping and sliding forward, cartoon style",
+      "duration_seconds": 0.8,
+      "prompt_influence": 0.3,
+      "category": "fail",
+      "scene_types": ["fail_demo", "mistake_reveal"]
+    },
+    "fall_thud": {
+      "prompt": "cartoon thud impact sound of a character falling down, soft and comedic",
+      "duration_seconds": 0.6,
+      "prompt_influence": 0.3,
+      "category": "fail",
+      "scene_types": ["fail_demo", "mistake_reveal"]
+    },
+    "victory_chime": {
+      "prompt": "upbeat success chime sound effect, bright and celebratory, short",
+      "duration_seconds": 1.0,
+      "prompt_influence": 0.4,
+      "category": "success",
+      "scene_types": ["fix_demo", "payoff", "correct_answer"]
+    },
+    "sparkle_pop": {
+      "prompt": "magical sparkle pop sound with light shimmer, like a star appearing",
+      "duration_seconds": 0.7,
+      "prompt_influence": 0.3,
+      "category": "success",
+      "scene_types": ["explanation", "payoff", "memory_trick"]
+    },
+    "explode_pop": {
+      "prompt": "fun cartoon explosion pop sound, energetic and punchy, not scary",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.3,
+      "category": "impact",
+      "scene_types": ["explosion_reveal", "hook", "payoff"]
+    },
+    "shatter_pop": {
+      "prompt": "glass shattering into pieces sound effect, light and crisp, cartoon style",
+      "duration_seconds": 0.8,
+      "prompt_influence": 0.3,
+      "category": "impact",
+      "scene_types": ["word_reveal", "meaning_reveal"]
+    },
+    "whoosh_slide": {
+      "prompt": "quick slide whoosh transition sound, smooth and fast",
+      "duration_seconds": 0.4,
+      "prompt_influence": 0.3,
+      "category": "transition",
+      "scene_types": ["hook", "transition", "explanation"]
+    },
+    "magic_whoosh": {
+      "prompt": "magical power-up whoosh sound, mystical and energetic with rising pitch",
+      "duration_seconds": 0.9,
+      "prompt_influence": 0.4,
+      "category": "power",
+      "scene_types": ["hero_pose", "power_up", "superpower"]
+    },
+    "power_chime": {
+      "prompt": "heroic power activation chime, strong and triumphant, short burst",
+      "duration_seconds": 1.2,
+      "prompt_influence": 0.4,
+      "category": "power",
+      "scene_types": ["hero_pose", "power_up", "world_transformation"]
+    },
+    "cheer_crowd": {
+      "prompt": "small cheerful crowd reaction, brief applause and cheer, warm and enthusiastic",
+      "duration_seconds": 1.5,
+      "prompt_influence": 0.3,
+      "category": "reaction",
+      "scene_types": ["payoff", "cta", "fix_demo"]
+    },
+    "fail_boop": {
+      "prompt": "cartoon fail boop sound, gentle negative feedback, not harsh",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.3,
+      "category": "fail",
+      "scene_types": ["hook", "fail_demo", "villain"]
+    },
+    "ding": {
+      "prompt": "clean bright notification ding sound, single tone, pleasant",
+      "duration_seconds": 0.4,
+      "prompt_influence": 0.3,
+      "category": "notification",
+      "scene_types": ["cta", "end_card", "fly_off_cta"]
+    },
+    "neon_flicker": {
+      "prompt": "electric neon light flickering sound, buzzing and zapping, brief",
+      "duration_seconds": 0.6,
+      "prompt_influence": 0.4,
+      "category": "electric",
+      "scene_types": ["hook", "word_explosion_hook"]
+    },
+    "type_click": {
+      "prompt": "fast typewriter clicking sound, mechanical keyboard typing burst",
+      "duration_seconds": 0.8,
+      "prompt_influence": 0.3,
+      "category": "mechanical",
+      "scene_types": ["explanation", "text_reveal"]
+    },
+    "level_up": {
+      "prompt": "video game level up sound effect, ascending tones with final triumphant note",
+      "duration_seconds": 1.5,
+      "prompt_influence": 0.4,
+      "category": "achievement",
+      "scene_types": ["payoff", "explosion_reveal", "level_up"]
+    },
+    "rocket_launch": {
+      "prompt": "small rocket launching sound effect, whoosh and distant roar, energetic",
+      "duration_seconds": 1.8,
+      "prompt_influence": 0.4,
+      "category": "launch",
+      "scene_types": ["cta", "fly_off_cta", "hero_launch"]
+    },
+    "pen_writing": {
+      "prompt": "pen or marker writing on paper sound, scratchy and natural, brief burst",
+      "duration_seconds": 0.7,
+      "prompt_influence": 0.3,
+      "category": "writing",
+      "scene_types": ["explanation", "rule_reveal", "memory_trick"]
+    },
+    "camera_shutter": {
+      "prompt": "smartphone camera shutter sound, quick snap, modern mobile style",
+      "duration_seconds": 0.3,
+      "prompt_influence": 0.3,
+      "category": "photo",
+      "scene_types": ["cta", "screenshot_prompt"]
+    },
+    "wrong_buzzer": {
+      "prompt": "wrong answer game show buzzer sound, short and clear, not too harsh",
+      "duration_seconds": 0.6,
+      "prompt_influence": 0.3,
+      "category": "fail",
+      "scene_types": ["fail_demo", "villain"]
+    },
+    "correct_ping": {
+      "prompt": "correct answer ping sound, bright and positive, quick double tone",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.3,
+      "category": "success",
+      "scene_types": ["fix_demo", "quick_test_reveal"]
+    }
+  }
+}

@@ -1,0 +1,385 @@
+{
+  "day": 6,
+  "date_offset_days": 5,
+  "videos": [
+    {
+      "video_id": "vid_011",
+      "format": "fail_fix_stickman_skit",
+      "topic": "You are coming? vs Are you coming? — question word order",
+      "hook": "English questions have a specific word order. Get it wrong and you sound like you are making a statement, not asking a question.",
+      "total_duration_seconds": 39,
+      "scenes": [
+        {
+          "scene_id": "hook",
+          "start": 0,
+          "duration": 3,
+          "type": "hook",
+          "text": "English questions have a strict word order. Most learners ignore it.",
+          "voice_line": "English questions have a very specific word order. Ignore it and you sound confused — even when people can understand you.",
+          "tone": "energetic",
+          "stickman_action": "confused_head_tilt",
+          "stickman_emotion": "shocked",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#1a1a2e",
+            "text_color": "#ff4757",
+            "main_text": "WORD ORDER",
+            "sub_text": "matters in questions!",
+            "animation": { "in": "zoom_punch", "emphasis": "shake", "out": "fade" }
+          },
+          "sfx_prompts": ["fail_boop", "whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "fail_demo",
+          "start": 3,
+          "duration": 5,
+          "type": "example",
+          "text": "❌ You are coming to the party?",
+          "voice_line": "You texted: You are coming to the party? That is a statement with a question mark. Native speakers notice. It feels lazy and unnatural.",
+          "tone": "serious",
+          "stickman_action": "trip_and_fall",
+          "stickman_emotion": "embarrassed",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#2d1b1b",
+            "text_color": "#ffffff",
+            "speech_bubble": "You are coming to the party?",
+            "highlight_color": "#ff4757",
+            "wrong_word_order": true,
+            "animation": { "in": "slide_up", "emphasis": "highlight_word", "out": "slide_left" }
+          },
+          "sfx_prompts": ["trip_whoosh", "fall_thud"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "explain_rule",
+          "start": 8,
+          "duration": 8,
+          "type": "explanation",
+          "text": "Questions: VERB before SUBJECT. Always.",
+          "voice_line": "Here is the rule. In English questions, the auxiliary verb comes before the subject. Not: you ARE coming. But: ARE you coming? Not: she HAS finished. But: HAS she finished? Flip them. Always.",
+          "tone": "calm",
+          "stickman_action": "flip_cards_gesture",
+          "stickman_emotion": "explaining",
+          "visual": {
+            "template": "stickman",
+            "background_color": "#16213e",
+            "text_color": "#ffffff",
+            "flip_visual": {
+              "statement": "You ARE coming.",
+              "question": "ARE you coming?",
+              "arrow": "flip ↔"
+            },
+            "animation": { "in": "fade", "emphasis": "flip_animation", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "fix_demo",
+          "start": 16,
+          "duration": 5,
+          "type": "payoff",
+          "text": "✅ Are you coming to the party?",
+          "voice_line": "Now say it right. ARE you coming to the party? ARE flips to the front. Clean. Correct. Natural English question.",
+          "tone": "energetic",
+          "stickman_action": "fist_pump",
+          "stickman_emotion": "triumphant",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0f3460",
+            "text_color": "#ffffff",
+            "highlight_word": "Are",
+            "highlight_color": "#2ed573",
+            "fixed_sentence": "Are you coming to the party?",
+            "animation": { "in": "zoom_punch", "emphasis": "confetti_burst", "out": "fade" }
+          },
+          "sfx_prompts": ["victory_chime", "sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "more_examples",
+          "start": 21,
+          "duration": 6,
+          "type": "example",
+          "text": "Does she know? Have they left? Will it rain?",
+          "voice_line": "More examples. Does she know? Not: she does know? Have they left? Not: they have left? Will it rain? Not: it will rain? The helper verb always comes first in a question.",
+          "tone": "energetic",
+          "stickman_action": "count_examples",
+          "stickman_emotion": "focused",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#1a1a2e",
+            "text_color": "#ffffff",
+            "correct_questions": ["Does she know? ✅", "Have they left? ✅", "Will it rain? ✅"],
+            "animation": { "in": "slide_up", "emphasis": "rapid_reveal", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "memory_trick",
+          "start": 27,
+          "duration": 5,
+          "type": "explanation",
+          "text": "Memory: Questions lead with the helper. Always.",
+          "voice_line": "Memory trick. In English, questions are led by the helper verb. DO, DID, DOES, IS, ARE, WAS, WERE, HAVE, HAS, WILL, CAN, SHOULD. These helpers always march to the front of a question.",
+          "tone": "warm",
+          "stickman_action": "march_gesture",
+          "stickman_emotion": "happy",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#16213e",
+            "text_color": "#ffffff",
+            "helper_verbs": ["DO", "DID", "IS", "ARE", "HAVE", "HAS", "WILL", "CAN"],
+            "animation": { "in": "slide_up", "emphasis": "march_reveal", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "cta",
+          "start": 32,
+          "duration": 7,
+          "type": "cta",
+          "text": "Save this. Ask better questions. 💾",
+          "voice_line": "Save this right now. Ask better questions from today. Follow — because every day I post one English fix that actually makes a difference.",
+          "tone": "energetic",
+          "stickman_action": "wave_at_camera",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#ff4757",
+            "text_color": "#ffffff",
+            "animation": { "in": "zoom_punch", "emphasis": "pulse", "out": "fade" }
+          },
+          "sfx_prompts": ["ding"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        }
+      ],
+      "audio": {
+        "voice_profile": "Energetic English Coach",
+        "background_music": false,
+        "sfx_enabled": true,
+        "master_volume": 1.0,
+        "voice_volume": 0.9,
+        "sfx_volume": 0.7
+      },
+      "packaging": {
+        "titles": [
+          "You are coming? vs Are you coming? — HUGE difference",
+          "English question word order — stop getting this wrong",
+          "The question mistake that makes every native speaker notice"
+        ],
+        "description": "In English questions, the helper verb ALWAYS comes before the subject. Not 'You are coming?' but 'Are you coming?' One flip changes everything about how natural you sound.",
+        "tags": ["question word order", "english questions", "are you coming", "grammar mistakes", "ESL questions", "learn english", "english word order", "question formation"],
+        "thumbnail_prompt": "Two stickmen texting. Left: confused stickman reading text 'You are coming?' with red X. Right: happy stickman reading text 'Are you coming?' with green checkmark. Giant flip arrow in the middle. Bold text: FLIP THE ORDER. Dark background."
+      },
+      "viral_triggers": [
+        "texting_scenario_relatability",
+        "native_speaker_notice_hook",
+        "flip_visualization",
+        "helper_verb_toolkit",
+        "immediate_applicable_fix"
+      ]
+    },
+    {
+      "video_id": "vid_012",
+      "format": "word_explosion_visual_build",
+      "topic": "The word TAKE — 3 completely different meanings",
+      "hook": "Take a photo. Take advice. Take two hours. Three different meanings you use every day without thinking.",
+      "total_duration_seconds": 46,
+      "scenes": [
+        {
+          "scene_id": "hook",
+          "start": 0,
+          "duration": 3,
+          "type": "hook",
+          "text": "TAKE does 3 completely different things. 🤯",
+          "voice_line": "Take a photo. Take advice. It takes two hours. You use TAKE every single day — but do you know these are three completely different meanings?",
+          "tone": "energetic",
+          "stickman_action": "taking_photo_pose",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#0d0d1a",
+            "text_color": "#00d4ff",
+            "neon_word": "TAKE",
+            "animation": { "in": "neon_flicker", "emphasis": "explosion_burst", "out": "fade" }
+          },
+          "sfx_prompts": ["whoosh_slide", "explode_pop"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "meaning_1",
+          "start": 3,
+          "duration": 8,
+          "type": "example",
+          "text": "1. TAKE = grab, carry, or bring",
+          "voice_line": "Meaning one: to grab, carry, or bring. Take a book. Take your umbrella. She took my hand. Take this with you. You are physically moving something from one place to another.",
+          "tone": "energetic",
+          "stickman_action": "pick_up_and_carry",
+          "stickman_emotion": "focused",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "1",
+            "meaning_label": "GRAB / CARRY",
+            "meaning_color": "#ff2d78",
+            "example": "Take your umbrella.",
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["whoosh_slide"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "meaning_2",
+          "start": 11,
+          "duration": 8,
+          "type": "example",
+          "text": "2. TAKE = require time, effort, or courage",
+          "voice_line": "Meaning two: to require. It takes twenty minutes to walk there. Learning a language takes patience. It took all my courage to speak first. Something needs a resource — it TAKES it.",
+          "tone": "serious",
+          "stickman_action": "clock_gesture",
+          "stickman_emotion": "serious",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "2",
+            "meaning_label": "REQUIRE",
+            "meaning_color": "#ffe600",
+            "example": "It takes twenty minutes.",
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "meaning_3",
+          "start": 19,
+          "duration": 8,
+          "type": "example",
+          "text": "3. TAKE = accept or receive",
+          "voice_line": "Meaning three: to accept or receive. Take advice. Take a compliment. Take a photo. Take a break. Take a seat. You are receiving or accepting something. This one is everywhere.",
+          "tone": "warm",
+          "stickman_action": "receive_gift_pose",
+          "stickman_emotion": "happy",
+          "visual": {
+            "template": "dialogue",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "meaning_number": "3",
+            "meaning_label": "ACCEPT / RECEIVE",
+            "meaning_color": "#39ff14",
+            "example": "Take a seat.",
+            "examples_mini": ["take advice", "take a photo", "take a break"],
+            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "explosion_reveal",
+          "start": 27,
+          "duration": 6,
+          "type": "payoff",
+          "text": "GRAB. REQUIRE. ACCEPT. TAKE does it all. 💥",
+          "voice_line": "Grab. Require. Accept. One small word does three enormous jobs. Now every sentence with TAKE makes complete sense.",
+          "tone": "dramatic",
+          "stickman_action": "explosion_pose",
+          "stickman_emotion": "triumphant",
+          "visual": {
+            "template": "superpower",
+            "background_color": "#0d0d1a",
+            "explosion_labels": ["GRAB", "REQUIRE", "ACCEPT"],
+            "center_word": "TAKE",
+            "center_color": "#00d4ff",
+            "animation": { "in": "zoom_punch", "emphasis": "neon_explosion_all_four", "out": "fade" }
+          },
+          "sfx_prompts": ["explode_pop", "victory_chime"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        },
+        {
+          "scene_id": "mini_story",
+          "start": 33,
+          "duration": 6,
+          "type": "example",
+          "text": "All 3 in one sentence:",
+          "voice_line": "All three in one sentence: She took — grabbed — her camera and it took — required — courage to take — accept — feedback from professionals.",
+          "tone": "warm",
+          "stickman_action": "storytelling_pose",
+          "stickman_emotion": "happy",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#0d0d1a",
+            "text_color": "#ffffff",
+            "animation": { "in": "fade", "emphasis": "word_by_word_highlight", "out": "fade" }
+          },
+          "sfx_prompts": ["sparkle_pop"],
+          "use_image": false,
+          "visual_priority": "standard"
+        },
+        {
+          "scene_id": "cta",
+          "start": 39,
+          "duration": 7,
+          "type": "cta",
+          "text": "TAKE this knowledge. You earned it. 💥",
+          "voice_line": "Take this knowledge — that is accept — and use it today. It will not take long — that is require — before it feels natural. Save and follow for more word explosions.",
+          "tone": "energetic",
+          "stickman_action": "phone_screenshot_pose",
+          "stickman_emotion": "excited",
+          "visual": {
+            "template": "text_burst",
+            "background_color": "#bf00ff",
+            "text_color": "#ffffff",
+            "animation": { "in": "zoom_punch", "emphasis": "neon_pulse_rapid", "out": "fade" }
+          },
+          "sfx_prompts": ["ding"],
+          "use_image": false,
+          "visual_priority": "high_emotion"
+        }
+      ],
+      "audio": {
+        "voice_profile": "Energetic English Coach",
+        "background_music": false,
+        "sfx_enabled": true,
+        "master_volume": 1.0,
+        "voice_volume": 0.9,
+        "sfx_volume": 0.75
+      },
+      "packaging": {
+        "titles": [
+          "TAKE has 3 meanings — do you know all of them? 🤯",
+          "Grab, Require, Accept — which TAKE is which?",
+          "The word TAKE explained in 40 seconds"
+        ],
+        "description": "Take your umbrella. It takes courage. Take a break. Three completely different meanings from one of the most common verbs in English. Master all three right now.",
+        "tags": ["take meaning", "english vocabulary", "word meanings", "word explosion", "ESL vocabulary", "learn english", "english words", "vocabulary boost"],
+        "thumbnail_prompt": "Dark neon background. Giant glowing TAKE in electric blue at center. Three neon labels radiate: GRAB in pink with hand icon, REQUIRE in yellow with clock icon, ACCEPT in green with gift icon. Bold text: 1 WORD. 3 MEANINGS. Neon explosion style."
+      },
+      "viral_triggers": [
+        "everyday_word_subversion",
+        "three_context_revelation",
+        "wordplay_cta_meta",
+        "mini_story_all_meanings",
+        "vocabulary_level_up"
+      ]
+    }
+  ]
+}

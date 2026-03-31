@@ -1,0 +1,376 @@
+{
+  "format": "word_explosion_visual_build",
+  "version": "1.0",
+  "topic": "The word SET — 4 completely different meanings that will blow your mind",
+  "target_audience": "intermediate to advanced English learners, vocabulary builders aged 16-40",
+  "video_duration_seconds": 52,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+
+  "hook_options": [
+    "One English word. Four completely different meanings. Most learners only know one.",
+    "This single word has more meanings than almost any other word in the English language.",
+    "You use this word every day and you don't even know what it really means."
+  ],
+
+  "script_sentences": [
+    "One tiny word. Four completely different meanings.",
+    "Meaning one: to place something. Set the cup on the table.",
+    "Meaning two: a group of things. A set of keys.",
+    "Meaning three: when the sun goes down. The sun sets at seven.",
+    "Meaning four: ready to go. Are you all set?",
+    "One word. Four worlds. You just leveled up.",
+    "Save this — your vocabulary just exploded."
+  ],
+
+  "packaging": {
+    "titles": [
+      "1 word. 4 meanings. 🤯 #SET",
+      "The word SET explained in 45 seconds",
+      "Why SET is the most powerful word in English"
+    ],
+    "description": "The word SET has over 430 definitions in the Oxford English Dictionary — more than any other verb. Today we cover the 4 you need to know to sound naturally fluent. Level up your English vocabulary fast with this one short.",
+    "tags": ["vocabulary", "english words", "word of the day", "set meaning", "ESL vocabulary", "learn english", "english tips", "advanced english"],
+    "thumbnail": {
+      "text": "SET = 4 meanings 🤯",
+      "visual": "neon explosion graphic with the word SET in giant glowing letters at center, four smaller neon words radiating outward: PLACE, GROUP, SUNSET, READY — dark background with electric purple and cyan glow"
+    }
+  },
+
+  "thumbnail_prompt": "Dark neon background with deep purple and black gradient. Giant glowing word 'SET' in electric cyan neon at the center, surrounded by an explosion of light. Four neon-labeled bubbles radiate outward in different directions: 'PLACE' in hot pink, 'GROUP' in electric yellow, 'SUNSET' in orange-red, 'READY' in lime green. Each bubble has a small matching icon. Bold text at top: '1 WORD. 4 MEANINGS.' Neon glow effect, high contrast, YouTube Shorts thumbnail style.",
+
+  "scenes": [
+    {
+      "scene_id": "hook",
+      "start": 0,
+      "duration": 3,
+      "type": "hook",
+      "text": "One word. FOUR meanings. 🤯",
+      "voice_line": "One tiny English word. Four completely different meanings. Most learners only know one.",
+      "tone": "energetic",
+      "stickman_action": "hold_up_one_finger_then_four",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#0d0d1a",
+        "text_color": "#00d4ff",
+        "accent_color": "#bf00ff",
+        "neon_style": true,
+        "main_word": "SET",
+        "main_word_size": 180,
+        "main_word_color": "#00d4ff",
+        "main_word_glow": "#00d4ff",
+        "subtitle": "4 MEANINGS",
+        "animation": {
+          "in": "neon_flicker",
+          "emphasis": "explosion_burst",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "electric spark buzz sound effect",
+        "neon light flicker sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    },
+    {
+      "scene_id": "meaning_1",
+      "start": 3,
+      "duration": 7,
+      "type": "example",
+      "text": "Meaning 1: to PLACE something",
+      "voice_line": "Meaning one: to place something. Set the cup on the table. Set your phone down. Set the record straight.",
+      "tone": "calm",
+      "stickman_action": "place_object_on_table",
+      "stickman_emotion": "focused",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#0d0d1a",
+        "text_color": "#ffffff",
+        "meaning_card": {
+          "number": "1",
+          "number_color": "#ff2d78",
+          "label": "PLACE",
+          "label_color": "#ff2d78",
+          "example_sentence": "Set the cup on the table.",
+          "example_color": "#ffffff",
+          "icon": "📦",
+          "neon_border": "#ff2d78"
+        },
+        "progress_bar": {
+          "total": 4,
+          "current": 1,
+          "color": "#ff2d78"
+        },
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "neon_pulse",
+          "out": "slide_left"
+        }
+      },
+      "sfx_prompts": [
+        "gentle thud place object sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "meaning_2",
+      "start": 10,
+      "duration": 7,
+      "type": "example",
+      "text": "Meaning 2: a GROUP of things",
+      "voice_line": "Meaning two: a group of things that belong together. A set of keys. A set of rules. A chess set. A matching set.",
+      "tone": "calm",
+      "stickman_action": "gesture_group",
+      "stickman_emotion": "explaining",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#0d0d1a",
+        "text_color": "#ffffff",
+        "meaning_card": {
+          "number": "2",
+          "number_color": "#ffe600",
+          "label": "GROUP",
+          "label_color": "#ffe600",
+          "example_sentence": "A set of keys.",
+          "example_color": "#ffffff",
+          "icon": "🔑",
+          "neon_border": "#ffe600"
+        },
+        "progress_bar": {
+          "total": 4,
+          "current": 2,
+          "color": "#ffe600"
+        },
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "neon_pulse",
+          "out": "slide_left"
+        }
+      },
+      "sfx_prompts": [
+        "keys jingle sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "meaning_3",
+      "start": 17,
+      "duration": 7,
+      "type": "example",
+      "text": "Meaning 3: when the sun goes DOWN",
+      "voice_line": "Meaning three: when the sun goes down. The sun sets at seven. It sets in the west. Beautiful sunset.",
+      "tone": "warm",
+      "stickman_action": "watch_sunset",
+      "stickman_emotion": "peaceful",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#0d0d1a",
+        "text_color": "#ffffff",
+        "meaning_card": {
+          "number": "3",
+          "number_color": "#ff6b35",
+          "label": "SUNSET",
+          "label_color": "#ff6b35",
+          "example_sentence": "The sun sets at seven.",
+          "example_color": "#ffffff",
+          "icon": "🌅",
+          "neon_border": "#ff6b35"
+        },
+        "progress_bar": {
+          "total": 4,
+          "current": 3,
+          "color": "#ff6b35"
+        },
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "neon_pulse",
+          "out": "slide_left"
+        }
+      },
+      "sfx_prompts": [
+        "peaceful nature ambient brief sound effect"
+      ],
+      "use_image": true,
+      "visual_priority": "standard",
+      "image_prompt": "Minimalist dark neon illustration of a sunset scene. Stickman figure silhouetted against an orange-red glowing horizon. The word SETS glows in neon letters in the sky. Dark purple sky, neon orange sun half-set on horizon. Clean, stylized, digital art style.",
+      "reuse_key": "sunset_scene"
+    },
+    {
+      "scene_id": "meaning_4",
+      "start": 24,
+      "duration": 6,
+      "type": "example",
+      "text": "Meaning 4: READY to go ✅",
+      "voice_line": "Meaning four: ready to go. Are you all set? We are set to launch. Get set! This one you hear every single day.",
+      "tone": "energetic",
+      "stickman_action": "thumbs_up_ready_pose",
+      "stickman_emotion": "confident",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#0d0d1a",
+        "text_color": "#ffffff",
+        "meaning_card": {
+          "number": "4",
+          "number_color": "#39ff14",
+          "label": "READY",
+          "label_color": "#39ff14",
+          "example_sentence": "Are you all set?",
+          "example_color": "#ffffff",
+          "icon": "✅",
+          "neon_border": "#39ff14"
+        },
+        "progress_bar": {
+          "total": 4,
+          "current": 4,
+          "color": "#39ff14"
+        },
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "neon_pulse",
+          "out": "slide_left"
+        }
+      },
+      "sfx_prompts": [
+        "starting pistol click sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "standard"
+    },
+    {
+      "scene_id": "mini_story",
+      "start": 30,
+      "duration": 8,
+      "type": "example",
+      "text": "All 4 meanings in ONE sentence:",
+      "voice_line": "Now listen to this one sentence that uses all four meanings. She set her alarm — that is place — for the full set — that is group — of sunrise photos as the sun set — that is sunset — because she was all set — that is ready — to go.",
+      "tone": "dramatic",
+      "stickman_action": "storytelling_pose",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#0d0d1a",
+        "text_color": "#ffffff",
+        "mini_story": {
+          "sentence": "She set her alarm for the full set of sunrise photos as the sun set — because she was all set to go.",
+          "highlighted_words": [
+            { "word": "set", "occurrence": 1, "label": "PLACE", "color": "#ff2d78" },
+            { "word": "set", "occurrence": 2, "label": "GROUP", "color": "#ffe600" },
+            { "word": "set", "occurrence": 3, "label": "SUNSET", "color": "#ff6b35" },
+            { "word": "set", "occurrence": 4, "label": "READY", "color": "#39ff14" }
+          ]
+        },
+        "animation": {
+          "in": "fade",
+          "emphasis": "word_by_word_highlight",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "magical sparkle sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    },
+    {
+      "scene_id": "level_up",
+      "start": 38,
+      "duration": 5,
+      "type": "payoff",
+      "text": "One word. Four worlds. You just leveled up. 🚀",
+      "voice_line": "One word. Four completely different worlds. And you just unlocked all of them. Your vocabulary just leveled up.",
+      "tone": "energetic",
+      "stickman_action": "rocket_launch_pose",
+      "stickman_emotion": "triumphant",
+      "visual": {
+        "template": "superpower",
+        "background_color": "#0d0d1a",
+        "text_color": "#ffffff",
+        "explosion_visual": {
+          "center_word": "SET",
+          "center_color": "#00d4ff",
+          "center_glow": "#00d4ff",
+          "radiating_labels": [
+            { "text": "PLACE", "color": "#ff2d78", "direction": "top_left" },
+            { "text": "GROUP", "color": "#ffe600", "direction": "top_right" },
+            { "text": "SUNSET", "color": "#ff6b35", "direction": "bottom_left" },
+            { "text": "READY", "color": "#39ff14", "direction": "bottom_right" }
+          ]
+        },
+        "animation": {
+          "in": "zoom_punch",
+          "emphasis": "neon_explosion_all_four",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "level up video game sound effect",
+        "explosion burst sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    },
+    {
+      "scene_id": "save_cta",
+      "start": 43,
+      "duration": 9,
+      "type": "cta",
+      "text": "Save this. Your vocab just exploded. 💥",
+      "voice_line": "Save this right now. Screenshot it. Send it to a friend who says they speak English. And follow — because next time I am blowing up another word you use every day without knowing why.",
+      "tone": "energetic",
+      "stickman_action": "phone_screenshot_pose",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#bf00ff",
+        "text_color": "#ffffff",
+        "neon_style": true,
+        "cta_elements": {
+          "primary": "💥 SAVE THIS",
+          "secondary": "Send it to your English friend",
+          "follow_tag": "Follow for more word explosions"
+        },
+        "animation": {
+          "in": "zoom_punch",
+          "emphasis": "neon_pulse_rapid",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "camera shutter screenshot sound effect",
+        "upbeat neon jingle sound effect"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion"
+    }
+  ],
+
+  "viral_prediction": {
+    "score": 88,
+    "hook_score": 86,
+    "retention_score": 89,
+    "emotional_score": 85,
+    "clarity_score": 90,
+    "shareability_score": 92,
+    "novelty_score": 86,
+    "decision": "produce",
+    "notes": "Mini-story scene using all four meanings is extremely shareable. Progress bar visual creates completion motivation. Neon aesthetic matches high-performing vocabulary content on TikTok/Shorts."
+  },
+
+  "metadata": {
+    "format_type": "word_explosion_visual_build",
+    "featured_word": "SET",
+    "meanings_count": 4,
+    "difficulty_level": "intermediate",
+    "visual_style": "dark_neon",
+    "estimated_watch_time_seconds": 52,
+    "hook_style": "curiosity_gap",
+    "emotional_arc": "curiosity → discovery → discovery → discovery → surprise → pride",
+    "primary_cta": "save",
+    "secondary_cta": "share",
+    "mini_story": true
+  }
+}

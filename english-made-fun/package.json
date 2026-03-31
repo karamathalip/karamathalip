@@ -1,0 +1,47 @@
+{
+  "name": "english-made-fun",
+  "version": "1.0.0",
+  "description": "Automated YouTube channel pipeline for English learning content",
+  "main": "index.js",
+  "scripts": {
+    "start": "node run_daily_batch.js",
+    "dev": "remotion studio src/index.tsx",
+    "build": "remotion render",
+    "render": "remotion render src/index.tsx EnglishLesson output/final/video.mp4",
+    "render:vid_001": "node render_vid_001.js",
+    "render:agent": "node pipeline/render_agent.js",
+    "schedule": "node pipeline/scheduler.js",
+    "health": "node pipeline/health_check.js",
+    "test:render": "node test_render_setup.js",
+    "verify": "node verify_command.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "@remotion/captions": "4.0.441",
+    "@remotion/cli": "latest",
+    "@remotion/media": "4.0.441",
+    "@remotion/renderer": "latest",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "fluent-ffmpeg": "^2.1.3",
+    "fs-extra": "^11.3.4",
+    "googleapis": "^140.0.0",
+    "node-cron": "^3.0.3",
+    "readline": "^1.3.0",
+    "remotion": "latest",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
+    "@types/fluent-ffmpeg": "^2.1.24",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.14.9",
+    "@types/node-cron": "^3.0.11",
+    "@types/uuid": "^10.0.0",
+    "typescript": "^5.5.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,7 @@
+file 'vid_001_scene01_padded.mp3'
+file 'vid_001_scene02_padded.mp3'
+file 'vid_001_scene03_padded.mp3'
+file 'vid_001_scene04_padded.mp3'
+file 'vid_001_scene05_padded.mp3'
+file 'vid_001_scene06_padded.mp3'
+file 'vid_001_scene07_padded.mp3'
