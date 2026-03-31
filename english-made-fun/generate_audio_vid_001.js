@@ -45,7 +45,8 @@ const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY || process.env.ELEVEN_API_
 // Override with env var ELEVENLABS_VOICE_ID if you prefer a different voice.
 const VOICE_ID = process.env.ELEVENLABS_VOICE_ID || '21m00Tcm4TlvDq8ikWAM';
 
-const TTS_MODEL     = 'eleven_monolingual_v1';
+// eleven_multilingual_v2 has better expressiveness, natural pauses, and warmer tone
+const TTS_MODEL     = 'eleven_multilingual_v2';
 const RETRY_MAX     = 3;
 const RETRY_BASE_MS = 1500;
 
@@ -107,9 +108,9 @@ async function callTTS(text) {
       text,
       model_id:       TTS_MODEL,
       voice_settings: {
-        stability:        0.55,
-        similarity_boost: 0.75,
-        style:            0.40,
+        stability:        0.38,    // lower = more expressive, varied inflection
+        similarity_boost: 0.80,    // keep voice consistent
+        style:            0.58,    // higher = more personality and warmth
         use_speaker_boost: true,
       },
     },
@@ -334,6 +335,25 @@ async function generateSFX(scenes, sfxLibrary) {
 
   if (!sfxOnly)  await generateVoice(scenes);
   if (!voiceOnly) await generateSFX(scenes, sfxLibrary);
+
+  // ── Generate background music (ambient layer) ────────────────────────────
+  if (!voiceOnly && script.background_music?.file) {
+    const bgFile = path.join(PROJECT_ROOT, script.background_music.file);
+    if (await fs.pathExists(bgFile)) {
+      ok(`Background music already exists: ${path.basename(bgFile)}`);
+    } else {
+      log('\n── Background Music Generation ──────────────────────────────────');
+      log('  Generating ambient study lo-fi track...');
+      const totalDur = script.total_duration_seconds ?? 52;
+      const bgBuffer = await callSoundGeneration(
+        'soft ambient lo-fi study music, gentle piano and warm pad, calm and minimal, no drums, relaxing background for learning, continuous and steady',
+        Math.min(22, totalDur)
+      );
+      await fs.ensureDir(path.dirname(bgFile));
+      await fs.writeFile(bgFile, bgBuffer);
+      ok(`Background music generated: ${path.basename(bgFile)} (${bgBuffer.length} bytes)`);
+    }
+  }
 
   log('\n╔════════════════════════════════════════════════════════════╗');
   log('║  Audio generation complete.                                ║');

@@ -1,13 +1,17 @@
 {
   "video_id": "vid_001",
-  "video_title": "STOP saying 'I have went' 🚫",
+  "video_title": "This ONE word exposes your English level",
   "format": "fail_fix_stickman_skit",
   "topic": "I have went vs I have gone — present perfect mistake",
-  "hook": "99% of English learners say this wrong every single day.",
-  "total_duration_seconds": 56,
-  "viral_score": 84,
+  "hook": "This one tiny word completely exposes your English level.",
+  "total_duration_seconds": 55,
+  "viral_score": 88,
   "status": "approved",
   "voice_file": "audio/voices/vid_001_voice_full.mp3",
+  "background_music": {
+    "file": "audio/sfx/ambient_study_lofi.mp3",
+    "volume": 0.08
+  },
   "scenes": [
     {
       "scene_id": "hook",
@@ -15,23 +19,22 @@
       "start": 0,
       "duration": 5,
       "type": "hook",
-      "text": "99% of learners say this WRONG.",
-      "voice_line": "Ninety-nine percent of English learners say this wrong every single day.",
+      "text": "This ONE word exposes your English level.",
+      "voice_line": "This one tiny word... completely exposes your English level.",
       "tone": "energetic",
       "stickman_action": "point_at_viewer",
       "stickman_emotion": "shocked",
       "visual": {
         "template": "text_burst",
-        "text": "99% of learners say this WRONG.",
-        "backgroundColor": "#1a1a2e",
-        "textColor": "#ff4757",
+        "text": "This ONE word exposes your English level.",
+        "backgroundColor": "#0d1b2e",
+        "textColor": "#ffffff",
         "emphasis": "zoom",
-        "keywords": ["WRONG", "99%"]
+        "keywords": ["ONE", "exposes"]
       },
-      "sfx_prompts": ["whoosh_slide", "fail_boop"],
+      "sfx_prompts": ["whoosh_slide"],
       "sfx": [
-        { "file": "audio/sfx/whoosh_slide.mp3", "startTime": 0,   "volume": 0.70 },
-        { "file": "audio/sfx/fail_boop.mp3",    "startTime": 0.5, "volume": 0.65 }
+        { "file": "audio/sfx/whoosh_slide.mp3", "startTime": 0, "volume": 0.55 }
       ],
       "use_image": false,
       "visual_priority": "high_emotion"
@@ -40,25 +43,24 @@
       "scene_id": "fail_demo",
       "id": "fail_demo",
       "start": 5,
-      "duration": 6,
+      "duration": 7,
       "type": "example",
-      "text": "❌ I have WENT to the store.",
-      "voice_line": "You said: I have went to the store. Wrong! That sounds terrible to a native speaker.",
-      "tone": "serious",
+      "text": "I have WENT to the store.",
+      "voice_line": "I have went to the store. Sounds off, right? Native speakers catch this instantly.",
+      "tone": "warm",
       "stickman_action": "trip_and_fall",
-      "stickman_emotion": "embarrassed",
+      "stickman_emotion": "confused",
       "visual": {
         "template": "stickman",
-        "text": "❌  I have WENT to the store.",
+        "text": "I have WENT to the store.",
         "stickman_action": "trip_and_fall",
-        "stickman_emotion": "embarrassed",
-        "bg_color": "#2d1b1b",
+        "stickman_emotion": "confused",
+        "bg_color": "#1a1a2e",
         "effect": "wrong"
       },
-      "sfx_prompts": ["trip_whoosh", "fall_thud"],
+      "sfx_prompts": ["wrong_buzzer"],
       "sfx": [
-        { "file": "audio/sfx/trip_whoosh.mp3", "startTime": 0,   "volume": 0.75 },
-        { "file": "audio/sfx/fall_thud.mp3",   "startTime": 0.4, "volume": 0.70 }
+        { "file": "audio/sfx/wrong_buzzer.mp3", "startTime": 0.3, "volume": 0.50 }
       ],
       "use_image": false,
       "visual_priority": "standard"
@@ -66,11 +68,11 @@
     {
       "scene_id": "explain",
       "id": "explain",
-      "start": 11,
-      "duration": 12,
+      "start": 12,
+      "duration": 14,
       "type": "explanation",
       "text": "WENT = simple past. Alone.\nGONE needs HAVE.",
-      "voice_line": "Here is the rule. WENT is simple past — it stands completely alone. I went. Done. But GONE is a past participle. It always needs HAVE with it. They are a team.",
+      "voice_line": "Here is the simple rule. WENT is past tense... it stands completely alone. But GONE... always needs HAVE. They are a team.",
       "tone": "calm",
       "stickman_action": "write_on_board",
       "stickman_emotion": "explaining",
@@ -81,9 +83,9 @@
         "stickman_emotion": "explaining",
         "bg_color": "#16213e"
       },
-      "sfx_prompts": ["whoosh_slide"],
+      "sfx_prompts": ["pen_writing"],
       "sfx": [
-        { "file": "audio/sfx/whoosh_slide.mp3", "startTime": 0, "volume": 0.55 }
+        { "file": "audio/sfx/pen_writing.mp3", "startTime": 0.2, "volume": 0.40 }
       ],
       "use_image": false,
       "visual_priority": "standard"
@@ -91,26 +93,26 @@
     {
       "scene_id": "fix_demo",
       "id": "fix_demo",
-      "start": 23,
+      "start": 26,
       "duration": 7,
       "type": "payoff",
-      "text": "✅ I have GONE to the store.",
-      "voice_line": "Now say it right. I have GONE to the store. Or just: I WENT to the store. Both are perfect. Never: I have WENT.",
+      "text": "I have GONE to the store.",
+      "voice_line": "Say it right. I have GONE to the store. Or... I WENT to the store. Both perfect.",
       "tone": "energetic",
       "stickman_action": "fist_pump",
-      "stickman_emotion": "triumphant",
+      "stickman_emotion": "victorious",
       "visual": {
         "template": "stickman",
-        "text": "✅  I have GONE to the store.",
+        "text": "I have GONE to the store.",
         "stickman_action": "epic_win",
         "stickman_emotion": "victorious",
         "bg_color": "#0f3460",
         "effect": "correct"
       },
-      "sfx_prompts": ["victory_chime", "sparkle_pop"],
+      "sfx_prompts": ["correct_ping", "sparkle_pop"],
       "sfx": [
-        { "file": "audio/sfx/victory_chime.mp3", "startTime": 0,   "volume": 0.75 },
-        { "file": "audio/sfx/sparkle_pop.mp3",   "startTime": 0.6, "volume": 0.65 }
+        { "file": "audio/sfx/correct_ping.mp3", "startTime": 0, "volume": 0.60 },
+        { "file": "audio/sfx/sparkle_pop.mp3", "startTime": 0.8, "volume": 0.50 }
       ],
       "use_image": false,
       "visual_priority": "high_emotion"
@@ -118,25 +120,25 @@
     {
       "scene_id": "memory_trick",
       "id": "memory_trick",
-      "start": 30,
+      "start": 33,
       "duration": 8,
       "type": "explanation",
-      "text": "WENT is a loner 🚶\nGONE always needs HAVE 🤝",
-      "voice_line": "Memory trick. WENT is a loner — it goes alone. GONE always needs a friend called HAVE. Lonely WENT. Social GONE.",
+      "text": "WENT is a loner.\nGONE always needs HAVE.",
+      "voice_line": "Memory trick. WENT is a loner... walks alone. GONE needs its friend HAVE. Follow for more tips like this.",
       "tone": "warm",
       "stickman_action": "lonely_walk_then_hug",
       "stickman_emotion": "happy",
       "visual": {
         "template": "dialogue",
-        "text": "WENT = loner 🚶  |  GONE + HAVE = team 🤝",
-        "speaker": "Memory Trick",
+        "text": "WENT = loner  |  GONE + HAVE = team",
+        "speaker": "Pro Tip",
         "bubbleColor": "#1e3a5f",
         "emotion": "happy",
         "backgroundColor": "#16213e"
       },
       "sfx_prompts": ["sparkle_pop"],
       "sfx": [
-        { "file": "audio/sfx/sparkle_pop.mp3", "startTime": 0, "volume": 0.65 }
+        { "file": "audio/sfx/sparkle_pop.mp3", "startTime": 0.3, "volume": 0.50 }
       ],
       "use_image": false,
       "visual_priority": "standard"
@@ -144,11 +146,11 @@
     {
       "scene_id": "quick_test",
       "id": "quick_test",
-      "start": 38,
+      "start": 41,
       "duration": 9,
       "type": "example",
-      "text": "Have you ___ to school today?\nWENT or GONE? 🤔",
-      "voice_line": "Quick test. Have you blank to school today? WENT or GONE? Three seconds. It is GONE. Have you GONE to school today. WENT is never allowed after HAVE.",
+      "text": "Have you ___ to school today?\nWENT or GONE?",
+      "voice_line": "Quick test. Have you blank to school today? WENT or GONE? ... It is GONE. WENT never follows HAVE.",
       "tone": "energetic",
       "stickman_action": "quiz_pose",
       "stickman_emotion": "curious",
@@ -160,36 +162,36 @@
         "emphasis": "highlight",
         "keywords": ["GONE", "WENT"]
       },
-      "sfx_prompts": ["whoosh_slide", "victory_chime"],
+      "sfx_prompts": ["whoosh_slide", "correct_ping"],
       "sfx": [
-        { "file": "audio/sfx/whoosh_slide.mp3",  "startTime": 0,   "volume": 0.55 },
-        { "file": "audio/sfx/victory_chime.mp3", "startTime": 5.0, "volume": 0.75 }
+        { "file": "audio/sfx/whoosh_slide.mp3", "startTime": 0, "volume": 0.45 },
+        { "file": "audio/sfx/correct_ping.mp3", "startTime": 5.5, "volume": 0.60 }
       ],
       "use_image": false,
       "visual_priority": "standard"
     },
     {
-      "scene_id": "cta",
-      "id": "cta",
-      "start": 47,
-      "duration": 9,
-      "type": "cta",
-      "text": "Save this. Never say it wrong again.",
-      "voice_line": "Save this video right now. Send it to a friend who makes this mistake. And follow — I post one grammar fix every single day.",
+      "scene_id": "loop_back",
+      "id": "loop_back",
+      "start": 50,
+      "duration": 5,
+      "type": "hook",
+      "text": "And if you are still mixing these up...\nthat is exactly why...",
+      "voice_line": "And if you are still mixing these up... that is exactly why...",
       "tone": "energetic",
-      "stickman_action": "wave_at_camera",
+      "stickman_action": "point_at_viewer",
       "stickman_emotion": "excited",
       "visual": {
         "template": "text_burst",
-        "text": "Save this.\nNever say it wrong again.",
-        "backgroundColor": "#c0392b",
+        "text": "And if you are still mixing these up...\nthat is exactly why...",
+        "backgroundColor": "#0d1b2e",
         "textColor": "#ffffff",
-        "emphasis": "pop",
-        "keywords": ["Save"]
+        "emphasis": "zoom",
+        "keywords": ["exactly"]
       },
-      "sfx_prompts": ["ding"],
+      "sfx_prompts": ["whoosh_slide"],
       "sfx": [
-        { "file": "audio/sfx/ding.mp3", "startTime": 0, "volume": 0.80 }
+        { "file": "audio/sfx/whoosh_slide.mp3", "startTime": 0, "volume": 0.50 }
       ],
       "use_image": false,
       "visual_priority": "high_emotion"
@@ -197,11 +199,12 @@
   ],
   "audio": {
     "voice_profile": "Energetic English Coach",
-    "background_music": false,
+    "background_music": true,
     "sfx_enabled": true,
     "master_volume": 1.0,
     "voice_volume": 0.9,
-    "sfx_volume": 0.7
+    "sfx_volume": 0.6,
+    "music_volume": 0.08
   },
   "captions": {
     "style": {
@@ -214,35 +217,36 @@
   },
   "packaging": {
     "titles": [
-      "STOP saying 'I have went' 🚫",
+      "This ONE word exposes your English level",
       "Have WENT vs Have GONE — fixed in 30 sec",
-      "The grammar mistake that follows you everywhere"
+      "The grammar trap that follows you everywhere"
     ],
-    "description": "One of the most common English grammar mistakes fixed in under 40 seconds. Save this so you never mix up WENT and GONE again.",
+    "description": "One of the most common English grammar mistakes fixed in under a minute. Master the difference between WENT and GONE with a simple memory trick you will never forget.",
     "tags": [
       "english grammar", "have went", "have gone",
       "present perfect", "common mistakes", "learn english",
-      "ESL", "grammar tips"
+      "ESL", "grammar tips", "english pro tip"
     ],
-    "thumbnail_prompt": "Split cartoon image. Left side dark red: embarrassed stickman, giant red X, speech bubble 'I have went'. Right side dark green: confident stickman, giant green checkmark, speech bubble 'I have gone'. Bold white text dividing the halves: WENT ❌ GONE ✅. High contrast, YouTube Shorts style."
+    "thumbnail_prompt": "Split cartoon image. Left side dark blue: confused stickman, giant red X, speech bubble 'I have went'. Right side dark green: confident stickman, giant green checkmark, speech bubble 'I have gone'. Bold white text dividing the halves: WENT vs GONE. High contrast, YouTube Shorts style."
   },
   "viral_triggers": [
-    "shocking_statistic_hook",
+    "curiosity_gap_hook",
     "common_mistake_recognition",
     "before_after_contrast",
-    "memory_trick_device",
+    "pro_tip_memory_device",
     "interactive_quiz_element",
-    "share_to_help_a_friend"
+    "seamless_loop_ending"
   ],
   "viral_prediction": {
-    "score": 84,
+    "score": 88,
     "decision": "produce",
     "reasons": [
-      "Universal mistake — almost every ESL speaker makes this error",
-      "Before/after contrast is highly shareable",
+      "Curiosity hook creates immediate knowledge gap without fake statistics",
+      "Empathetic tone builds trust — no shaming, positioned as pro tip",
       "Memory trick (loner/social) is sticky and memorable",
       "Quick test drives comments and saves",
-      "Statistics hook triggers curiosity gap in first 2 seconds"
+      "Seamless loop ending drives re-watches and inflates view duration",
+      "Follow CTA embedded mid-video, not at the end"
     ]
   }
 }

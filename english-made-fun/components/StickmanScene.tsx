@@ -1,8 +1,9 @@
 /**
  * StickmanScene.tsx
  * Core scene renderer: stickman + text overlay + optional background + particle effects.
- * Particle effects: green ✓ for 'correct', red ✗ for 'wrong'.
- * Background: solid color or image via <Img> (never native <img>).
+ * Enhanced with gradient backgrounds, centered text with keyword highlighting,
+ * and smoother particle animations.
+ * Background: gradient color or image via <Img> (never native <img>).
  */
 
 import React from 'react';
@@ -20,7 +21,7 @@ import { Stickman, type Pose, type Emotion } from './Stickman';
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export interface StickmanSceneData {
-  /** Subtitle / caption text shown at the bottom */
+  /** Subtitle / caption text shown in the upper area */
   text: string;
   /** Maps to Stickman pose prop (e.g. 'hero_pose', 'celebrate') */
   stickman_action?: string;
@@ -41,8 +42,24 @@ export interface StickmanSceneProps {
   sceneData: StickmanSceneData;
 }
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function darkenHex(hex: string, amount: number): string {
+  const c = hex.replace('#', '');
+  if (c.length !== 6) return hex;
+  const r = Math.max(0, parseInt(c.substring(0, 2), 16) - amount);
+  const g = Math.max(0, parseInt(c.substring(2, 4), 16) - amount);
+  const b = Math.max(0, parseInt(c.substring(4, 6), 16) - amount);
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
+/** Detect ALL-CAPS words (3+ chars) for keyword highlighting */
+function isKeywordWord(word: string): boolean {
+  const clean = word.replace(/[^a-zA-Z0-9']/g, '');
+  return clean.length >= 3 && clean === clean.toUpperCase();
+}
+
 // ─── Deterministic particle positions ────────────────────────────────────────
-// Fixed relative positions (0–1) so particles never flicker between frames.
 const PARTICLE_SLOTS = [
   { rx: 0.12, ry: 0.18 }, { rx: 0.88, ry: 0.22 }, { rx: 0.22, ry: 0.72 },
   { rx: 0.78, ry: 0.68 }, { rx: 0.50, ry: 0.10 }, { rx: 0.50, ry: 0.82 },
@@ -59,7 +76,6 @@ const Particle: React.FC<{
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
 
-  // Stagger entry: each particle pops in at a different frame
   const delay = index * 6;
   const entrySpring = spring({
     frame: frame - delay,
@@ -73,12 +89,10 @@ const Particle: React.FC<{
     extrapolateRight: 'clamp',
   });
 
-  // Slow float upward over the scene duration
   const floatY = interpolate(frame, [0, fps * 3], [0, -30], {
     extrapolateRight: 'clamp',
   });
 
-  // Fade out in the last second
   const opacity = interpolate(
     frame,
     [fps * 2, fps * 3],
@@ -105,7 +119,6 @@ const Particle: React.FC<{
         fontFamily: 'sans-serif',
         textShadow: `0 0 20px ${color}`,
         lineHeight: 1,
-        // No CSS transition — all via frame-driven spring above
       }}
     >
       {symbol}
@@ -113,13 +126,12 @@ const Particle: React.FC<{
   );
 };
 
-// ─── Text Overlay ─────────────────────────────────────────────────────────────
+// ─── Text Overlay (Centered Upper Area with Keyword Highlighting) ────────────
 
-const TextOverlay: React.FC<{ text: string }> = ({ text }) => {
+const TextOverlay: React.FC<{ text: string; effect?: 'correct' | 'wrong' | null }> = ({ text, effect }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Gentle fade-and-scale entry — centered vertically in upper portion
   const entrySpring = spring({
     frame,
     fps,
@@ -128,6 +140,12 @@ const TextOverlay: React.FC<{ text: string }> = ({ text }) => {
   });
   const scale = interpolate(entrySpring, [0, 1], [0.85, 1]);
   const opacity = interpolate(entrySpring, [0, 1], [0, 1]);
+
+  // Determine accent color based on effect
+  const accentColor = effect === 'correct' ? '#22c55e' : effect === 'wrong' ? '#ef4444' : '#FFD700';
+
+  // Split text into words for keyword highlighting
+  const words = text.split(/(\s+)/);
 
   return (
     <div
@@ -142,6 +160,7 @@ const TextOverlay: React.FC<{ text: string }> = ({ text }) => {
         alignItems: 'center',
         transform: `scale(${scale})`,
         opacity,
+        zIndex: 10,
       }}
     >
       <div
@@ -150,21 +169,37 @@ const TextOverlay: React.FC<{ text: string }> = ({ text }) => {
           borderRadius: 18,
           padding: '24px 40px',
           maxWidth: '90%',
+          borderLeft: `4px solid ${accentColor}`,
+          borderRight: `4px solid ${accentColor}`,
         }}
       >
         <p
           style={{
             margin: 0,
-            color: '#ffffff',
-            fontSize: 58,
+            fontSize: 56,
             fontFamily: 'sans-serif',
             fontWeight: 800,
             textAlign: 'center',
             lineHeight: 1.3,
-            textShadow: '0 2px 12px rgba(0,0,0,0.7)',
           }}
         >
-          {text}
+          {words.map((word, i) => {
+            const isKw = isKeywordWord(word);
+            return (
+              <span
+                key={i}
+                style={{
+                  color: isKw ? accentColor : '#ffffff',
+                  textShadow: isKw
+                    ? `0 0 8px ${accentColor}, 0 2px 12px rgba(0,0,0,0.7)`
+                    : '0 2px 12px rgba(0,0,0,0.7)',
+                  fontWeight: isKw ? 900 : 800,
+                }}
+              >
+                {word}
+              </span>
+            );
+          })}
         </p>
       </div>
     </div>
@@ -174,7 +209,8 @@ const TextOverlay: React.FC<{ text: string }> = ({ text }) => {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData }) => {
-  const { width, height } = useVideoConfig();
+  const { width, height, fps, durationInFrames } = useVideoConfig();
+  const frame = useCurrentFrame();
 
   const {
     text,
@@ -185,16 +221,37 @@ export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData }) => {
     effect,
   } = sceneData;
 
-  // Cast action/emotion to their typed variants (unknown strings fall back gracefully)
   const pose = stickman_action as Pose;
   const emotion = stickman_emotion as Emotion;
 
-  // Stickman sits center-horizontally, in the lower-center area
   const stickmanX = width / 2;
   const stickmanY = height * 0.58;
 
+  // ── Animated gradient background ──────────────────────────────────────────
+  const darkerBg = darkenHex(bg_color, 35);
+  const gradCx = interpolate(frame, [0, durationInFrames], [42, 58], { extrapolateRight: 'clamp' });
+  const gradCy = interpolate(frame, [0, durationInFrames], [40, 55], { extrapolateRight: 'clamp' });
+
   return (
-    <AbsoluteFill style={{ backgroundColor: bg_color }}>
+    <AbsoluteFill>
+
+      {/* ── Gradient background ──────────────────────────────────────────── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(ellipse at ${gradCx}% ${gradCy}%, ${bg_color} 0%, ${darkerBg} 100%)`,
+        }}
+      />
+
+      {/* ── Subtle vignette ──────────────────────────────────────────────── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.4) 100%)',
+        }}
+      />
 
       {/* ── Background image (uses <Img> to hold render until loaded) ────── */}
       {bg_image && (
@@ -210,7 +267,6 @@ export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData }) => {
         />
       )}
 
-      {/* ── Semi-transparent overlay to keep text legible over images ──────  */}
       {bg_image && (
         <div
           style={{
@@ -241,8 +297,8 @@ export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData }) => {
         />
       ))}
 
-      {/* ── Text overlay at bottom ──────────────────────────────────────── */}
-      {text && <TextOverlay text={text} />}
+      {/* ── Text overlay at upper area ──────────────────────────────────── */}
+      {text && <TextOverlay text={text} effect={effect} />}
 
     </AbsoluteFill>
   );

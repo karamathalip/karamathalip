@@ -2,6 +2,7 @@
  * TextBurstScene.tsx
  * Text explodes onto screen with spring physics.
  * Supports four emphasis modes: zoom | shake | highlight | pop
+ * Enhanced with gradient backgrounds, kinetic keyword scaling, and glow effects.
  * No CSS transitions — all animation driven by useCurrentFrame().
  */
 
@@ -46,21 +47,32 @@ function isKeyword(word: string, keywords: string[]): boolean {
   return clean.length >= 3 && clean === clean.toUpperCase();
 }
 
+/** Darken a hex color for gradient bottom */
+function darkenHex(hex: string, amount: number): string {
+  const c = hex.replace('#', '');
+  if (c.length !== 6) return hex;
+  const r = Math.max(0, parseInt(c.substring(0, 2), 16) - amount);
+  const g = Math.max(0, parseInt(c.substring(2, 4), 16) - amount);
+  const b = Math.max(0, parseInt(c.substring(4, 6), 16) - amount);
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-/** Single word with optional yellow keyword highlight */
+/** Single word with keyword highlight + kinetic scale on keywords */
 const Word: React.FC<{
   word: string;
   isHighlighted: boolean;
   textColor: string;
   emphasis: TextBurstEmphasis;
   wordIndex: number;
-}> = ({ word, isHighlighted, textColor, emphasis, wordIndex }) => {
+  totalWords: number;
+}> = ({ word, isHighlighted, textColor, emphasis, wordIndex, totalWords }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   // ── Pop emphasis: each word springs in with a staggered delay ────────────
-  const popDelay = wordIndex * 5; // 5 frames between each word
+  const popDelay = wordIndex * 5;
   const popSpring = spring({
     frame: frame - popDelay,
     fps,
@@ -74,30 +86,91 @@ const Word: React.FC<{
     ? interpolate(frame - popDelay, [0, 6], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
     : 1;
 
-  const highlightBg = isHighlighted && emphasis === 'highlight'
-    ? '#FFD700'
-    : isHighlighted
-    ? '#FFD700'
-    : 'transparent';
+  // ── Keyword kinetic bounce: keywords scale up with a spring when they appear ──
+  const keywordDelay = Math.round(fps * 0.6) + wordIndex * 4;
+  const keywordSpring = spring({
+    frame: frame - keywordDelay,
+    fps,
+    config: { damping: 10, stiffness: 140, mass: 0.8 },
+    durationInFrames: 36,
+  });
+  const keywordScale = isHighlighted
+    ? interpolate(keywordSpring, [0, 1], [0.7, 1.15], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
+    : 1;
 
+  // ── Keyword glow pulse ──────────────────────────────────────────────────
+  const glowIntensity = isHighlighted
+    ? interpolate(
+        Math.sin((frame / fps) * Math.PI * 1.5),
+        [-1, 1],
+        [4, 14]
+      )
+    : 0;
+
+  const highlightBg = isHighlighted ? '#FFD700' : 'transparent';
   const highlightTextColor = isHighlighted ? '#1a1a2e' : textColor;
 
   return (
     <span
       style={{
         display: 'inline-block',
-        transform: `scale(${popScale})`,
+        transform: `scale(${popScale * keywordScale})`,
         opacity: popOpacity,
         backgroundColor: highlightBg,
         color: highlightTextColor,
-        borderRadius: isHighlighted ? 8 : 0,
-        padding: isHighlighted ? '2px 10px' : '0 4px',
-        margin: '0 2px',
+        borderRadius: isHighlighted ? 10 : 0,
+        padding: isHighlighted ? '4px 14px' : '0 4px',
+        margin: '0 3px',
+        textShadow: isHighlighted
+          ? `0 0 ${glowIntensity}px #FFD700, 0 0 ${glowIntensity * 2}px rgba(255,215,0,0.4)`
+          : `0 2px 8px rgba(0,0,0,0.5)`,
         // No CSS transition — transform recalculated every frame via spring
       }}
     >
       {word}
     </span>
+  );
+};
+
+// ─── Background Gradient Layer ───────────────────────────────────────────────
+
+const AnimatedBackground: React.FC<{
+  backgroundColor: string;
+  frame: number;
+  fps: number;
+  duration: number;
+}> = ({ backgroundColor, frame, fps, duration }) => {
+  // Subtle gradient shift: radial gradient center moves slowly
+  const cx = interpolate(frame, [0, duration], [40, 60], { extrapolateRight: 'clamp' });
+  const cy = interpolate(frame, [0, duration], [45, 55], { extrapolateRight: 'clamp' });
+
+  const darkerBg = darkenHex(backgroundColor, 30);
+
+  // Subtle vignette pulse
+  const vignetteOpacity = interpolate(
+    Math.sin((frame / fps) * Math.PI * 0.3),
+    [-1, 1],
+    [0.3, 0.5]
+  );
+
+  return (
+    <>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(ellipse at ${cx}% ${cy}%, ${backgroundColor} 0%, ${darkerBg} 100%)`,
+        }}
+      />
+      {/* Vignette overlay */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,${vignetteOpacity}) 100%)`,
+        }}
+      />
+    </>
   );
 };
 
@@ -128,14 +201,13 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
 
   // ── Zoom emphasis: slow continuous scale-up over the scene ────────────────
   const zoomScale = emphasis === 'zoom'
-    ? interpolate(frame, [0, duration], [1, 1.22], {
+    ? interpolate(frame, [0, duration], [1, 1.18], {
         extrapolateRight: 'clamp',
         easing: Easing.out(Easing.quad),
       })
     : 1;
 
   // ── Shake emphasis: gentle translateX oscillation driven by sine ──────────
-  // Using Math.sin on frame directly (no CSS animation) — recalculated each frame
   const shakeX = emphasis === 'shake'
     ? Math.sin((frame / fps) * Math.PI * 6) *
       interpolate(frame, [0, fps * 0.5, fps * 2], [5, 5, 0], {
@@ -143,22 +215,18 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
       })
     : 0;
 
-  // ── Highlight emphasis: pulsing glow behind highlighted words ─────────────
-  // (individual word backgrounds — no extra transform needed at container level)
-
   // ── Combined transform for the whole block ────────────────────────────────
   const combinedScale = entranceScale * zoomScale;
 
-  // ── Exit fade: fade out in the last 20 frames (smoother exit) ──────────────
+  // ── Exit fade: smooth fade out in the last 24 frames ──────────────────────
   const exitOpacity = interpolate(
     frame,
-    [duration - 20, duration],
+    [duration - 24, duration],
     [1, 0],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
   );
 
-  // ── Emphasis-specific background effect ───────────────────────────────────
-  // 'highlight' mode: add a glowing underline bar that pulses
+  // ── Highlight mode: pulsing underline bar ─────────────────────────────────
   const highlightBarOpacity = emphasis === 'highlight'
     ? interpolate(Math.abs(Math.sin((frame / fps) * Math.PI * 1.2)), [0, 1], [0.3, 0.7])
     : 0;
@@ -166,12 +234,19 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
   return (
     <AbsoluteFill
       style={{
-        backgroundColor,
         justifyContent: 'center',
         alignItems: 'center',
         padding: '60px 80px',
       }}
     >
+      {/* Animated gradient background */}
+      <AnimatedBackground
+        backgroundColor={backgroundColor}
+        frame={frame}
+        fps={fps}
+        duration={duration}
+      />
+
       {/* Highlight mode: animated background glow bar */}
       {emphasis === 'highlight' && (
         <div
@@ -195,7 +270,7 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
           opacity: exitOpacity,
           textAlign: 'center',
           lineHeight: 1.4,
-          // transformOrigin default 'center' is correct
+          zIndex: 10,
         }}
       >
         <div
@@ -220,6 +295,7 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
               textColor={textColor}
               emphasis={emphasis}
               wordIndex={i}
+              totalWords={words.length}
             />
           ))}
         </div>
@@ -228,7 +304,7 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
       {/* Pop mode: starburst radial lines behind text */}
       {emphasis === 'pop' && (
         <svg
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.12 }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.10 }}
           viewBox="0 0 1080 1920"
         >
           {[0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5].map((angle, i) => {
@@ -242,11 +318,27 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
                 x2={540 + Math.cos(rad) * len}
                 y2={960 + Math.sin(rad) * len}
                 stroke={textColor}
-                strokeWidth={3}
+                strokeWidth={2.5}
               />
             );
           })}
         </svg>
+      )}
+
+      {/* Zoom mode: subtle radial light burst */}
+      {emphasis === 'zoom' && (
+        <div
+          style={{
+            position: 'absolute',
+            width: '60%',
+            height: '30%',
+            borderRadius: '50%',
+            background: `radial-gradient(ellipse, rgba(255,255,255,0.06) 0%, transparent 70%)`,
+            top: '35%',
+            left: '20%',
+            transform: `scale(${interpolate(frame, [0, duration], [0.8, 1.3], { extrapolateRight: 'clamp' })})`,
+          }}
+        />
       )}
     </AbsoluteFill>
   );

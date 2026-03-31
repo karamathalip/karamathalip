@@ -419,12 +419,13 @@ async function renderVideo(scriptData, bundleLocation, outputPath) {
  * @param {string}   opts.silentVideoPath  - Remotion render output
  * @param {string}   opts.voicePath        - Full voice track MP3
  * @param {Array<{filePath:string, offsetSeconds:number, volume:number}>} opts.sfxTracks
+ * @param {object}   [opts.backgroundMusic] - { filePath, volume } for ambient layer
  * @param {string}   opts.outputPath       - Final MP4 output path
  * @returns {Promise<void>}
  */
 function mergeAudio(opts) {
   return new Promise((resolve, reject) => {
-    const { silentVideoPath, voicePath, sfxTracks, outputPath } = opts;
+    const { silentVideoPath, voicePath, sfxTracks, backgroundMusic, outputPath } = opts;
 
     const cmd = ffmpeg();
 
@@ -437,7 +438,13 @@ function mergeAudio(opts) {
       cmd.input(voicePath);
     }
 
-    // Inputs 2..N: SFX files
+    // Input 2 (optional): Background music
+    const hasBgMusic = backgroundMusic?.filePath && fs.existsSync(backgroundMusic.filePath);
+    if (hasBgMusic) {
+      cmd.input(backgroundMusic.filePath);
+    }
+
+    // Inputs 3..N: SFX files
     const validSfx = (sfxTracks ?? []).filter(s => s.filePath && fs.existsSync(s.filePath));
     validSfx.forEach(s => cmd.input(s.filePath));
 
@@ -451,6 +458,14 @@ function mergeAudio(opts) {
       // Voice at delay 0 (plays from start)
       filterParts.push(`[${inputIndex}:a]adelay=0|0,volume=1[voice]`);
       mixInputs.push('[voice]');
+      inputIndex++;
+    }
+
+    if (hasBgMusic) {
+      // Background music: loop if shorter than video, apply volume, fade in/out
+      const bgVol = typeof backgroundMusic.volume === 'number' ? backgroundMusic.volume : 0.08;
+      filterParts.push(`[${inputIndex}:a]aloop=loop=-1:size=2e+09,volume=${bgVol},afade=t=in:d=2,afade=t=out:st=51:d=4[bgm]`);
+      mixInputs.push('[bgm]');
       inputIndex++;
     }
 
@@ -615,10 +630,28 @@ async function processScript(scriptData, scriptPath, bundleLocation) {
 
   // ── Step 3: Build SFX track list ──────────────────────────────────────────
   const sfxTracks = buildSfxTracks(scriptData);
+
+  // ── Step 3b: Background music ────────────────────────────────────────────
+  let backgroundMusic = null;
+  if (scriptData.background_music?.file) {
+    const bgPath = path.isAbsolute(scriptData.background_music.file)
+      ? scriptData.background_music.file
+      : path.join(PROJECT_ROOT, scriptData.background_music.file);
+    if (await fs.pathExists(bgPath)) {
+      backgroundMusic = {
+        filePath: bgPath,
+        volume: scriptData.background_music.volume ?? 0.08,
+      };
+      console.log(`    → Background music: ${path.basename(bgPath)} (vol=${backgroundMusic.volume})`);
+    } else {
+      console.warn(`    ⚠  Background music not found: ${scriptData.background_music.file}`);
+    }
+  }
+
   if (sfxTracks.length > 0) {
-    console.log(`    → Merging voice + ${sfxTracks.length} SFX track(s) with FFmpeg...`);
+    console.log(`    → Merging voice + ${sfxTracks.length} SFX track(s)${backgroundMusic ? ' + background music' : ''} with FFmpeg...`);
   } else {
-    console.log(`    → Merging voice track with FFmpeg...`);
+    console.log(`    → Merging voice track${backgroundMusic ? ' + background music' : ''} with FFmpeg...`);
   }
 
   // ── Step 4: FFmpeg merge ──────────────────────────────────────────────────
@@ -626,6 +659,7 @@ async function processScript(scriptData, scriptPath, bundleLocation) {
     silentVideoPath: silentPath,
     voicePath,
     sfxTracks,
+    backgroundMusic,
     outputPath:      finalPath,
   });
 

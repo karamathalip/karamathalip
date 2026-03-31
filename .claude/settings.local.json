@@ -41,7 +41,11 @@
       "Bash(rm audio/sfx/whoosh_slide.mp3 audio/sfx/fail_boop.mp3 audio/sfx/trip_whoosh.mp3 audio/sfx/fall_thud.mp3 audio/sfx/victory_chime.mp3 audio/sfx/sparkle_pop.mp3 audio/sfx/ding.mp3)",
       "Bash(node generate_audio_vid_001.js --sfx-only)",
       "Bash(node generate_audio_vid_001.js --voice-only)",
-      "Bash(ffprobe -v quiet -show_entries format=duration -of csv=p=0 \"D:\\\\The Alternate Archieve Studio\\\\English\\\\english-made-fun\\\\audio\\\\voices\\\\vid_001_voice_full.mp3\")"
+      "Bash(ffprobe -v quiet -show_entries format=duration -of csv=p=0 \"D:\\\\The Alternate Archieve Studio\\\\English\\\\english-made-fun\\\\audio\\\\voices\\\\vid_001_voice_full.mp3\")",
+      "Bash(rm -f audio/voices/vid_001_scene*_voice.mp3 audio/voices/vid_001_scene*_padded.mp3 audio/voices/vid_001_voice_full.mp3 audio/voices/vid_001_concat_list.txt)",
+      "Bash(rm -f output/final/vid_001_final.mp4 videos/vid_001.mp4)",
+      "Bash(ffprobe -v error -show_entries format=duration,size -of default=noprint_wrappers=1 \"D:\\\\The Alternate Archieve Studio\\\\English\\\\english-made-fun\\\\output\\\\final\\\\vid_001_final.mp4\")",
+      "Bash(ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate,duration -of default=noprint_wrappers=1 \"D:\\\\The Alternate Archieve Studio\\\\English\\\\english-made-fun\\\\output\\\\final\\\\vid_001_final.mp4\")"
     ]
   }
 }

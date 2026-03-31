@@ -141,6 +141,13 @@
       "prompt_influence": 0.3,
       "category": "success",
       "scene_types": ["fix_demo", "quick_test_reveal"]
+    },
+    "ambient_study_lofi": {
+      "prompt": "soft ambient lo-fi study music, gentle piano and warm pad, calm and minimal, no drums, relaxing background for learning, continuous and steady",
+      "duration_seconds": 22,
+      "prompt_influence": 0.3,
+      "category": "background",
+      "scene_types": ["background_music"]
     }
   }
 }

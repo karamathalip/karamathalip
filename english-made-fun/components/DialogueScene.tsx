@@ -1,6 +1,7 @@
 /**
  * DialogueScene.tsx
  * Chat-bubble scene with typewriter text animation and a stickman speaker.
+ * Enhanced with gradient backgrounds, glowing bubble, and smoother animations.
  * Text reveals character-by-character using string slicing (never per-char opacity).
  * Bubble tail points toward the stickman on the left.
  */
@@ -30,8 +31,18 @@ export interface DialogueSceneProps {
   backgroundColor?: string;
 }
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function darkenHex(hex: string, amount: number): string {
+  const c = hex.replace('#', '');
+  if (c.length !== 6) return hex;
+  const r = Math.max(0, parseInt(c.substring(0, 2), 16) - amount);
+  const g = Math.max(0, parseInt(c.substring(2, 4), 16) - amount);
+  const b = Math.max(0, parseInt(c.substring(4, 6), 16) - amount);
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
 // ─── Bubble Tail SVG ─────────────────────────────────────────────────────────
-// Points left toward the stickman
 
 const BubbleTail: React.FC<{ color: string }> = ({ color }) => (
   <svg
@@ -44,7 +55,6 @@ const BubbleTail: React.FC<{ color: string }> = ({ color }) => (
     }}
     viewBox="0 0 36 28"
   >
-    {/* Triangle pointing left */}
     <polygon points="36,0 36,28 0,14" fill={color} />
   </svg>
 );
@@ -76,6 +86,7 @@ const SpeakerLabel: React.FC<{ name: string; color: string }> = ({ name, color }
         fontWeight: 800,
         letterSpacing: 1,
         textTransform: 'uppercase',
+        textShadow: `0 0 12px ${color}, 0 2px 6px rgba(0,0,0,0.5)`,
       }}
     >
       {name}
@@ -93,7 +104,6 @@ const ChatBubble: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // ── Bubble entrance: eases in from right ──────────────────────────────────
   const bubbleSpring = spring({
     frame,
     fps,
@@ -105,10 +115,8 @@ const ChatBubble: React.FC<{
   const translateX = interpolate(bubbleSpring, [0, 1], [40, 0]);
 
   // ── Typewriter: reveal text character by character ────────────────────────
-  // Per Remotion best practices: always use string slicing, never per-char opacity.
-  // Text reveal starts at 0.4s to let the bubble finish entering first.
   const revealDelay = Math.round(fps * 0.4);
-  const charsPerSecond = 28; // natural reading pace
+  const charsPerSecond = 28;
   const charsToShow = Math.max(
     0,
     Math.floor(
@@ -122,9 +130,15 @@ const ChatBubble: React.FC<{
   );
   const displayText = text.slice(0, charsToShow);
 
-  // ── Blinking cursor: visible while text is being typed ────────────────────
   const isTyping = charsToShow < text.length;
   const cursorVisible = isTyping && Math.floor(frame / 8) % 2 === 0;
+
+  // ── Bubble glow pulse ─────────────────────────────────────────────────────
+  const glowIntensity = interpolate(
+    Math.sin((frame / fps) * Math.PI * 1.2),
+    [-1, 1],
+    [8, 20]
+  );
 
   return (
     <div
@@ -137,15 +151,12 @@ const ChatBubble: React.FC<{
         maxWidth: 680,
         transform: `scale(${bubbleScale}) translateX(${translateX}px)`,
         opacity: bubbleOpacity,
-        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-        // transformOrigin: 'left center' so it scales from the tail side
+        boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 ${glowIntensity}px rgba(255,255,255,0.08)`,
         transformOrigin: 'left center',
       }}
     >
-      {/* Bubble tail pointing toward the stickman on the left */}
       <BubbleTail color={bubbleColor} />
 
-      {/* Text content — whiteSpace:pre preserves intentional line breaks */}
       <p
         style={{
           margin: 0,
@@ -159,7 +170,6 @@ const ChatBubble: React.FC<{
         }}
       >
         {displayText}
-        {/* Blinking cursor while typing */}
         {cursorVisible && (
           <span style={{ opacity: 1, color: textColor }}>|</span>
         )}
@@ -177,12 +187,9 @@ export const DialogueScene: React.FC<DialogueSceneProps> = ({
   emotion = 'happy',
   backgroundColor = '#1a1a2e',
 }) => {
-  const { width, height } = useVideoConfig();
+  const { width, height, fps, durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
 
-  // Decide text color based on bubble brightness (simple heuristic: dark bubbles → white text)
-  // Parse hex to determine lightness; fallback to white
   const isDarkBubble = (() => {
     const hex = bubbleColor.replace('#', '');
     if (hex.length === 6) {
@@ -196,6 +203,11 @@ export const DialogueScene: React.FC<DialogueSceneProps> = ({
   const textColor = isDarkBubble ? '#ffffff' : '#1a1a2e';
   const labelColor = '#FFD700';
 
+  // ── Animated gradient background ──────────────────────────────────────────
+  const darkerBg = darkenHex(backgroundColor, 30);
+  const gradCx = interpolate(frame, [0, durationInFrames], [38, 62], { extrapolateRight: 'clamp' });
+  const gradCy = interpolate(frame, [0, durationInFrames], [42, 55], { extrapolateRight: 'clamp' });
+
   // ── Stickman entry spring ─────────────────────────────────────────────────
   const stickmanSpring = spring({
     frame,
@@ -206,7 +218,25 @@ export const DialogueScene: React.FC<DialogueSceneProps> = ({
   const stickmanX = interpolate(stickmanSpring, [0, 1], [-30, width * 0.2]);
 
   return (
-    <AbsoluteFill style={{ backgroundColor }}>
+    <AbsoluteFill>
+
+      {/* ── Gradient background ──────────────────────────────────────────── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(ellipse at ${gradCx}% ${gradCy}%, ${backgroundColor} 0%, ${darkerBg} 100%)`,
+        }}
+      />
+
+      {/* ── Vignette ─────────────────────────────────────────────────────── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.35) 100%)',
+        }}
+      />
 
       {/* ── Stickman: left side of screen ────────────────────────────────── */}
       <Stickman
@@ -227,6 +257,7 @@ export const DialogueScene: React.FC<DialogueSceneProps> = ({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
+          zIndex: 10,
         }}
       >
         <SpeakerLabel name={speaker} color={labelColor} />
