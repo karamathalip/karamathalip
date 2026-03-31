@@ -7,15 +7,15 @@
       "format": "fail_fix_stickman_skit",
       "topic": "She go vs She goes — third person singular S",
       "hook": "This one tiny letter separates beginners from fluent speakers.",
-      "total_duration_seconds": 38,
+      "total_duration_seconds": 35,
       "scenes": [
         {
           "scene_id": "hook",
           "start": 0,
           "duration": 3,
           "type": "hook",
-          "text": "One letter. The difference between beginner and fluent.",
-          "voice_line": "One tiny letter. That is the only difference between sounding like a beginner and sounding fluent. Let me show you.",
+          "text": "One letter. Beginner or fluent.",
+          "voice_line": "<emphasis level=\"strong\">One</emphasis> tiny letter. <break time=\"0.2s\"/> That is all that separates beginner from fluent.",
           "tone": "energetic",
           "stickman_action": "hold_up_one_finger",
           "stickman_emotion": "shocked",
@@ -23,9 +23,16 @@
             "template": "text_burst",
             "background_color": "#1a1a2e",
             "text_color": "#ff6b35",
-            "animation": { "in": "zoom_punch", "emphasis": "shake", "out": "fade" }
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "shake",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["whoosh_slide", "fail_boop"],
+          "sfx_prompts": [
+            "whoosh_slide",
+            "fail_boop"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
@@ -45,9 +52,17 @@
             "text_color": "#ffffff",
             "highlight_word": "go",
             "highlight_color": "#ff4757",
-            "animation": { "in": "slide_up", "emphasis": "highlight_word", "out": "slide_left" }
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "highlight_word",
+              "out": "slide_left"
+            },
+            "transition": "moody_problem_state"
           },
-          "sfx_prompts": ["trip_whoosh", "fall_thud"],
+          "sfx_prompts": [
+            "trip_whoosh",
+            "fall_thud"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
@@ -57,7 +72,7 @@
           "duration": 7,
           "type": "explanation",
           "text": "He / She / It → always add -S",
-          "voice_line": "Here is the rule. When the subject is he, she, or it — you ALWAYS add S to the verb in the present simple. He goes. She walks. It runs. Always. No exceptions for these three.",
+          "voice_line": "Here is the rule. <break time=\"0.3s\"/> When the subject is he, she, or it — you <emphasis level=\"strong\">ALWAYS</emphasis> add S to the verb in the present simple. He goes. She walks. It runs. Always. No exceptions for these three.",
           "tone": "calm",
           "stickman_action": "write_on_board",
           "stickman_emotion": "explaining",
@@ -66,9 +81,15 @@
             "background_color": "#16213e",
             "text_color": "#ffffff",
             "rule_display": "He / She / It + verb+S",
-            "animation": { "in": "fade", "emphasis": "type_on", "out": "fade" }
+            "animation": {
+              "in": "fade",
+              "emphasis": "type_on",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["whoosh_slide"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
@@ -78,7 +99,7 @@
           "duration": 5,
           "type": "payoff",
           "text": "✅ She GOES to school every day.",
-          "voice_line": "Now say it right. She GOES to school every day. He WORKS at a hospital. It COSTS too much. Hear that S? That is fluency.",
+          "voice_line": "<break time=\"0.5s\"/> Now <break time=\"0.5s\"/> say it right. She <emphasis level=\"strong\">GOES</emphasis> to school every day. He <emphasis level=\"strong\">WORKS</emphasis> at a hospital. It <emphasis level=\"strong\">COSTS</emphasis> too much. Hear that S? That is fluency.",
           "tone": "energetic",
           "stickman_action": "fist_pump",
           "stickman_emotion": "triumphant",
@@ -88,9 +109,17 @@
             "text_color": "#ffffff",
             "highlight_word": "GOES",
             "highlight_color": "#2ed573",
-            "animation": { "in": "zoom_punch", "emphasis": "confetti_burst", "out": "fade" }
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "confetti_burst",
+              "out": "fade"
+            },
+            "transition": "dark_to_bright_reveal"
           },
-          "sfx_prompts": ["victory_chime", "sparkle_pop"],
+          "sfx_prompts": [
+            "victory_chime",
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
@@ -108,10 +137,21 @@
             "template": "text_burst",
             "background_color": "#1a1a2e",
             "text_color": "#2ed573",
-            "rapid_list": ["He works", "She runs", "It rains", "My dog barks"],
-            "animation": { "in": "slide_up", "emphasis": "rapid_reveal", "out": "fade" }
+            "rapid_list": [
+              "He works",
+              "She runs",
+              "It rains",
+              "My dog barks"
+            ],
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "rapid_reveal",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
@@ -121,7 +161,7 @@
           "duration": 5,
           "type": "explanation",
           "text": "Memory: SHE, HE, IT — they demand an S.",
-          "voice_line": "Memory trick: SHE, HE, IT. They are royalty. They demand an S. Always. Give them that S and your English changes instantly.",
+          "voice_line": "Memory trick: <break time=\"0.3s\"/> <emphasis level=\"strong\">SHE</emphasis>, <emphasis level=\"strong\">HE</emphasis>, <emphasis level=\"strong\">IT</emphasis>. They are royalty. They demand an S. Always. Give them that S and your English changes instantly.",
           "tone": "warm",
           "stickman_action": "royal_bow",
           "stickman_emotion": "happy",
@@ -130,38 +170,50 @@
             "background_color": "#16213e",
             "text_color": "#ffffff",
             "crown_visual": true,
-            "animation": { "in": "slide_up", "emphasis": "wave", "out": "fade" }
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "wave",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
-          "scene_id": "cta",
-          "start": 31,
-          "duration": 7,
-          "type": "cta",
-          "text": "Save this. One S changes everything. 👑",
-          "voice_line": "Save this. One S. That is all it takes to sound more fluent today. Follow for one fix every day — your English will thank you.",
+          "scene_id": "loop_back",
+          "type": "hook",
+          "duration": 4,
+          "text": "One letter. Are you adding it? 👆",
+          "voice_line": "One letter is all it takes. <break time=\"0.3s\"/> Are you adding it?",
           "tone": "energetic",
-          "stickman_action": "wave_at_camera",
-          "stickman_emotion": "excited",
+          "stickman_action": "point_up",
+          "stickman_emotion": "curious",
           "visual": {
             "template": "text_burst",
-            "background_color": "#ff6b35",
-            "text_color": "#ffffff",
-            "animation": { "in": "zoom_punch", "emphasis": "pulse", "out": "fade" }
+            "background_color": "#1a1a2e",
+            "text_color": "#ff6b35",
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "pulse",
+              "out": "hard_cut"
+            }
           },
-          "sfx_prompts": ["ding"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
-          "visual_priority": "high_emotion"
+          "visual_priority": "high_emotion",
+          "start": 31
         }
       ],
       "audio": {
         "voice_profile": "Energetic English Coach",
         "background_music": false,
         "sfx_enabled": true,
-        "master_volume": 1.0,
+        "master_volume": 1,
         "voice_volume": 0.9,
         "sfx_volume": 0.7
       },
@@ -172,7 +224,16 @@
           "The -S rule every English learner forgets 😬"
         ],
         "description": "Third person singular S is one of the most common mistakes ESL learners make. One rule, fixed forever — He, She, It always gets an S in present simple.",
-        "tags": ["english grammar", "third person s", "she goes", "present simple", "ESL mistakes", "learn english", "grammar rules", "fluent english"],
+        "tags": [
+          "english grammar",
+          "third person s",
+          "she goes",
+          "present simple",
+          "ESL mistakes",
+          "learn english",
+          "grammar rules",
+          "fluent english"
+        ],
         "thumbnail_prompt": "Two cartoon stickmen. Left: embarrassed figure, red X, speech bubble 'She GO'. Right: confident figure, crown, green checkmark, speech bubble 'She GOES'. Giant letter S glowing in gold between them. Dark background. Bold text: ONE LETTER. ALL THE DIFFERENCE."
       },
       "viral_triggers": [
@@ -188,15 +249,15 @@
       "format": "rule_as_superpower_metaphor",
       "topic": "Much vs Many — the countability superpower",
       "hook": "Two words. One rule. Most learners pick randomly and hope for the best.",
-      "total_duration_seconds": 50,
+      "total_duration_seconds": 44,
       "scenes": [
         {
           "scene_id": "hook",
           "start": 0,
-          "duration": 4,
+          "duration": 3,
           "type": "hook",
-          "text": "MUCH vs MANY. Stop guessing. ⚡",
-          "voice_line": "Much or many? Most English learners just guess and hope. But there is one rule that makes the right choice automatic every time.",
+          "text": "MUCH or MANY? You are guessing.",
+          "voice_line": "Much or many? <break time=\"0.3s\"/> You are <emphasis level=\"strong\">guessing</emphasis> every single time. One question makes it automatic.",
           "tone": "dramatic",
           "stickman_action": "dramatic_point_at_camera",
           "stickman_emotion": "intense",
@@ -204,20 +265,31 @@
             "template": "text_burst",
             "background_color": "#0a0a1a",
             "text_color": "#f7c948",
-            "split_words": ["MUCH", "vs", "MANY"],
-            "animation": { "in": "lightning_strike", "emphasis": "shake", "out": "fade" }
+            "split_words": [
+              "MUCH",
+              "vs",
+              "MANY"
+            ],
+            "animation": {
+              "in": "lightning_strike",
+              "emphasis": "shake",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["whoosh_slide", "magic_whoosh"],
+          "sfx_prompts": [
+            "whoosh_slide",
+            "magic_whoosh"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "hero_pose",
-          "start": 4,
+          "start": 3,
           "duration": 5,
           "type": "explanation",
           "text": "The superpower: Can you COUNT it?",
-          "voice_line": "Your superpower question is this: Can you count it? That is all you need to ask. Can I count this thing? Yes or no. That is the whole rule.",
+          "voice_line": "Your superpower question is this: <break time=\"0.5s\"/> Can you count it? That is all you need to ask. Can I count this thing? Yes or no. That is the whole rule.",
           "tone": "dramatic",
           "stickman_action": "hero_cape_pose",
           "stickman_emotion": "heroic",
@@ -227,19 +299,26 @@
             "text_color": "#ffffff",
             "formula": "Can you COUNT it?",
             "formula_color": "#f7c948",
-            "animation": { "in": "hero_landing", "emphasis": "cape_flutter", "out": "fade" }
+            "animation": {
+              "in": "hero_landing",
+              "emphasis": "cape_flutter",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["power_chime", "magic_whoosh"],
+          "sfx_prompts": [
+            "power_chime",
+            "magic_whoosh"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "many_rule",
-          "start": 9,
+          "start": 8,
           "duration": 7,
           "type": "explanation",
           "text": "Can count it? → MANY",
-          "voice_line": "If you CAN count it — use MANY. Many books. You can count books: one, two, three. Many people. Many days. Many mistakes. Count it — MANY.",
+          "voice_line": "If you <emphasis level=\"strong\">CAN</emphasis> count it — use <emphasis level=\"strong\">MANY</emphasis>. Many books. You can count books: one, two, three. Many people. Many days. Many mistakes. Count it — <emphasis level=\"strong\">MANY</emphasis>.",
           "tone": "energetic",
           "stickman_action": "count_on_fingers",
           "stickman_emotion": "focused",
@@ -247,20 +326,35 @@
             "template": "stickman",
             "background_color": "#0a0a1a",
             "text_color": "#ffffff",
-            "rule_card": { "word": "MANY", "rule": "countable nouns", "examples": ["many books", "many people", "many days"], "color": "#2ed573" },
-            "animation": { "in": "slide_up", "emphasis": "pulse_callout", "out": "fade" }
+            "rule_card": {
+              "word": "MANY",
+              "rule": "countable nouns",
+              "examples": [
+                "many books",
+                "many people",
+                "many days"
+              ],
+              "color": "#2ed573"
+            },
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "pulse_callout",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
           "scene_id": "much_rule",
-          "start": 16,
+          "start": 15,
           "duration": 7,
           "type": "explanation",
           "text": "Cannot count it? → MUCH",
-          "voice_line": "If you CANNOT count it — use MUCH. Much water. You cannot say one water, two waters. Much time. Much love. Much information. No counting — MUCH.",
+          "voice_line": "If you <emphasis level=\"strong\">CANNOT</emphasis> count it — use <emphasis level=\"strong\">MUCH</emphasis>. Much water. You cannot say one water, two waters. Much time. Much love. Much information. No counting — <emphasis level=\"strong\">MUCH</emphasis>.",
           "tone": "calm",
           "stickman_action": "shake_head_no",
           "stickman_emotion": "focused",
@@ -268,20 +362,35 @@
             "template": "stickman",
             "background_color": "#0a0a1a",
             "text_color": "#ffffff",
-            "rule_card": { "word": "MUCH", "rule": "uncountable nouns", "examples": ["much water", "much time", "much love"], "color": "#ff6b35" },
-            "animation": { "in": "slide_up", "emphasis": "pulse_callout", "out": "fade" }
+            "rule_card": {
+              "word": "MUCH",
+              "rule": "uncountable nouns",
+              "examples": [
+                "much water",
+                "much time",
+                "much love"
+              ],
+              "color": "#ff6b35"
+            },
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "pulse_callout",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
           "scene_id": "contrast_battle",
-          "start": 23,
+          "start": 22,
           "duration": 7,
           "type": "example",
           "text": "MANY books. MUCH knowledge. MANY questions. MUCH advice.",
-          "voice_line": "Watch. Many books — you count books. Much knowledge — you cannot count knowledge. Many questions — count them. Much advice — cannot count advice. Feel the difference now.",
+          "voice_line": "Watch. Many books — you count books. Much knowledge — you cannot count knowledge. Many questions — count them. Much advice — cannot count advice. Feel the difference <break time=\"0.3s\"/> now.",
           "tone": "energetic",
           "stickman_action": "rapid_compare_gesture",
           "stickman_emotion": "excited",
@@ -290,22 +399,35 @@
             "background_color": "#0a0a1a",
             "text_color": "#ffffff",
             "battle_pairs": [
-              { "many": "many books", "much": "much knowledge" },
-              { "many": "many questions", "much": "much advice" }
+              {
+                "many": "many books",
+                "much": "much knowledge"
+              },
+              {
+                "many": "many questions",
+                "much": "much advice"
+              }
             ],
-            "animation": { "in": "slide_up", "emphasis": "rapid_reveal", "out": "fade" }
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "rapid_reveal",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["whoosh_slide", "victory_chime"],
+          "sfx_prompts": [
+            "whoosh_slide",
+            "victory_chime"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "quick_wins",
-          "start": 30,
+          "start": 29,
           "duration": 6,
           "type": "explanation",
           "text": "3 quick wins to say TODAY:",
-          "voice_line": "Three quick wins. One: I do not have much time. Two: How many people are coming? Three: There is so much love in this room. Use these today and notice the difference.",
+          "voice_line": "Three quick wins. <break time=\"0.3s\"/> One: I do not have much time. Two: How many people are coming? Three: There is so much love in this room. Use these today and notice the difference.",
           "tone": "warm",
           "stickman_action": "write_on_board",
           "stickman_emotion": "happy",
@@ -313,20 +435,30 @@
             "template": "text_burst",
             "background_color": "#0a0a1a",
             "text_color": "#f7c948",
-            "list": ["I don't have much time.", "How many people are coming?", "There is so much love."],
-            "animation": { "in": "fade", "emphasis": "line_by_line_reveal", "out": "fade" }
+            "list": [
+              "I don't have much time.",
+              "How many people are coming?",
+              "There is so much love."
+            ],
+            "animation": {
+              "in": "fade",
+              "emphasis": "line_by_line_reveal",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
           "scene_id": "power_reveal",
-          "start": 36,
+          "start": 35,
           "duration": 5,
           "type": "payoff",
           "text": "One question. Zero confusion. ⚡",
-          "voice_line": "One question changes everything. Can you count it? Yes — many. No — much. You will never confuse these again. Grammar superpower unlocked.",
+          "voice_line": "<break time=\"0.3s\"/> One question changes everything. Can you count it? Yes — many. No — much. You will never confuse these again. Grammar superpower unlocked.",
           "tone": "dramatic",
           "stickman_action": "power_up_glowing",
           "stickman_emotion": "triumphant",
@@ -336,39 +468,52 @@
             "text_color": "#ffffff",
             "lightning_effect": true,
             "formula_reveal": "COUNT? → MANY  |  NO COUNT? → MUCH",
-            "animation": { "in": "zoom_punch", "emphasis": "lightning_burst", "out": "fade" }
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "lightning_burst",
+              "out": "fade"
+            },
+            "transition": "dark_to_bright_reveal"
           },
-          "sfx_prompts": ["power_chime", "victory_chime"],
+          "sfx_prompts": [
+            "power_chime",
+            "victory_chime"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
-          "scene_id": "cta",
-          "start": 41,
-          "duration": 9,
-          "type": "cta",
-          "text": "Follow for your next grammar superpower. 🚀",
-          "voice_line": "Follow right now. Every day I give you one grammar superpower like this. Save this one — because much vs many comes up much more than you think. See what I did there?",
+          "scene_id": "loop_back",
+          "type": "hook",
+          "duration": 4,
+          "text": "Can you count it? That is the whole rule. 🔄",
+          "voice_line": "Can you count it? <break time=\"0.3s\"/> That one question. And you were <emphasis level=\"strong\">guessing</emphasis> this whole time.",
           "tone": "energetic",
-          "stickman_action": "rocket_fly_off_screen",
-          "stickman_emotion": "excited",
+          "stickman_action": "power_pose",
+          "stickman_emotion": "triumphant",
           "visual": {
-            "template": "text_burst",
+            "template": "superpower",
             "background_color": "#0a0a1a",
             "text_color": "#f7c948",
-            "cta_text": "🚀 FOLLOW for daily grammar superpowers",
-            "animation": { "in": "zoom_punch", "emphasis": "rocket_trail", "out": "fly_off_top" }
+            "animation": {
+              "in": "lightning_strike",
+              "emphasis": "pulse",
+              "out": "hard_cut"
+            }
           },
-          "sfx_prompts": ["ding"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
-          "visual_priority": "high_emotion"
+          "visual_priority": "high_emotion",
+          "start": 40
         }
       ],
       "audio": {
         "voice_profile": "Energetic English Coach",
         "background_music": false,
         "sfx_enabled": true,
-        "master_volume": 1.0,
+        "master_volume": 1,
         "voice_volume": 0.9,
         "sfx_volume": 0.7
       },
@@ -379,7 +524,16 @@
           "The grammar superpower that ends MUCH/MANY confusion"
         ],
         "description": "Much or many? Stop guessing forever with this one simple question: Can you count it? If yes, MANY. If no, MUCH. Grammar superpower unlocked.",
-        "tags": ["much vs many", "english grammar", "countable uncountable", "ESL grammar", "grammar rules", "learn english", "grammar superpower", "english tips"],
+        "tags": [
+          "much vs many",
+          "english grammar",
+          "countable uncountable",
+          "ESL grammar",
+          "grammar rules",
+          "learn english",
+          "grammar superpower",
+          "english tips"
+        ],
         "thumbnail_prompt": "Hero stickman with cape and lightning. Left side glowing green: word MANY with countable icons (books, people, apples). Right side glowing orange: word MUCH with uncountable icons (water, time, love). Center: electric question mark '?'. Bold text: CAN YOU COUNT IT? Dark background, superhero style."
       },
       "viral_triggers": [

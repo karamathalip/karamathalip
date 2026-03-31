@@ -7,15 +7,15 @@
       "format": "fail_fix_stickman_skit",
       "topic": "I have saw vs I have seen — irregular past participle",
       "hook": "SAW is what you use alone. SEEN always needs HAVE. Most learners mix this up every single day.",
-      "total_duration_seconds": 39,
+      "total_duration_seconds": 36,
       "scenes": [
         {
           "scene_id": "hook",
           "start": 0,
           "duration": 3,
           "type": "hook",
-          "text": "I have SAW. Nope. Never. Here is why. 🚫",
-          "voice_line": "I have saw. No. Never. Not once. Not ever. And here is exactly why — plus the fix that sticks forever.",
+          "text": "I have SAW. No. Never.",
+          "voice_line": "I have <emphasis level=\"strong\">saw</emphasis>. <break time=\"0.5s\"/> No. Never. Not once. Here is the fix that sticks <emphasis level=\"strong\">forever</emphasis>.",
           "tone": "energetic",
           "stickman_action": "hard_no_gesture",
           "stickman_emotion": "shocked",
@@ -24,9 +24,16 @@
             "background_color": "#1a1a2e",
             "text_color": "#ff4757",
             "strikethrough_text": "I have SAW",
-            "animation": { "in": "zoom_punch", "emphasis": "shake", "out": "fade" }
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "shake",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["fail_boop", "whoosh_slide"],
+          "sfx_prompts": [
+            "fail_boop",
+            "whoosh_slide"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
@@ -47,9 +54,17 @@
             "speech_bubble": "I have saw that movie.",
             "highlight_word": "saw",
             "highlight_color": "#ff4757",
-            "animation": { "in": "slide_up", "emphasis": "highlight_word", "out": "slide_left" }
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "highlight_word",
+              "out": "slide_left"
+            },
+            "transition": "moody_problem_state"
           },
-          "sfx_prompts": ["trip_whoosh", "fall_thud"],
+          "sfx_prompts": [
+            "trip_whoosh",
+            "fall_thud"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
@@ -59,7 +74,7 @@
           "duration": 7,
           "type": "explanation",
           "text": "SAW = simple past. Alone. It is complete.",
-          "voice_line": "SAW is the simple past of SEE. It stands completely alone. I saw the movie. Done. Complete. You do not pair SAW with HAVE. Ever. SAW is the past. It is already finished.",
+          "voice_line": "<emphasis level=\"strong\">SAW</emphasis> is the simple past of <emphasis level=\"strong\">SEE</emphasis>. It stands completely alone. I saw the movie. Done. Complete. You do not pair <emphasis level=\"strong\">SAW</emphasis> with <emphasis level=\"strong\">HAVE</emphasis>. Ever. <emphasis level=\"strong\">SAW</emphasis> is the past. It is already finished.",
           "tone": "calm",
           "stickman_action": "firm_point_gesture",
           "stickman_emotion": "serious",
@@ -69,9 +84,15 @@
             "text_color": "#ffffff",
             "rule_display": "SAW = simple past → stands ALONE",
             "example": "I saw the movie. ✅",
-            "animation": { "in": "fade", "emphasis": "type_on", "out": "fade" }
+            "animation": {
+              "in": "fade",
+              "emphasis": "type_on",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["whoosh_slide"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
@@ -81,7 +102,7 @@
           "duration": 5,
           "type": "payoff",
           "text": "✅ I have SEEN that movie three times.",
-          "voice_line": "Say it right: I have SEEN that movie three times. SEEN is the past participle. It pairs with HAVE. Have seen. Has seen. Had seen. Always SEEN with a helper.",
+          "voice_line": "<break time=\"0.5s\"/> Say it right: I have <emphasis level=\"strong\">SEEN</emphasis> that movie three times. <emphasis level=\"strong\">SEEN</emphasis> is the past participle. It pairs with <emphasis level=\"strong\">HAVE</emphasis>. Have seen. Has seen. Had seen. Always <emphasis level=\"strong\">SEEN</emphasis> with a helper.",
           "tone": "energetic",
           "stickman_action": "fist_pump",
           "stickman_emotion": "triumphant",
@@ -92,9 +113,17 @@
             "highlight_word": "SEEN",
             "highlight_color": "#2ed573",
             "partner_formula": "HAVE + SEEN ❤",
-            "animation": { "in": "zoom_punch", "emphasis": "confetti_burst", "out": "fade" }
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "confetti_burst",
+              "out": "fade"
+            },
+            "transition": "dark_to_bright_reveal"
           },
-          "sfx_prompts": ["victory_chime", "sparkle_pop"],
+          "sfx_prompts": [
+            "victory_chime",
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
@@ -104,7 +133,7 @@
           "duration": 6,
           "type": "explanation",
           "text": "The partner rule: SAW alone. SEEN + HAVE.",
-          "voice_line": "Here is the partner rule. SAW is a solo traveller. I saw it last night. SEEN is a partner — it needs HAVE or HAS or HAD beside it always. Have you SEEN it? She has never SEEN snow. I had SEEN it before.",
+          "voice_line": "Here is the partner rule. <break time=\"0.3s\"/> <emphasis level=\"strong\">SAW</emphasis> is a solo traveller. I saw it last night. <emphasis level=\"strong\">SEEN</emphasis> is a partner — it needs <emphasis level=\"strong\">HAVE</emphasis> or <emphasis level=\"strong\">HAS</emphasis> or <emphasis level=\"strong\">HAD</emphasis> beside it always. Have you <emphasis level=\"strong\">SEEN</emphasis> it? She has never <emphasis level=\"strong\">SEEN</emphasis> snow. I had <emphasis level=\"strong\">SEEN</emphasis> it before.",
           "tone": "warm",
           "stickman_action": "solo_then_pair_gesture",
           "stickman_emotion": "happy",
@@ -112,10 +141,21 @@
             "template": "dialogue",
             "background_color": "#16213e",
             "text_color": "#ffffff",
-            "partner_examples": ["I saw it. ✅", "I have seen it. ✅", "She has seen it. ✅", "I had seen it. ✅"],
-            "animation": { "in": "slide_up", "emphasis": "wave", "out": "fade" }
+            "partner_examples": [
+              "I saw it. ✅",
+              "I have seen it. ✅",
+              "She has seen it. ✅",
+              "I had seen it. ✅"
+            ],
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "wave",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
@@ -125,7 +165,7 @@
           "duration": 6,
           "type": "example",
           "text": "Same pattern: GO/GONE. EAT/EATEN. DO/DONE.",
-          "voice_line": "And this is the same pattern for many irregular verbs. Went alone. Have gone. Ate alone. Have eaten. Did alone. Have done. Once you see the pattern, you lock it in forever.",
+          "voice_line": "<break time=\"0.3s\"/> And this is the same pattern for many irregular verbs. Went alone. Have gone. Ate alone. Have eaten. Did alone. Have done. Once you see the pattern, you lock it in forever.",
           "tone": "energetic",
           "stickman_action": "rapid_examples_gesture",
           "stickman_emotion": "excited",
@@ -133,39 +173,56 @@
             "template": "text_burst",
             "background_color": "#1a1a2e",
             "text_color": "#ffffff",
-            "pattern_pairs": ["went / have gone", "ate / have eaten", "did / have done", "saw / have seen"],
-            "animation": { "in": "slide_up", "emphasis": "rapid_reveal", "out": "fade" }
+            "pattern_pairs": [
+              "went / have gone",
+              "ate / have eaten",
+              "did / have done",
+              "saw / have seen"
+            ],
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "rapid_reveal",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
-          "scene_id": "cta",
-          "start": 32,
-          "duration": 7,
-          "type": "cta",
-          "text": "Have you SEEN enough? Save this. 💾",
-          "voice_line": "Have you SEEN enough? Save this. You will never confuse SAW and SEEN again. Follow — because I post one of these every day and your English gets better with every Short.",
+          "scene_id": "loop_back",
+          "type": "hook",
+          "duration": 4,
+          "text": "Have you SEEN enough? Or still saying SAW? 🔄",
+          "voice_line": "Have you <emphasis level=\"strong\">seen</emphasis> enough? <break time=\"0.3s\"/> Or are you still saying I have <emphasis level=\"strong\">saw</emphasis>?",
           "tone": "energetic",
-          "stickman_action": "wave_at_camera",
-          "stickman_emotion": "excited",
+          "stickman_action": "point_up",
+          "stickman_emotion": "curious",
           "visual": {
             "template": "text_burst",
-            "background_color": "#ff4757",
-            "text_color": "#ffffff",
-            "animation": { "in": "zoom_punch", "emphasis": "pulse", "out": "fade" }
+            "background_color": "#1a1a2e",
+            "text_color": "#ff4757",
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "pulse",
+              "out": "hard_cut"
+            }
           },
-          "sfx_prompts": ["ding"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
-          "visual_priority": "high_emotion"
+          "visual_priority": "high_emotion",
+          "start": 32
         }
       ],
       "audio": {
         "voice_profile": "Energetic English Coach",
         "background_music": false,
         "sfx_enabled": true,
-        "master_volume": 1.0,
+        "master_volume": 1,
         "voice_volume": 0.9,
         "sfx_volume": 0.7
       },
@@ -176,7 +233,16 @@
           "Have SEEN vs Have SAW — fixed in 30 seconds"
         ],
         "description": "SAW stands alone. SEEN needs HAVE. This is the same pattern for most irregular English verbs — once you learn it, you fix went/gone, ate/eaten, did/done all at once.",
-        "tags": ["have seen", "have saw", "irregular verbs", "past participle", "english grammar", "ESL mistakes", "learn english", "grammar fix"],
+        "tags": [
+          "have seen",
+          "have saw",
+          "irregular verbs",
+          "past participle",
+          "english grammar",
+          "ESL mistakes",
+          "learn english",
+          "grammar fix"
+        ],
         "thumbnail_prompt": "Split cartoon. Left dark red: embarrassed stickman, red X, speech bubble 'I have SAW'. Right dark green: confident stickman, green checkmark, speech bubble 'I have SEEN'. Giant heart symbol below showing SAW alone vs SEEN+HAVE together. Bold text: SAW vs SEEN. Dark background."
       },
       "viral_triggers": [
@@ -192,15 +258,15 @@
       "format": "rule_as_superpower_metaphor",
       "topic": "Countable vs Uncountable nouns — the grammar superpower that fixes a dozen mistakes",
       "hook": "One rule. Fixes a dozen grammar mistakes. Most learners have never even heard of it.",
-      "total_duration_seconds": 55,
+      "total_duration_seconds": 46,
       "scenes": [
         {
           "scene_id": "hook",
           "start": 0,
-          "duration": 4,
+          "duration": 3,
           "type": "hook",
-          "text": "One rule fixes 12 grammar mistakes. ⚡",
-          "voice_line": "One grammar rule. Fixes at least twelve common mistakes. If you have ever wondered about a, an, the, some, any, much, many — this is the root of all of it.",
+          "text": "One rule. Twelve mistakes. Fixed.",
+          "voice_line": "<emphasis level=\"strong\">One</emphasis> rule. <break time=\"0.3s\"/> Fixes twelve grammar mistakes. Most learners have <emphasis level=\"strong\">never</emphasis> heard it.",
           "tone": "dramatic",
           "stickman_action": "dramatic_reveal_gesture",
           "stickman_emotion": "intense",
@@ -210,15 +276,22 @@
             "text_color": "#f7c948",
             "main_text": "1 RULE",
             "sub_text": "fixes 12 mistakes ⚡",
-            "animation": { "in": "lightning_strike", "emphasis": "shake", "out": "fade" }
+            "animation": {
+              "in": "lightning_strike",
+              "emphasis": "shake",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["magic_whoosh", "power_chime"],
+          "sfx_prompts": [
+            "magic_whoosh",
+            "power_chime"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "hero_pose",
-          "start": 4,
+          "start": 3,
           "duration": 5,
           "type": "explanation",
           "text": "Countable vs Uncountable: every noun is one of these.",
@@ -231,15 +304,21 @@
             "background_color": "#0a0a1a",
             "formula": "Every noun = COUNTABLE or UNCOUNTABLE",
             "formula_color": "#f7c948",
-            "animation": { "in": "hero_landing", "emphasis": "cape_flutter", "out": "fade" }
+            "animation": {
+              "in": "hero_landing",
+              "emphasis": "cape_flutter",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["power_chime"],
+          "sfx_prompts": [
+            "power_chime"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "countable_explained",
-          "start": 9,
+          "start": 8,
           "duration": 7,
           "type": "explanation",
           "text": "COUNTABLE: can be counted. Has a plural.",
@@ -253,18 +332,32 @@
             "rule_card": {
               "label": "COUNTABLE",
               "color": "#2ed573",
-              "features": ["can be counted", "has a plural", "use a / an / the"],
-              "examples": ["apple → apples", "book → books", "question → questions"]
+              "features": [
+                "can be counted",
+                "has a plural",
+                "use a / an / the"
+              ],
+              "examples": [
+                "apple → apples",
+                "book → books",
+                "question → questions"
+              ]
             },
-            "animation": { "in": "slide_up", "emphasis": "pulse_callout", "out": "fade" }
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "pulse_callout",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
           "scene_id": "uncountable_explained",
-          "start": 16,
+          "start": 15,
           "duration": 7,
           "type": "explanation",
           "text": "UNCOUNTABLE: cannot count it. No plural.",
@@ -278,18 +371,34 @@
             "rule_card": {
               "label": "UNCOUNTABLE",
               "color": "#ff6b35",
-              "features": ["cannot be counted", "no plural", "use some / any / much"],
-              "examples": ["water", "music", "love", "advice", "information"]
+              "features": [
+                "cannot be counted",
+                "no plural",
+                "use some / any / much"
+              ],
+              "examples": [
+                "water",
+                "music",
+                "love",
+                "advice",
+                "information"
+              ]
             },
-            "animation": { "in": "slide_up", "emphasis": "pulse_callout", "out": "fade" }
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "pulse_callout",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
           "scene_id": "villain_mistakes",
-          "start": 23,
+          "start": 22,
           "duration": 7,
           "type": "example",
           "text": "Common villain mistakes: informations, advices, furnitures",
@@ -300,21 +409,32 @@
           "visual": {
             "template": "dialogue",
             "background_color": "#1a0a0a",
-            "error_list": ["❌ informations", "❌ advices", "❌ furnitures", "❌ luggages"],
+            "error_list": [
+              "❌ informations",
+              "❌ advices",
+              "❌ furnitures",
+              "❌ luggages"
+            ],
             "error_color": "#ff4757",
-            "animation": { "in": "fade", "emphasis": "shake_each_error", "out": "fade" }
+            "animation": {
+              "in": "fade",
+              "emphasis": "shake_each_error",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["fail_boop"],
+          "sfx_prompts": [
+            "fail_boop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
           "scene_id": "superpower_fixes",
-          "start": 30,
+          "start": 29,
           "duration": 7,
           "type": "payoff",
           "text": "The fix: some information. Some advice. Some furniture.",
-          "voice_line": "The fix is instant. Some information — not informations. Some advice — not advices. Some furniture — not furnitures. Some or any or a piece of — these are your uncountable helpers. Use them.",
+          "voice_line": "<break time=\"0.3s\"/> The fix is instant. Some information — not informations. Some advice — not advices. Some furniture — not furnitures. Some or any or a piece of — these are your uncountable helpers. Use them.",
           "tone": "dramatic",
           "stickman_action": "power_up_glowing",
           "stickman_emotion": "triumphant",
@@ -328,19 +448,27 @@
               "✅ a piece of luggage"
             ],
             "correction_color": "#2ed573",
-            "animation": { "in": "zoom_punch", "emphasis": "confetti_burst", "out": "fade" }
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "confetti_burst",
+              "out": "fade"
+            },
+            "transition": "dark_to_bright_reveal"
           },
-          "sfx_prompts": ["victory_chime", "sparkle_pop"],
+          "sfx_prompts": [
+            "victory_chime",
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "quick_wins",
-          "start": 37,
+          "start": 36,
           "duration": 6,
           "type": "explanation",
           "text": "Test every new noun: Can I say TWO of it?",
-          "voice_line": "Here is your test for every new word you learn. Can you say TWO of it? Two books — yes — countable. Two waters — sounds weird — uncountable. Two advices — never — uncountable. Two of it? Countable. Weird? Uncountable.",
+          "voice_line": "Here is your test <break time=\"0.3s\"/> for every new word you learn. Can you say <emphasis level=\"strong\">TWO</emphasis> of it? Two books — yes — countable. Two waters — sounds weird — uncountable. Two advices — never — uncountable. Two of it? Countable. Weird? Uncountable.",
           "tone": "energetic",
           "stickman_action": "pointing_at_two_fingers",
           "stickman_emotion": "focused",
@@ -351,42 +479,50 @@
             "test_question": "Can you say TWO of it?",
             "yes_answer": "YES → COUNTABLE",
             "no_answer": "NO → UNCOUNTABLE",
-            "animation": { "in": "fade", "emphasis": "type_on", "out": "fade" }
+            "animation": {
+              "in": "fade",
+              "emphasis": "type_on",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
-          "scene_id": "cta",
-          "start": 43,
-          "duration": 12,
-          "type": "cta",
-          "text": "You have just unlocked the root of English articles. 🚀",
-          "voice_line": "You have just unlocked the root of English articles, quantity words, and plurals — all from one concept. Follow. Because the next superpower builds right on top of this one. And comment: give me a word and I will tell you — countable or uncountable?",
+          "scene_id": "loop_back",
+          "type": "hook",
+          "duration": 4,
+          "text": "Twelve mistakes. One rule. 🔄",
+          "voice_line": "Twelve mistakes. <break time=\"0.3s\"/> One rule. Most learners have <emphasis level=\"strong\">never</emphasis> heard it.",
           "tone": "energetic",
-          "stickman_action": "rocket_fly_off_screen",
-          "stickman_emotion": "triumphant",
+          "stickman_action": "power_pose",
+          "stickman_emotion": "intense",
           "visual": {
             "template": "superpower",
             "background_color": "#0a0a1a",
             "text_color": "#f7c948",
-            "cta_overlay": {
-              "primary": "🚀 Follow for next superpower",
-              "secondary": "💬 Comment: countable or uncountable?"
-            },
-            "animation": { "in": "zoom_punch", "emphasis": "rocket_trail", "out": "fly_off_top" }
+            "animation": {
+              "in": "lightning_strike",
+              "emphasis": "pulse",
+              "out": "hard_cut"
+            }
           },
-          "sfx_prompts": ["ding"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
-          "visual_priority": "high_emotion"
+          "visual_priority": "high_emotion",
+          "start": 42
         }
       ],
       "audio": {
         "voice_profile": "Energetic English Coach",
         "background_music": false,
         "sfx_enabled": true,
-        "master_volume": 1.0,
+        "master_volume": 1,
         "voice_volume": 0.9,
         "sfx_volume": 0.7
       },
@@ -397,7 +533,16 @@
           "Why you CANNOT say 'informations' — explained in 45 seconds"
         ],
         "description": "Countable vs uncountable nouns is the single rule behind articles, much/many, a/an, some/any, and plural mistakes. Learn this once and a dozen grammar problems solve themselves.",
-        "tags": ["countable uncountable", "english nouns", "grammar superpower", "information not informations", "articles english", "learn english", "ESL grammar", "english mistakes"],
+        "tags": [
+          "countable uncountable",
+          "english nouns",
+          "grammar superpower",
+          "information not informations",
+          "articles english",
+          "learn english",
+          "ESL grammar",
+          "english mistakes"
+        ],
         "thumbnail_prompt": "Hero stickman with cape standing between two pillars. Left pillar glowing green labeled COUNTABLE with stacked apple icons (1, 2, 3). Right pillar glowing orange labeled UNCOUNTABLE with flowing water wave. Lightning bolt between them. Bold text: 1 RULE. ALL ARTICLES. FIXED. Dark background, superhero style."
       },
       "viral_triggers": [

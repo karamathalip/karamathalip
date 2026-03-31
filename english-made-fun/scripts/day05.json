@@ -7,15 +7,15 @@
       "format": "word_explosion_visual_build",
       "topic": "The word MAKE — 3 completely different meanings",
       "hook": "MAKE money. MAKE someone cry. MAKE a cake. Three totally different things, one tiny word.",
-      "total_duration_seconds": 47,
+      "total_duration_seconds": 44,
       "scenes": [
         {
           "scene_id": "hook",
           "start": 0,
           "duration": 3,
           "type": "hook",
-          "text": "MAKE has 3 meanings. You mix them up every day.",
-          "voice_line": "Make money. Make someone cry. Make a cake. You use MAKE all the time but did you know these are three completely different meanings?",
+          "text": "MAKE has 3 meanings. You mix them up.",
+          "voice_line": "Make money. Make someone cry. Make a cake. <break time=\"0.3s\"/> Three completely different things. One tiny word.",
           "tone": "energetic",
           "stickman_action": "juggling_pose",
           "stickman_emotion": "excited",
@@ -24,9 +24,16 @@
             "background_color": "#0d0d1a",
             "text_color": "#00d4ff",
             "neon_word": "MAKE",
-            "animation": { "in": "neon_flicker", "emphasis": "explosion_burst", "out": "fade" }
+            "animation": {
+              "in": "neon_flicker",
+              "emphasis": "explosion_burst",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["whoosh_slide", "explode_pop"],
+          "sfx_prompts": [
+            "whoosh_slide",
+            "explode_pop"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
@@ -36,7 +43,7 @@
           "duration": 8,
           "type": "example",
           "text": "1. MAKE = create or produce",
-          "voice_line": "Meaning one: to create or produce something. Make a cake. Make a plan. Make a mistake. Make noise. Make a decision. You are producing something that did not exist before.",
+          "voice_line": "<break time=\"0.3s\"/> Meaning one: to create or produce something. Make a cake. Make a plan. Make a mistake. Make noise. Make a decision. You are producing something that did not exist before.",
           "tone": "warm",
           "stickman_action": "baking_gesture",
           "stickman_emotion": "happy",
@@ -48,10 +55,20 @@
             "meaning_label": "CREATE",
             "meaning_color": "#ff2d78",
             "example": "She made a plan.",
-            "examples_list": ["make a cake", "make a plan", "make a mistake"],
-            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+            "examples_list": [
+              "make a cake",
+              "make a plan",
+              "make a mistake"
+            ],
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "neon_pulse",
+              "out": "slide_left"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
@@ -61,7 +78,7 @@
           "duration": 8,
           "type": "example",
           "text": "2. MAKE = force or cause someone to do something",
-          "voice_line": "Meaning two: to force or cause. The movie made me cry. My boss makes me work late. Do not make me repeat this. You are causing someone to do or feel something — they did not choose it.",
+          "voice_line": "<break time=\"0.3s\"/> Meaning two: to force or cause. The movie made me cry. My boss makes me work late. Do not make me repeat this. You are causing someone to do or feel something — they did not choose it.",
           "tone": "serious",
           "stickman_action": "push_gesture",
           "stickman_emotion": "serious",
@@ -73,10 +90,20 @@
             "meaning_label": "FORCE / CAUSE",
             "meaning_color": "#ffe600",
             "example": "The movie made me cry.",
-            "examples_list": ["make me cry", "make me work late", "make him apologize"],
-            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+            "examples_list": [
+              "make me cry",
+              "make me work late",
+              "make him apologize"
+            ],
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "neon_pulse",
+              "out": "slide_left"
+            }
           },
-          "sfx_prompts": ["whoosh_slide"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
@@ -86,7 +113,7 @@
           "duration": 8,
           "type": "example",
           "text": "3. MAKE = earn money",
-          "voice_line": "Meaning three: to earn. She makes fifty thousand a year. He makes good money. You can make a living from this. This is the business meaning — the one that comes up in every salary conversation.",
+          "voice_line": "<break time=\"0.3s\"/> Meaning three: to earn. She makes fifty thousand a year. He makes good money. You can make a living from this. This is the business meaning — the one that comes up in every salary conversation.",
           "tone": "energetic",
           "stickman_action": "money_gesture",
           "stickman_emotion": "confident",
@@ -98,10 +125,20 @@
             "meaning_label": "EARN",
             "meaning_color": "#39ff14",
             "example": "She makes good money.",
-            "examples_list": ["make a living", "make good money", "make a profit"],
-            "animation": { "in": "slide_up", "emphasis": "neon_pulse", "out": "slide_left" }
+            "examples_list": [
+              "make a living",
+              "make good money",
+              "make a profit"
+            ],
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "neon_pulse",
+              "out": "slide_left"
+            }
           },
-          "sfx_prompts": ["victory_chime"],
+          "sfx_prompts": [
+            "victory_chime"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
@@ -111,19 +148,31 @@
           "duration": 6,
           "type": "payoff",
           "text": "CREATE. FORCE. EARN. One word does it all. 💥",
-          "voice_line": "Create. Force. Earn. One tiny word does all three jobs. And now you understand every sentence with MAKE that confused you before.",
+          "voice_line": "<break time=\"0.3s\"/> Create. Force. Earn. One tiny word does all three jobs. And now you understand every sentence with <emphasis level=\"strong\">MAKE</emphasis> that confused you before.",
           "tone": "dramatic",
           "stickman_action": "explosion_pose",
           "stickman_emotion": "triumphant",
           "visual": {
             "template": "superpower",
             "background_color": "#0d0d1a",
-            "explosion_labels": ["CREATE", "FORCE", "EARN"],
+            "explosion_labels": [
+              "CREATE",
+              "FORCE",
+              "EARN"
+            ],
             "center_word": "MAKE",
             "center_color": "#00d4ff",
-            "animation": { "in": "zoom_punch", "emphasis": "neon_explosion_all_four", "out": "fade" }
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "neon_explosion_all_four",
+              "out": "fade"
+            },
+            "transition": "neon_explosion_climax"
           },
-          "sfx_prompts": ["explode_pop", "victory_chime"],
+          "sfx_prompts": [
+            "explode_pop",
+            "victory_chime"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
@@ -133,7 +182,7 @@
           "duration": 7,
           "type": "example",
           "text": "All 3 in one sentence:",
-          "voice_line": "All three in one sentence: She makes — earns — great money making — creating — YouTube videos, which makes — causes — her followers incredibly happy.",
+          "voice_line": "<break time=\"0.3s\"/> All three in one sentence: She makes — earns — great money making — creating — YouTube videos, which makes — causes — her followers incredibly happy.",
           "tone": "warm",
           "stickman_action": "storytelling_pose",
           "stickman_emotion": "happy",
@@ -142,38 +191,50 @@
             "background_color": "#0d0d1a",
             "text_color": "#ffffff",
             "highlighted_sentence": "She makes great money making YouTube videos, which makes her followers happy.",
-            "animation": { "in": "fade", "emphasis": "word_by_word_highlight", "out": "fade" }
+            "animation": {
+              "in": "fade",
+              "emphasis": "word_by_word_highlight",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
-          "scene_id": "cta",
-          "start": 40,
-          "duration": 7,
-          "type": "cta",
-          "text": "Save this. Now MAKE the most of your English. 💥",
-          "voice_line": "Save this and make the most of your English — that is create plus earn in one phrase. Follow for the next word explosion. Every day a new word unlocked.",
+          "scene_id": "loop_back",
+          "type": "hook",
+          "duration": 4,
+          "text": "Three meanings. One word. Every day. 🔄",
+          "voice_line": "Three meanings. One tiny word you use every day. <break time=\"0.2s\"/> Make money. Make someone cry. Make a cake.",
           "tone": "energetic",
-          "stickman_action": "phone_screenshot_pose",
-          "stickman_emotion": "excited",
+          "stickman_action": "mind_blown",
+          "stickman_emotion": "shocked",
           "visual": {
             "template": "text_burst",
-            "background_color": "#bf00ff",
-            "text_color": "#ffffff",
-            "animation": { "in": "zoom_punch", "emphasis": "neon_pulse_rapid", "out": "fade" }
+            "background_color": "#0d0d1a",
+            "text_color": "#00d4ff",
+            "animation": {
+              "in": "neon_flicker",
+              "emphasis": "explosion_burst",
+              "out": "hard_cut"
+            }
           },
-          "sfx_prompts": ["ding"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
-          "visual_priority": "high_emotion"
+          "visual_priority": "high_emotion",
+          "start": 40
         }
       ],
       "audio": {
         "voice_profile": "Energetic English Coach",
         "background_music": false,
         "sfx_enabled": true,
-        "master_volume": 1.0,
+        "master_volume": 1,
         "voice_volume": 0.9,
         "sfx_volume": 0.75
       },
@@ -184,7 +245,16 @@
           "The word MAKE explained in 40 seconds"
         ],
         "description": "Make a cake. Make someone cry. Make money. Three different meanings, one common English word. Understand all three and you will sound fluent in any conversation.",
-        "tags": ["word meanings", "make meaning", "english vocabulary", "word explosion", "ESL vocabulary", "learn english", "english words", "vocabulary boost"],
+        "tags": [
+          "word meanings",
+          "make meaning",
+          "english vocabulary",
+          "word explosion",
+          "ESL vocabulary",
+          "learn english",
+          "english words",
+          "vocabulary boost"
+        ],
         "thumbnail_prompt": "Dark neon background. Giant glowing MAKE in electric blue at center. Three neon labels radiate outward: CREATE in pink with cake icon, FORCE in yellow with arrow pushing stickman, EARN in green with money icon. Bold text: 3 MEANINGS. 1 WORD. High contrast, neon glow."
       },
       "viral_triggers": [
@@ -200,15 +270,15 @@
       "format": "rule_as_superpower_metaphor",
       "topic": "Present Perfect tense — the grammar bridge between past and now",
       "hook": "There is a tense that makes you sound fluent instantly. Native speakers use it hundreds of times a day.",
-      "total_duration_seconds": 53,
+      "total_duration_seconds": 45,
       "scenes": [
         {
           "scene_id": "hook",
           "start": 0,
-          "duration": 4,
+          "duration": 3,
           "type": "hook",
-          "text": "This ONE tense = instant fluency upgrade. ⚡",
-          "voice_line": "There is one grammar tense that separates learners from fluent speakers. Native speakers use it hundreds of times a day. Most teachers explain it badly. I will fix that right now.",
+          "text": "ONE tense = instant fluency.",
+          "voice_line": "There is <emphasis level=\"strong\">one</emphasis> tense that separates learners from fluent speakers. <break time=\"0.3s\"/> Most teachers explain it wrong.",
           "tone": "dramatic",
           "stickman_action": "dramatic_point_at_camera",
           "stickman_emotion": "intense",
@@ -218,19 +288,26 @@
             "text_color": "#f7c948",
             "main_text": "INSTANT FLUENCY UPGRADE",
             "sub_text": "ONE tense ⚡",
-            "animation": { "in": "lightning_strike", "emphasis": "shake", "out": "fade" }
+            "animation": {
+              "in": "lightning_strike",
+              "emphasis": "shake",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["magic_whoosh", "power_chime"],
+          "sfx_prompts": [
+            "magic_whoosh",
+            "power_chime"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "hero_pose",
-          "start": 4,
+          "start": 3,
           "duration": 5,
           "type": "explanation",
           "text": "Present Perfect: HAVE + past participle",
-          "voice_line": "The Present Perfect. Formula: HAVE or HAS plus the past participle. Have eaten. Has gone. Have seen. Have you ever heard of it? You just used it.",
+          "voice_line": "The Present Perfect. Formula: <emphasis level=\"strong\">HAVE</emphasis> or <emphasis level=\"strong\">HAS</emphasis> plus the past participle. Have eaten. Has gone. Have seen. Have you ever heard of it? You just used it.",
           "tone": "dramatic",
           "stickman_action": "hero_cape_pose",
           "stickman_emotion": "heroic",
@@ -239,15 +316,21 @@
             "background_color": "#0a0a1a",
             "formula": "HAVE / HAS + past participle",
             "formula_color": "#f7c948",
-            "animation": { "in": "hero_landing", "emphasis": "cape_flutter", "out": "fade" }
+            "animation": {
+              "in": "hero_landing",
+              "emphasis": "cape_flutter",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["power_chime"],
+          "sfx_prompts": [
+            "power_chime"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "power_up",
-          "start": 9,
+          "start": 8,
           "duration": 7,
           "type": "explanation",
           "text": "The superpower: connects past → RIGHT NOW",
@@ -264,19 +347,26 @@
               "bridge_color": "#f7c948",
               "glowing": true
             },
-            "animation": { "in": "power_surge_left_to_right", "emphasis": "bridge_glow_pulse", "out": "fade" }
+            "animation": {
+              "in": "power_surge_left_to_right",
+              "emphasis": "bridge_glow_pulse",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["magic_whoosh", "sparkle_pop"],
+          "sfx_prompts": [
+            "magic_whoosh",
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "contrast_examples",
-          "start": 16,
+          "start": 15,
           "duration": 8,
           "type": "example",
           "text": "Feel the difference:",
-          "voice_line": "Feel this difference. I ate lunch — simple past, that is just history. I have eaten lunch — present perfect, so do not offer me food right now. I lived in Paris — I moved away. I have lived in Paris — maybe I still do.",
+          "voice_line": "Feel this difference. <break time=\"0.3s\"/> I ate lunch — simple past, that is just history. I have eaten lunch — present perfect, so do not offer me food right now. I lived in Paris — I moved away. I have lived in Paris — maybe I still do.",
           "tone": "serious",
           "stickman_action": "side_by_side_compare",
           "stickman_emotion": "focused",
@@ -285,18 +375,32 @@
             "background_color": "#0a0a1a",
             "text_color": "#ffffff",
             "pairs": [
-              { "past_simple": "I ate lunch.", "present_perfect": "I have eaten lunch.", "note": "Still full NOW" },
-              { "past_simple": "I lived in Paris.", "present_perfect": "I have lived in Paris.", "note": "Experience still relevant" }
+              {
+                "past_simple": "I ate lunch.",
+                "present_perfect": "I have eaten lunch.",
+                "note": "Still full NOW"
+              },
+              {
+                "past_simple": "I lived in Paris.",
+                "present_perfect": "I have lived in Paris.",
+                "note": "Experience still relevant"
+              }
             ],
-            "animation": { "in": "slide_up", "emphasis": "highlight_difference", "out": "fade" }
+            "animation": {
+              "in": "slide_up",
+              "emphasis": "highlight_difference",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["whoosh_slide"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "key_phrases",
-          "start": 24,
+          "start": 23,
           "duration": 6,
           "type": "explanation",
           "text": "Key phrases: Have you ever? I have never. I have just.",
@@ -308,20 +412,30 @@
             "template": "text_burst",
             "background_color": "#0a0a1a",
             "text_color": "#f7c948",
-            "golden_phrases": ["Have you ever...?", "I have never...", "I have just..."],
-            "animation": { "in": "fade", "emphasis": "line_by_line_reveal", "out": "fade" }
+            "golden_phrases": [
+              "Have you ever...?",
+              "I have never...",
+              "I have just..."
+            ],
+            "animation": {
+              "in": "fade",
+              "emphasis": "line_by_line_reveal",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
           "scene_id": "world_transformation",
-          "start": 30,
+          "start": 29,
           "duration": 6,
           "type": "payoff",
           "text": "Use it and watch your English transform.",
-          "voice_line": "Start using the Present Perfect and your English transforms. You stop sounding like a textbook and start sounding like a person. That is the whole difference.",
+          "voice_line": "<break time=\"0.3s\"/> Start using the Present Perfect and your English transforms. You stop sounding like a textbook and start sounding like a person. That is the whole difference.",
           "tone": "dramatic",
           "stickman_action": "world_transforms_around_hero",
           "stickman_emotion": "triumphant",
@@ -334,19 +448,27 @@
               "before_color": "#444444",
               "after_color": "#f7c948"
             },
-            "animation": { "in": "lightning_transform", "emphasis": "world_glow_sweep", "out": "fade" }
+            "animation": {
+              "in": "lightning_transform",
+              "emphasis": "world_glow_sweep",
+              "out": "fade"
+            },
+            "transition": "dark_to_bright_reveal"
           },
-          "sfx_prompts": ["power_chime", "victory_chime"],
+          "sfx_prompts": [
+            "power_chime",
+            "victory_chime"
+          ],
           "use_image": false,
           "visual_priority": "high_emotion"
         },
         {
           "scene_id": "quick_wins",
-          "start": 36,
+          "start": 35,
           "duration": 6,
           "type": "explanation",
           "text": "Say these 3 sentences today:",
-          "voice_line": "Three sentences to say out loud today. One: I have been studying English for two years. Two: Have you ever tried speaking to a native? Three: I have just learned something that will change my English. Say them. Own them.",
+          "voice_line": "Three sentences to say <break time=\"0.3s\"/> out loud today. One: I have been studying English for two years. Two: Have you ever tried speaking to a native? Three: I have just learned something that will change my English. Say them. Own them.",
           "tone": "warm",
           "stickman_action": "write_on_board",
           "stickman_emotion": "happy",
@@ -359,39 +481,50 @@
               "Have you ever tried speaking to a native?",
               "I have just learned something powerful."
             ],
-            "animation": { "in": "fade", "emphasis": "line_by_line_reveal", "out": "fade" }
+            "animation": {
+              "in": "fade",
+              "emphasis": "line_by_line_reveal",
+              "out": "fade"
+            }
           },
-          "sfx_prompts": ["sparkle_pop"],
+          "sfx_prompts": [
+            "sparkle_pop"
+          ],
           "use_image": false,
           "visual_priority": "standard"
         },
         {
-          "scene_id": "cta",
-          "start": 42,
-          "duration": 11,
-          "type": "cta",
-          "text": "You have just unlocked the Present Perfect. 🚀",
-          "voice_line": "You have just unlocked the Present Perfect. Notice I used it just now? That is how natural it is. Follow for your next grammar superpower. And tell me in the comments: what have you learned today?",
+          "scene_id": "loop_back",
+          "type": "hook",
+          "duration": 4,
+          "text": "Have you learned something? That is it. 🔄",
+          "voice_line": "Have you learned something just now? <break time=\"0.3s\"/> That is the Present Perfect. The one tense that separates learners from fluent speakers.",
           "tone": "energetic",
-          "stickman_action": "rocket_fly_off_screen",
+          "stickman_action": "bridge_gesture",
           "stickman_emotion": "triumphant",
           "visual": {
             "template": "superpower",
             "background_color": "#0a0a1a",
             "text_color": "#f7c948",
-            "cta_text": "🚀 Follow + What have you learned today?",
-            "animation": { "in": "zoom_punch", "emphasis": "rocket_trail", "out": "fly_off_top" }
+            "animation": {
+              "in": "zoom_punch",
+              "emphasis": "pulse",
+              "out": "hard_cut"
+            }
           },
-          "sfx_prompts": ["ding"],
+          "sfx_prompts": [
+            "whoosh_slide"
+          ],
           "use_image": false,
-          "visual_priority": "high_emotion"
+          "visual_priority": "high_emotion",
+          "start": 41
         }
       ],
       "audio": {
         "voice_profile": "Energetic English Coach",
         "background_music": false,
         "sfx_enabled": true,
-        "master_volume": 1.0,
+        "master_volume": 1,
         "voice_volume": 0.9,
         "sfx_volume": 0.7
       },
@@ -402,7 +535,16 @@
           "Why HAVE + V3 is the most powerful grammar structure"
         ],
         "description": "The Present Perfect connects the past to right now. It is the grammar tense that makes the biggest difference in how natural and fluent you sound. Formula: HAVE/HAS + past participle.",
-        "tags": ["present perfect", "english grammar", "have been", "have eaten", "tense explained", "fluent english", "grammar superpower", "ESL tenses"],
+        "tags": [
+          "present perfect",
+          "english grammar",
+          "have been",
+          "have eaten",
+          "tense explained",
+          "fluent english",
+          "grammar superpower",
+          "ESL tenses"
+        ],
         "thumbnail_prompt": "Hero stickman with cape and lightning aura. Golden glowing bridge connecting 'PAST' on the left to 'NOW' on the right. Above the bridge: HAVE + V3 in electric yellow neon. Bold text: INSTANT FLUENCY UPGRADE. Dark background, superhero comic style."
       },
       "viral_triggers": [

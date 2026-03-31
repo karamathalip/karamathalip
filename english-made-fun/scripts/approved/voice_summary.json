@@ -1,0 +1,18 @@
+{
+  "run_at": "2026-03-31T22:22:05.043Z",
+  "total": 1,
+  "processed": [
+    {
+      "fileName": "vid_001.json",
+      "video_id": "vid_001",
+      "scenes_generated": 7,
+      "full_track": "audio/voices/vid_001_voice_full.mp3",
+      "char_count": 579,
+      "cost_estimate": 0.0034739999999999997,
+      "skipped_scenes": []
+    }
+  ],
+  "failed": [],
+  "total_char_count": 579,
+  "total_cost_estimate": 0.0034739999999999997
+}

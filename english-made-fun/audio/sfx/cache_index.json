@@ -1,0 +1,37 @@
+{
+  "2a6f16068e630485271baaab93bff07f": {
+    "prompt": "whoosh_slide",
+    "file": "audio/sfx/2a6f16068e630485271baaab93bff07f.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-03-31T22:24:01.605Z",
+    "hits": 2
+  },
+  "b0d7712d7cf56390d423b7adb7c90887": {
+    "prompt": "wrong_buzzer",
+    "file": "audio/sfx/b0d7712d7cf56390d423b7adb7c90887.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-03-31T22:24:03.043Z",
+    "hits": 0
+  },
+  "2dd531452b10ffff9fa0060ca00bcf7f": {
+    "prompt": "pen_writing",
+    "file": "audio/sfx/2dd531452b10ffff9fa0060ca00bcf7f.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-03-31T22:24:04.297Z",
+    "hits": 0
+  },
+  "a1dfac715d58aff4c05138a652bf0e88": {
+    "prompt": "correct_ping",
+    "file": "audio/sfx/a1dfac715d58aff4c05138a652bf0e88.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-03-31T22:24:05.752Z",
+    "hits": 1
+  },
+  "9ab81bc33c6120fd8296cf80cd7fbd64": {
+    "prompt": "sparkle_pop",
+    "file": "audio/sfx/9ab81bc33c6120fd8296cf80cd7fbd64.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-03-31T22:24:07.789Z",
+    "hits": 1
+  }
+}

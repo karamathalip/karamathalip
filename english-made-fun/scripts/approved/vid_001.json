@@ -3,129 +3,201 @@
   "video_title": "This ONE word exposes your English level",
   "format": "fail_fix_stickman_skit",
   "topic": "I have went vs I have gone — present perfect mistake",
-  "hook": "This one tiny word completely exposes your English level.",
-  "total_duration_seconds": 55,
+  "hook": "Stop saying this. It's exposing your English level.",
+  "total_duration_seconds": 51,
   "viral_score": 88,
   "status": "approved",
   "voice_file": "audio/voices/vid_001_voice_full.mp3",
   "background_music": {
     "file": "audio/sfx/ambient_study_lofi.mp3",
-    "volume": 0.08
+    "volume": 0.06
   },
   "scenes": [
     {
       "scene_id": "hook",
       "id": "hook",
       "start": 0,
-      "duration": 5,
+      "duration": 3,
       "type": "hook",
-      "text": "This ONE word exposes your English level.",
-      "voice_line": "This one tiny word... completely exposes your English level.",
+      "text": "This ONE mistake exposes you.",
+      "voice_line": "This <emphasis level=\"strong\">one</emphasis> mistake is exposing your English level <break time=\"0.2s\"/> right now.",
       "tone": "energetic",
+      "speed": 1.1,
+      "silence_after": 0.3,
       "stickman_action": "point_at_viewer",
       "stickman_emotion": "shocked",
       "visual": {
         "template": "text_burst",
-        "text": "This ONE word exposes your English level.",
+        "text": "Stop saying THIS.",
         "backgroundColor": "#0d1b2e",
         "textColor": "#ffffff",
         "emphasis": "zoom",
-        "keywords": ["ONE", "exposes"]
+        "keywords": [
+          "THIS"
+        ]
       },
-      "sfx_prompts": ["whoosh_slide"],
+      "sfx_prompts": [
+        "whoosh_slide"
+      ],
       "sfx": [
-        { "file": "audio/sfx/whoosh_slide.mp3", "startTime": 0, "volume": 0.55 }
+        {
+          "file": "audio/sfx/whoosh_slide.mp3",
+          "startTime": 0.1,
+          "volume": 0.5
+        },
+        {
+          "file": "audio/sfx/vid_001_scene01_sfx1.mp3",
+          "startTime": 0.1,
+          "volume": 0.5
+        }
       ],
       "use_image": false,
-      "visual_priority": "high_emotion"
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_001_scene01_voice.wav"
     },
     {
       "scene_id": "fail_demo",
       "id": "fail_demo",
-      "start": 5,
-      "duration": 7,
+      "start": 3,
+      "duration": 6,
       "type": "example",
-      "text": "I have WENT to the store.",
-      "voice_line": "I have went to the store. Sounds off, right? Native speakers catch this instantly.",
+      "text": "\"I have WENT to the store.\"",
+      "voice_line": "I have <emphasis level=\"strong\">went</emphasis> to the store. <break time=\"0.3s\"/> Hear that? Native speakers catch it <emphasis level=\"strong\">instantly</emphasis>.",
       "tone": "warm",
+      "speed": 0.95,
+      "silence_after": 0.2,
       "stickman_action": "trip_and_fall",
       "stickman_emotion": "confused",
       "visual": {
         "template": "stickman",
-        "text": "I have WENT to the store.",
+        "text": "\"I have WENT to the store.\"",
         "stickman_action": "trip_and_fall",
         "stickman_emotion": "confused",
         "bg_color": "#1a1a2e",
-        "effect": "wrong"
+        "effect": "wrong",
+        "transition": "moody_problem_state"
       },
-      "sfx_prompts": ["wrong_buzzer"],
+      "sfx_prompts": [
+        "wrong_buzzer"
+      ],
       "sfx": [
-        { "file": "audio/sfx/wrong_buzzer.mp3", "startTime": 0.3, "volume": 0.50 }
+        {
+          "file": "audio/sfx/wrong_buzzer.mp3",
+          "startTime": 1.5,
+          "volume": 0.45
+        },
+        {
+          "file": "audio/sfx/vid_001_scene02_sfx1.mp3",
+          "startTime": 1.5,
+          "volume": 0.45
+        }
       ],
       "use_image": false,
-      "visual_priority": "standard"
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_001_scene02_voice.wav"
     },
     {
       "scene_id": "explain",
       "id": "explain",
-      "start": 12,
-      "duration": 14,
+      "start": 9,
+      "duration": 9,
       "type": "explanation",
-      "text": "WENT = simple past. Alone.\nGONE needs HAVE.",
-      "voice_line": "Here is the simple rule. WENT is past tense... it stands completely alone. But GONE... always needs HAVE. They are a team.",
+      "text": "WENT = alone.\nGONE = needs HAVE.",
+      "voice_line": "Super simple. <break time=\"0.3s\"/> <emphasis level=\"strong\">WENT</emphasis> walks alone. <emphasis level=\"strong\">Gone</emphasis> <break time=\"0.2s\"/> always needs <emphasis level=\"strong\">have</emphasis>. They are a team. That is it.",
       "tone": "calm",
+      "speed": 1,
+      "silence_after": 0.35,
       "stickman_action": "write_on_board",
       "stickman_emotion": "explaining",
       "visual": {
         "template": "stickman",
-        "text": "WENT = past. Alone.\nGONE always needs HAVE.",
+        "text": "WENT = alone.\nGONE = needs HAVE.",
         "stickman_action": "write_on_board",
         "stickman_emotion": "explaining",
         "bg_color": "#16213e"
       },
-      "sfx_prompts": ["pen_writing"],
+      "sfx_prompts": [
+        "pen_writing"
+      ],
       "sfx": [
-        { "file": "audio/sfx/pen_writing.mp3", "startTime": 0.2, "volume": 0.40 }
+        {
+          "file": "audio/sfx/pen_writing.mp3",
+          "startTime": 0.8,
+          "volume": 0.35
+        },
+        {
+          "file": "audio/sfx/vid_001_scene03_sfx1.mp3",
+          "startTime": 0.8,
+          "volume": 0.35
+        }
       ],
       "use_image": false,
-      "visual_priority": "standard"
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_001_scene03_voice.wav"
     },
     {
       "scene_id": "fix_demo",
       "id": "fix_demo",
-      "start": 26,
+      "start": 18,
       "duration": 7,
       "type": "payoff",
-      "text": "I have GONE to the store.",
-      "voice_line": "Say it right. I have GONE to the store. Or... I WENT to the store. Both perfect.",
+      "text": "\"I have GONE to the store.\" ✓",
+      "voice_line": "<break time=\"0.5s\"/> Now say it right. I have <emphasis level=\"strong\">gone</emphasis> to the store. Or just <break time=\"0.2s\"/> I <emphasis level=\"strong\">went</emphasis> to the store. Both perfect.",
       "tone": "energetic",
+      "speed": 1.05,
+      "silence_after": 0.3,
       "stickman_action": "fist_pump",
       "stickman_emotion": "victorious",
       "visual": {
         "template": "stickman",
-        "text": "I have GONE to the store.",
+        "text": "\"I have GONE to the store.\" ✓",
         "stickman_action": "epic_win",
         "stickman_emotion": "victorious",
         "bg_color": "#0f3460",
-        "effect": "correct"
+        "effect": "correct",
+        "transition": "dark_to_bright_reveal"
       },
-      "sfx_prompts": ["correct_ping", "sparkle_pop"],
+      "sfx_prompts": [
+        "correct_ping",
+        "sparkle_pop"
+      ],
       "sfx": [
-        { "file": "audio/sfx/correct_ping.mp3", "startTime": 0, "volume": 0.60 },
-        { "file": "audio/sfx/sparkle_pop.mp3", "startTime": 0.8, "volume": 0.50 }
+        {
+          "file": "audio/sfx/correct_ping.mp3",
+          "startTime": 1.2,
+          "volume": 0.55
+        },
+        {
+          "file": "audio/sfx/sparkle_pop.mp3",
+          "startTime": 3,
+          "volume": 0.45
+        },
+        {
+          "file": "audio/sfx/vid_001_scene04_sfx1.mp3",
+          "startTime": 1.2,
+          "volume": 0.55
+        },
+        {
+          "file": "audio/sfx/vid_001_scene04_sfx2.mp3",
+          "startTime": 3,
+          "volume": 0.45
+        }
       ],
       "use_image": false,
-      "visual_priority": "high_emotion"
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_001_scene04_voice.wav"
     },
     {
       "scene_id": "memory_trick",
       "id": "memory_trick",
-      "start": 33,
-      "duration": 8,
+      "start": 25,
+      "duration": 9,
       "type": "explanation",
-      "text": "WENT is a loner.\nGONE always needs HAVE.",
-      "voice_line": "Memory trick. WENT is a loner... walks alone. GONE needs its friend HAVE. Follow for more tips like this.",
+      "text": "WENT = loner 🚶\nGONE + HAVE = team 🤝",
+      "voice_line": "Memory trick. <break time=\"0.3s\"/> <emphasis level=\"strong\">Went</emphasis> is a loner, walks alone. <emphasis level=\"strong\">Gone</emphasis> needs its buddy <emphasis level=\"strong\">have</emphasis>. That is the whole rule.",
       "tone": "warm",
+      "speed": 1,
+      "silence_after": 0.25,
       "stickman_action": "lonely_walk_then_hug",
       "stickman_emotion": "happy",
       "visual": {
@@ -136,22 +208,36 @@
         "emotion": "happy",
         "backgroundColor": "#16213e"
       },
-      "sfx_prompts": ["sparkle_pop"],
+      "sfx_prompts": [
+        "sparkle_pop"
+      ],
       "sfx": [
-        { "file": "audio/sfx/sparkle_pop.mp3", "startTime": 0.3, "volume": 0.50 }
+        {
+          "file": "audio/sfx/sparkle_pop.mp3",
+          "startTime": 0.5,
+          "volume": 0.45
+        },
+        {
+          "file": "audio/sfx/vid_001_scene05_sfx1.mp3",
+          "startTime": 0.5,
+          "volume": 0.45
+        }
       ],
       "use_image": false,
-      "visual_priority": "standard"
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_001_scene05_voice.wav"
     },
     {
       "scene_id": "quick_test",
       "id": "quick_test",
-      "start": 41,
-      "duration": 9,
+      "start": 34,
+      "duration": 11,
       "type": "example",
       "text": "Have you ___ to school today?\nWENT or GONE?",
-      "voice_line": "Quick test. Have you blank to school today? WENT or GONE? ... It is GONE. WENT never follows HAVE.",
+      "voice_line": "Quick test. <break time=\"0.3s\"/> Have you blank to school today. Went or gone? Three, <break time=\"0.3s\"/> two, <break time=\"0.3s\"/> one. <break time=\"0.5s\"/> <emphasis level=\"strong\">Gone</emphasis>. Went <emphasis level=\"strong\">never</emphasis> follows have.",
       "tone": "energetic",
+      "speed": 1.05,
+      "silence_after": 0.15,
       "stickman_action": "quiz_pose",
       "stickman_emotion": "curious",
       "visual": {
@@ -160,52 +246,108 @@
         "backgroundColor": "#0d1b2a",
         "textColor": "#ffffff",
         "emphasis": "highlight",
-        "keywords": ["GONE", "WENT"],
-        "quizCountdown": 4.0
+        "keywords": [
+          "GONE",
+          "WENT"
+        ],
+        "quizCountdown": 3.5
       },
-      "sfx_prompts": ["whoosh_slide", "correct_ping"],
+      "sfx_prompts": [
+        "whoosh_slide",
+        "correct_ping"
+      ],
       "sfx": [
-        { "file": "audio/sfx/whoosh_slide.mp3", "startTime": 0, "volume": 0.45 },
-        { "file": "audio/sfx/correct_ping.mp3", "startTime": 5.5, "volume": 0.60 }
+        {
+          "file": "audio/sfx/whoosh_slide.mp3",
+          "startTime": 0.1,
+          "volume": 0.4
+        },
+        {
+          "file": "audio/sfx/correct_ping.mp3",
+          "startTime": 7.5,
+          "volume": 0.55
+        },
+        {
+          "file": "audio/sfx/vid_001_scene06_sfx1.mp3",
+          "startTime": 0.1,
+          "volume": 0.4
+        },
+        {
+          "file": "audio/sfx/vid_001_scene06_sfx2.mp3",
+          "startTime": 7.5,
+          "volume": 0.55
+        }
       ],
       "use_image": false,
-      "visual_priority": "standard"
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_001_scene06_voice.wav"
     },
     {
       "scene_id": "loop_back",
       "id": "loop_back",
-      "start": 50,
-      "duration": 5,
+      "start": 45,
+      "duration": 6,
       "type": "hook",
-      "text": "And if you are still mixing these up...\nthat is exactly why...",
-      "voice_line": "And if you are still mixing these up... that is exactly why...",
+      "text": "Still mixing these up? 👆",
+      "voice_line": "Still mixing these up? <break time=\"0.3s\"/> This one mistake is exposing your English level right now.",
       "tone": "energetic",
-      "stickman_action": "point_at_viewer",
+      "speed": 1.1,
+      "silence_after": 0,
+      "stickman_action": "point_up",
       "stickman_emotion": "excited",
       "visual": {
         "template": "text_burst",
-        "text": "And if you are still mixing these up...\nthat is exactly why...",
-        "backgroundColor": "#0d1b2e",
-        "textColor": "#ffffff",
-        "emphasis": "zoom",
-        "keywords": ["exactly"]
+        "text": "Still mixing these up? 👆",
+        "backgroundColor": "#1a1a2e",
+        "textColor": "#ff4757",
+        "emphasis": "pulse",
+        "keywords": [
+          "mixing",
+          "exposing"
+        ],
+        "animation": {
+          "out": "hard_cut"
+        }
       },
-      "sfx_prompts": ["whoosh_slide"],
+      "sfx_prompts": [
+        "whoosh_slide"
+      ],
       "sfx": [
-        { "file": "audio/sfx/whoosh_slide.mp3", "startTime": 0, "volume": 0.50 }
+        {
+          "file": "audio/sfx/whoosh_slide.mp3",
+          "startTime": 0.2,
+          "volume": 0.5
+        },
+        {
+          "file": "audio/sfx/vid_001_scene07_sfx1.mp3",
+          "startTime": 0.2,
+          "volume": 0.5
+        }
       ],
       "use_image": false,
-      "visual_priority": "high_emotion"
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_001_scene07_voice.wav"
     }
   ],
   "audio": {
     "voice_profile": "Energetic English Coach",
     "background_music": true,
     "sfx_enabled": true,
-    "master_volume": 1.0,
+    "master_volume": 1,
     "voice_volume": 0.9,
     "sfx_volume": 0.6,
-    "music_volume": 0.08
+    "music_volume": 0.06,
+    "file_url": "audio/voices/vid_001_voice_full.mp3",
+    "voice_agent_meta": {
+      "character": "Energetic English Coach",
+      "speaking_rate": 1,
+      "pitch_semitones": 0,
+      "per_scene_tone": true,
+      "scene_gap_seconds": 0.25,
+      "encoding": "WAV",
+      "sample_rate": 48000,
+      "generated_at": "2026-03-31T22:22:21.399Z"
+    }
   },
   "captions": {
     "style": {
@@ -218,17 +360,24 @@
   },
   "packaging": {
     "titles": [
-      "This ONE word exposes your English level",
+      "Stop saying this ONE word (it exposes you)",
       "Have WENT vs Have GONE — fixed in 30 sec",
       "The grammar trap that follows you everywhere"
     ],
-    "description": "One of the most common English grammar mistakes fixed in under a minute. Master the difference between WENT and GONE with a simple memory trick you will never forget.",
+    "description": "One of the most common English grammar mistakes fixed in under a minute. Master the difference between WENT and GONE with a memory trick you will never forget. #englishgrammar #learnenglish #shorts",
     "tags": [
-      "english grammar", "have went", "have gone",
-      "present perfect", "common mistakes", "learn english",
-      "ESL", "grammar tips", "english pro tip"
+      "english grammar",
+      "have went",
+      "have gone",
+      "present perfect",
+      "common mistakes",
+      "learn english",
+      "ESL",
+      "grammar tips",
+      "english pro tip",
+      "shorts"
     ],
-    "thumbnail_prompt": "Split cartoon image. Left side dark blue: confused stickman, giant red X, speech bubble 'I have went'. Right side dark green: confident stickman, giant green checkmark, speech bubble 'I have gone'. Bold white text dividing the halves: WENT vs GONE. High contrast, YouTube Shorts style."
+    "thumbnail_prompt": "Split cartoon image. Left side dark red: confused stickman, giant red X, speech bubble 'I have went'. Right side bright green: confident stickman, giant green checkmark, speech bubble 'I have gone'. Bold white text dividing: WENT vs GONE. High contrast YouTube Shorts style, dramatic lighting."
   },
   "viral_triggers": [
     "curiosity_gap_hook",

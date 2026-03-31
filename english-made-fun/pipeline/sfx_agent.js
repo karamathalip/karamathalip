@@ -107,12 +107,12 @@ function md5(str) {
  * @returns {string}
  */
 function getApiKey() {
-  const key = process.env.ELEVEN_API_KEY;
+  const key = process.env.ELEVEN_API_KEY || process.env.ELEVENLABS_API_KEY;
   if (!key) {
     throw new Error(
-      'ELEVEN_API_KEY is not set.\n' +
+      'ELEVENLABS_API_KEY is not set.\n' +
       'Add it to english-made-fun/.env:\n' +
-      '  ELEVEN_API_KEY=<your-elevenlabs-api-key>'
+      '  ELEVENLABS_API_KEY=<your-elevenlabs-api-key>'
     );
   }
   return key;
@@ -453,10 +453,16 @@ async function processScript(scriptData, scriptPath, cacheIndex) {
           };
         }
 
+        // Preserve existing startTime/volume from prior manual edits in the script.
+        // Look up the matching SFX entry that already exists on the scene.
+        const existingCue = Array.isArray(scene.sfx)
+          ? scene.sfx.find(c => c.file && path.basename(c.file) === fileName)
+          : null;
+
         sfxCues.push({
           file:      toRelative(outputPath),
-          startTime: 0,
-          volume:    1,
+          startTime: existingCue?.startTime ?? 0,
+          volume:    existingCue?.volume ?? 1,
         });
         continue;
       }
@@ -471,10 +477,16 @@ async function processScript(scriptData, scriptPath, cacheIndex) {
       totalChars += charCount;
       if (hit) { sfxCached++; } else { sfxGenerated++; }
 
+      // Preserve manually-set startTime/volume from existing scene.sfx entries.
+      // sfx_prompts[j] may correspond to scene.sfx[j] if both arrays align.
+      const existingCue = Array.isArray(scene.sfx) && scene.sfx[j]
+        ? scene.sfx[j]
+        : null;
+
       sfxCues.push({
         file:      toRelative(outputPath),
-        startTime: 0,       // default: plays at scene start; adjust manually if needed
-        volume:    1,
+        startTime: existingCue?.startTime ?? 0,
+        volume:    existingCue?.volume ?? 1,
       });
     }
 

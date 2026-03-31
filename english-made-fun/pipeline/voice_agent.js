@@ -1,32 +1,27 @@
 /**
  * pipeline/voice_agent.js
  *
- * Generates MP3 voice files for each approved script using the Inworld Studio
- * TTS API, then stitches all scene lines into one combined voice track per video.
+ * Generates WAV voice files for each approved script using the Inworld
+ * TTS API (api.inworld.ai/tts/v1/voice), then stitches all scene lines
+ * into one combined voice track per video.
  *
  * ── Prerequisites ─────────────────────────────────────────────────────────────
  *   .env must contain:
- *     INWORLD_API_KEY=<your-inworld-service-account-key-or-bearer-token>
- *     INWORLD_WORKSPACE_ID=<workspaces/{name}>   e.g. workspaces/my-channel-abc123
- *     INWORLD_CHARACTER_ID=<characters/{name}>   e.g. characters/energetic-english-coach
- *
- *   The workspace and character IDs are shown in Inworld Studio under
- *   Studio → Settings → API Access and the character's detail page.
- *   Format: "workspaces/abc123def456" (the full resource path segment).
+ *     INWORLD_API_KEY=<your-inworld-api-key>
  *
  * ── Inworld TTS API ───────────────────────────────────────────────────────────
- *   Endpoint : POST https://studio.inworld.ai/v1/{workspace}/{character}:synthesize
- *   Auth     : Authorization: Basic <base64("key:")>  ← key only, no secret
- *   Voices   : GET  https://studio.inworld.ai/v1/{workspace}/characters/{id}/voices
+ *   Endpoint : POST https://api.inworld.ai/tts/v1/voice
+ *   Auth     : Authorization: Basic <api-key>  (key is already base64)
+ *   Body     : { text, voiceId, modelId, timestampType, speakingRate, temperature, audioConfig }
+ *   Response : { audioContent: "<base64 WAV>", timepoints: [...] }
  *
  * ── CLI usage ─────────────────────────────────────────────────────────────────
  *   node pipeline/voice_agent.js                  # processes all approved scripts
- *   node pipeline/voice_agent.js --list-voices    # prints available Inworld voices
  *   node pipeline/voice_agent.js scripts/approved/my_script.json   # single file
  *
  * ── Output ────────────────────────────────────────────────────────────────────
- *   audio/voices/[video_id]_scene[N]_voice.mp3    — per-scene audio
- *   audio/voices/[video_id]_voice_full.mp3        — stitched full track
+ *   audio/voices/[video_id]_scene[N]_voice.wav    — per-scene audio
+ *   audio/voices/[video_id]_voice_full.mp3        — stitched full track (MP3)
  *   scripts/approved/[original_filename]          — script updated with file paths
  */
 
@@ -45,27 +40,30 @@ const os           = require('os');
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 /**
- * Inworld Studio REST API base URL.
- * Docs: https://docs.inworld.ai/docs/tutorial-integrations/studio-api/
+ * Inworld TTS v1 API endpoint.
+ * Docs: https://docs.inworld.ai/docs/tutorial-integrations/tts-api/
  */
-const INWORLD_BASE_URL = 'https://studio.inworld.ai/v1';
+const INWORLD_TTS_URL = 'https://api.inworld.ai/tts/v1/voice';
+
+/** Default voice and model used for synthesis. */
+const DEFAULT_VOICE_ID = 'Trevor';
+const DEFAULT_MODEL_ID = 'inworld-tts-1.5-max';
 
 /**
  * Character display name used in prompts and logs.
- * The actual character used for synthesis is controlled by INWORLD_CHARACTER_ID.
  */
 const CHARACTER_DISPLAY_NAME = 'Energetic English Coach';
 
 const MAX_RETRIES    = 3;
 const RETRY_BASE_MS  = 1500;   // exponential backoff: 1.5s → 3s → 6s
-const MAX_CONCURRENT = 2;      // Inworld free tier is rate-limited; keep low
+const MAX_CONCURRENT = 2;      // rate-limit guard; keep low
 
 const APPROVED_DIR  = path.join(__dirname, '../scripts/approved');
 const VOICES_DIR    = path.join(__dirname, '../audio/voices');
 
-// Inworld TTS supports MP3 at these sample rates. 24000 is their default.
-const AUDIO_ENCODING  = 'MP3';
-const SAMPLE_RATE_HZ  = 24000;
+// WAV at 48 kHz — matches YouTube's native sample rate, avoids MP3 padding drift.
+const AUDIO_ENCODING  = 'WAV';
+const SAMPLE_RATE_HZ  = 48000;
 
 // Cost estimate (Inworld as of 2025): ~$0.006 per 1K characters synthesised.
 // Adjust if your plan differs.
@@ -78,51 +76,36 @@ function sleep(ms) {
 }
 
 /**
- * Build the Authorization header value for Inworld Studio API.
+ * Build the Authorization header for Inworld TTS v1 API.
  *
- * Inworld uses HTTP Basic auth where the API key is the username and the
- * password is empty:  base64("sk-ant-...:") → "Basic <token>"
+ * The Inworld API key is already a base64-encoded string.
+ * Pass it directly as: Authorization: Basic <api-key>
  *
  * @param {string} apiKey
  * @returns {string}
  */
 function buildAuthHeader(apiKey) {
-  const encoded = Buffer.from(`${apiKey}:`).toString('base64');
-  return `Basic ${encoded}`;
+  return `Basic ${apiKey}`;
 }
 
 /**
- * Validate required environment variables and return them.
- * Throws a descriptive error if any are missing.
+ * Validate required environment variables and return the API key.
+ * Only INWORLD_API_KEY is needed for the TTS v1 endpoint.
  *
- * @returns {{ apiKey: string, workspaceId: string, characterId: string }}
+ * @returns {{ apiKey: string }}
  */
 function getEnvConfig() {
-  const apiKey      = process.env.INWORLD_API_KEY;
-  const workspaceId = process.env.INWORLD_WORKSPACE_ID;
-  const characterId = process.env.INWORLD_CHARACTER_ID;
+  const apiKey = process.env.INWORLD_API_KEY;
 
-  const missing = [];
-  if (!apiKey)      missing.push('INWORLD_API_KEY');
-  if (!workspaceId) missing.push('INWORLD_WORKSPACE_ID');
-  if (!characterId) missing.push('INWORLD_CHARACTER_ID');
-
-  if (missing.length > 0) {
+  if (!apiKey) {
     throw new Error(
-      `Missing required environment variable(s): ${missing.join(', ')}\n` +
-      'Add them to english-made-fun/.env:\n' +
-      '  INWORLD_API_KEY=<your-key>\n' +
-      '  INWORLD_WORKSPACE_ID=workspaces/<id>   # from Studio → Settings → API Access\n' +
-      '  INWORLD_CHARACTER_ID=characters/<id>   # from your character\'s detail page'
+      'Missing required environment variable: INWORLD_API_KEY\n' +
+      'Add it to english-made-fun/.env:\n' +
+      '  INWORLD_API_KEY=<your-inworld-api-key>'
     );
   }
 
-  // Normalise: strip trailing slashes
-  return {
-    apiKey,
-    workspaceId: workspaceId.replace(/\/$/, ''),
-    characterId: characterId.replace(/\/$/, ''),
-  };
+  return { apiKey };
 }
 
 /**
@@ -173,112 +156,68 @@ function toneToSemitones(tone) {
   return 0.0;
 }
 
-// ─── Inworld API: List Voices ─────────────────────────────────────────────────
+// ─── Inworld API: List Voices (stub) ──────────────────────────────────────────
 
 /**
- * Fetches all available voices for the configured character from Inworld Studio.
- *
- * Endpoint: GET /v1/{workspace}/characters/{id}/voices
- * Docs: https://docs.inworld.ai/docs/tutorial-integrations/studio-api/#voices
- *
- * @returns {Promise<Array<{ name: string, gender: string, languageCodes: string[] }>>}
+ * Stub — the TTS v1 API uses voiceId directly; no listing endpoint needed.
+ * Kept for CLI --list-voices backward compat.
  */
 async function listVoices() {
-  const { apiKey, workspaceId, characterId } = getEnvConfig();
-
-  // Build the full resource path: workspaces/{ws}/characters/{ch}/voices
-  const characterResource = `${workspaceId}/${characterId}`;
-  const url = `${INWORLD_BASE_URL}/${characterResource}/voices`;
-
-  console.log(`\nFetching available voices for character: ${characterResource}`);
-  console.log(`GET ${url}\n`);
-
-  try {
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: buildAuthHeader(apiKey),
-        'Content-Type': 'application/json',
-      },
-      timeout: 15000,
-    });
-
-    const voices = response.data?.voices ?? response.data ?? [];
-
-    if (!Array.isArray(voices) || voices.length === 0) {
-      console.log('No voices returned. Check your workspace/character IDs.');
-      return [];
-    }
-
-    console.log(`Available voices for "${CHARACTER_DISPLAY_NAME}":\n`);
-    voices.forEach((v, i) => {
-      const langs = Array.isArray(v.languageCodes) ? v.languageCodes.join(', ') : '—';
-      console.log(`  [${String(i + 1).padStart(2)}] ${v.name ?? v.voiceName ?? '(unnamed)'}`);
-      console.log(`       Gender: ${v.gender ?? v.ssmlGender ?? '—'}  |  Languages: ${langs}`);
-    });
-    console.log('');
-
-    return voices;
-  } catch (error) {
-    const status = error.response?.status;
-    const msg    = error.response?.data?.message ?? error.message;
-    throw new Error(
-      `listVoices failed${status ? ` [HTTP ${status}]` : ''}: ${msg}`
-    );
-  }
+  console.log(`\n  Using TTS v1 API — voiceId is specified directly (default: "${DEFAULT_VOICE_ID}").\n`);
+  console.log('  No list endpoint available for the v1 API.');
+  console.log('  See https://docs.inworld.ai/docs/tutorial-integrations/tts-api/ for voice options.\n');
+  return [];
 }
 
 // ─── Inworld API: Synthesize One Voice Line ───────────────────────────────────
 
 /**
- * Call the Inworld TTS synthesize endpoint for a single text string.
- * Returns the raw MP3 bytes as a Buffer.
+ * Call the Inworld TTS v1 endpoint for a single text string.
+ * Returns an object with the raw WAV buffer and word-level timestamps.
  *
- * Endpoint: POST /v1/{workspace}/{character}:synthesize
+ * Endpoint: POST https://api.inworld.ai/tts/v1/voice
  * Request body (JSON):
  * {
  *   "text": "...",
+ *   "voiceId": "Hades",
+ *   "modelId": "inworld-tts-1.5-max",
+ *   "timestampType": "WORD",
+ *   "speakingRate": 1.0,
  *   "audioConfig": {
- *     "audioEncoding": "MP3",
- *     "sampleRateHertz": 24000,
- *     "speakingRate": 1.0,
- *     "pitch": 0.0
+ *     "audioEncoding": "WAV",
+ *     "sampleRateHertz": 48000
  *   }
  * }
  *
  * Response body (JSON):
  * {
- *   "audioContent": "<base64-encoded-mp3>",
- *   "timepoints": [ ... ],    // word-level timing (optional, may be absent)
- *   "audioConfig": { ... }
+ *   "audioContent": "<base64-encoded-wav>",
+ *   "wordTimestamps": [ { "word": "...", "startTime": "0.1s", "endTime": "0.3s" }, ... ]
  * }
- *
- * Docs: https://docs.inworld.ai/docs/tutorial-integrations/studio-api/#text-to-speech
  *
  * @param {string}  text          - The voice line to synthesise
  * @param {number}  speakingRate  - 0.25–4.0 (1.0 = normal)
- * @param {number}  pitch         - -20.0 to +20.0 semitones
+ * @param {number}  pitch         - semitones (used for logging only — v1 API doesn't support pitch)
  * @param {number}  attempt       - Internal retry counter
- * @returns {Promise<Buffer>}     - Raw MP3 bytes
+ * @returns {Promise<{ audio: Buffer, wordTimestamps: Array }>}
  */
 async function synthesizeVoiceLine(text, speakingRate, pitch, attempt = 0) {
-  const { apiKey, workspaceId, characterId } = getEnvConfig();
-
-  // Full resource path: workspaces/{ws}/characters/{ch}
-  const characterResource = `${workspaceId}/${characterId}`;
-  const url = `${INWORLD_BASE_URL}/${characterResource}:synthesize`;
+  const { apiKey } = getEnvConfig();
 
   const requestBody = {
     text,
+    voiceId:       DEFAULT_VOICE_ID,
+    modelId:       DEFAULT_MODEL_ID,
+    timestampType: 'WORD',
+    speakingRate,
     audioConfig: {
       audioEncoding:   AUDIO_ENCODING,
       sampleRateHertz: SAMPLE_RATE_HZ,
-      speakingRate,
-      pitch,
     },
   };
 
   try {
-    const response = await axios.post(url, requestBody, {
+    const response = await axios.post(INWORLD_TTS_URL, requestBody, {
       headers: {
         Authorization:  buildAuthHeader(apiKey),
         'Content-Type': 'application/json',
@@ -295,8 +234,16 @@ async function synthesizeVoiceLine(text, speakingRate, pitch, attempt = 0) {
       );
     }
 
-    // audioContent is base64-encoded MP3 data
-    return Buffer.from(audioContent, 'base64');
+    const audioBuffer = Buffer.from(audioContent, 'base64');
+
+    // Validate RIFF/WAV header — first 4 bytes should be "RIFF"
+    if (audioBuffer.length >= 4 && audioBuffer.toString('ascii', 0, 4) !== 'RIFF') {
+      console.warn('      ⚠  Audio does not have a RIFF header — may not be valid WAV');
+    }
+
+    const wordTimestamps = response.data?.wordTimestamps ?? response.data?.timepoints ?? [];
+
+    return { audio: audioBuffer, wordTimestamps };
 
   } catch (error) {
     const exhausted = attempt >= MAX_RETRIES;
@@ -322,17 +269,29 @@ async function synthesizeVoiceLine(text, speakingRate, pitch, attempt = 0) {
   }
 }
 
-// ─── Audio: Concatenate MP3 Files ────────────────────────────────────────────
+// ─── Audio: Concatenate WAV/MP3 Files ────────────────────────────────────────
 
 /**
- * Concatenate multiple MP3 files into one output file using FFmpeg's
- * concat demuxer. Writes a temporary file list, runs ffmpeg, then cleans up.
+ * Default silence gap (in seconds) inserted between scene voice lines.
+ * Creates natural breathing room between scenes. Controlled per-scene
+ * via scene.silence_after (seconds) in the script JSON; this is the fallback.
+ */
+const DEFAULT_SCENE_GAP_SECONDS = 0.25;
+
+/**
+ * Concatenate multiple audio files into one output file using FFmpeg's
+ * concat demuxer. Inserts configurable silence gaps between clips for
+ * natural breathing room. Input files can be WAV or MP3; output is always MP3
+ * for the stitched full-track (downstream render_agent expects MP3).
  *
- * @param {string[]} inputPaths   - Absolute paths to input MP3 files (in order)
- * @param {string}   outputPath   - Absolute path for the combined output MP3
+ * @param {string[]} inputPaths      - Absolute paths to input audio files (in order)
+ * @param {string}   outputPath      - Absolute path for the combined output MP3
+ * @param {number[]} [gapSeconds]    - Silence duration after each clip (length = inputPaths.length).
+ *                                     Last element is ignored (no gap after final clip).
+ *                                     If omitted, uses DEFAULT_SCENE_GAP_SECONDS for all gaps.
  * @returns {Promise<void>}
  */
-function concatenateAudioFiles(inputPaths, outputPath) {
+function concatenateAudioFiles(inputPaths, outputPath, gapSeconds) {
   return new Promise((resolve, reject) => {
     if (inputPaths.length === 0) {
       return reject(new Error('concatenateAudioFiles: no input files provided'));
@@ -343,14 +302,35 @@ function concatenateAudioFiles(inputPaths, outputPath) {
       return fs.copy(inputPaths[0], outputPath).then(resolve).catch(reject);
     }
 
-    // Write a temporary concat list file
-    const tmpList = path.join(os.tmpdir(), `inworld_concat_${Date.now()}.txt`);
-    const listContent = inputPaths
-      .map(p => `file '${p.replace(/'/g, "'\\''")}'`)
-      .join('\n');
+    // Build a concat list with silence gaps between clips.
+    // FFmpeg concat demuxer doesn't natively support gaps, so we generate
+    // short silence WAV files and interleave them.
+    const tmpDir  = path.join(os.tmpdir(), `inworld_concat_${Date.now()}`);
+    const tmpList = path.join(tmpDir, 'list.txt');
 
-    fs.writeFile(tmpList, listContent, 'utf8')
-      .then(() => {
+    const gaps = gapSeconds ?? inputPaths.map(() => DEFAULT_SCENE_GAP_SECONDS);
+
+    fs.ensureDir(tmpDir)
+      .then(async () => {
+        const listLines = [];
+
+        for (let i = 0; i < inputPaths.length; i++) {
+          // Add the audio clip
+          listLines.push(`file '${inputPaths[i].replace(/'/g, "'\\''")}'`);
+
+          // Insert silence gap after each clip except the last
+          if (i < inputPaths.length - 1) {
+            const gap = typeof gaps[i] === 'number' ? Math.max(0, gaps[i]) : DEFAULT_SCENE_GAP_SECONDS;
+            if (gap > 0) {
+              const silencePath = path.join(tmpDir, `silence_${i}.wav`);
+              await generateSilence(silencePath, gap);
+              listLines.push(`file '${silencePath.replace(/'/g, "'\\''")}'`);
+            }
+          }
+        }
+
+        await fs.writeFile(tmpList, listLines.join('\n'), 'utf8');
+
         ffmpeg()
           .input(tmpList)
           .inputOptions(['-f', 'concat', '-safe', '0'])
@@ -358,17 +338,58 @@ function concatenateAudioFiles(inputPaths, outputPath) {
           .audioBitrate('128k')
           .output(outputPath)
           .on('end', () => {
-            fs.remove(tmpList).catch(() => {});
+            fs.remove(tmpDir).catch(() => {});
             resolve();
           })
           .on('error', (err) => {
-            fs.remove(tmpList).catch(() => {});
+            fs.remove(tmpDir).catch(() => {});
             reject(new Error(`FFmpeg concat error: ${err.message}`));
           })
           .run();
       })
       .catch(reject);
   });
+}
+
+/**
+ * Generate a silent WAV file of the specified duration using a raw PCM buffer.
+ * Avoids FFmpeg's lavfi filter (not available in all builds).
+ *
+ * @param {string} outputPath      - Absolute path for the silence file
+ * @param {number} durationSeconds - Duration in seconds
+ * @returns {Promise<void>}
+ */
+async function generateSilence(outputPath, durationSeconds) {
+  const numChannels  = 1;
+  const bitsPerSample = 16;
+  const byteRate     = SAMPLE_RATE_HZ * numChannels * (bitsPerSample / 8);
+  const numSamples   = Math.round(SAMPLE_RATE_HZ * durationSeconds);
+  const dataSize     = numSamples * numChannels * (bitsPerSample / 8);
+
+  // 44-byte WAV header + silent PCM data (all zeros = silence)
+  const buffer = Buffer.alloc(44 + dataSize, 0);
+
+  // RIFF header
+  buffer.write('RIFF', 0);
+  buffer.writeUInt32LE(36 + dataSize, 4);
+  buffer.write('WAVE', 8);
+
+  // fmt sub-chunk
+  buffer.write('fmt ', 12);
+  buffer.writeUInt32LE(16, 16);                               // sub-chunk size
+  buffer.writeUInt16LE(1, 20);                                // PCM format
+  buffer.writeUInt16LE(numChannels, 22);
+  buffer.writeUInt32LE(SAMPLE_RATE_HZ, 24);
+  buffer.writeUInt32LE(byteRate, 28);
+  buffer.writeUInt16LE(numChannels * (bitsPerSample / 8), 32); // block align
+  buffer.writeUInt16LE(bitsPerSample, 34);
+
+  // data sub-chunk
+  buffer.write('data', 36);
+  buffer.writeUInt32LE(dataSize, 40);
+  // PCM data is already all zeros (silence)
+
+  await fs.writeFile(outputPath, buffer);
 }
 
 // ─── Core: Process One Script ─────────────────────────────────────────────────
@@ -394,13 +415,15 @@ async function processScript(scriptData, scriptPath) {
   const scenes      = scriptData.scenes ?? [];
   const audioConfig = scriptData.audio   ?? {};
 
-  const speakingRate = normaliseSpeakingRate(audioConfig.speed);
-  const pitch        = toneToSemitones(audioConfig.tone);
+  // Global defaults — used as fallback when a scene has no per-scene tone/speed
+  const globalSpeakingRate = normaliseSpeakingRate(audioConfig.speed);
+  const globalPitch        = toneToSemitones(audioConfig.tone);
 
   console.log(`\n  Character : ${CHARACTER_DISPLAY_NAME}`);
-  console.log(`  Speed     : ${speakingRate.toFixed(2)}  (from audio.speed=${audioConfig.speed ?? 'default'})`);
-  console.log(`  Tone      : "${audioConfig.tone ?? 'neutral'}"  → pitch=${pitch} semitones`);
+  console.log(`  Speed     : ${globalSpeakingRate.toFixed(2)}  (global default from audio.speed=${audioConfig.speed ?? 'default'})`);
+  console.log(`  Tone      : "${audioConfig.tone ?? 'neutral'}"  → global pitch=${globalPitch} semitones`);
   console.log(`  Scenes    : ${scenes.length}`);
+  console.log(`  Per-scene : tone/speed overrides enabled`);
 
   await fs.ensureDir(VOICES_DIR);
 
@@ -419,23 +442,39 @@ async function processScript(scriptData, scriptPath) {
       continue;
     }
 
-    // Filename: [video_id]_scene[N]_voice.mp3  (N is 1-padded to 2 digits)
+    // ── Per-scene voice parameters ──────────────────────────────────────────
+    // Use scene-level tone/speed if provided; fall back to global audio config.
+    const sceneSpeakingRate = scene.speed != null
+      ? normaliseSpeakingRate(scene.speed)
+      : globalSpeakingRate;
+    const scenePitch = scene.tone
+      ? toneToSemitones(scene.tone)
+      : globalPitch;
+
+    // Filename: [video_id]_scene[N]_voice.wav  (N is 1-padded to 2 digits)
     const paddedIndex = String(sceneIndex).padStart(2, '0');
-    const fileName    = `${videoId}_scene${paddedIndex}_voice.mp3`;
+    const fileName    = `${videoId}_scene${paddedIndex}_voice.wav`;
     const filePath    = path.join(VOICES_DIR, fileName);
 
     console.log(
       `    [scene ${sceneIndex}/${scenes.length}] ` +
-      `"${voiceLine.slice(0, 60)}${voiceLine.length > 60 ? '…' : ''}"`
+      `"${voiceLine.slice(0, 60)}${voiceLine.length > 60 ? '…' : ''}"` +
+      (scene.tone ? `  tone="${scene.tone}" pitch=${scenePitch}` : '')
     );
 
     // Skip if file already exists (allows re-runs to resume without re-billing)
     if (await fs.pathExists(filePath)) {
       console.log(`      ✓ Already exists — reusing: ${fileName}`);
     } else {
-      const mp3Buffer = await synthesizeVoiceLine(voiceLine, speakingRate, pitch);
-      await fs.writeFile(filePath, mp3Buffer);
-      console.log(`      ✓ Saved: ${fileName}  (${mp3Buffer.length} bytes)`);
+      const result = await synthesizeVoiceLine(voiceLine, sceneSpeakingRate, scenePitch);
+      await fs.writeFile(filePath, result.audio);
+      console.log(`      ✓ Saved: ${fileName}  (${result.audio.length} bytes)`);
+
+      // Save word timestamps alongside the WAV for future caption/kinetic text use
+      if (result.wordTimestamps && result.wordTimestamps.length > 0) {
+        const tsPath = path.join(VOICES_DIR, `${videoId}_scene${paddedIndex}_timestamps.json`);
+        await fs.writeJson(tsPath, result.wordTimestamps, { spaces: 2 });
+      }
     }
 
     totalChars += voiceLine.length;
@@ -459,7 +498,12 @@ async function processScript(scriptData, scriptPath) {
     console.log(`    ✓ Full track already exists — reusing: ${fullTrackName}`);
   } else {
     console.log(`    ↳ Stitching ${sceneFilePaths.length} files into full track...`);
-    await concatenateAudioFiles(sceneFilePaths, fullTrackPath);
+    // Collect per-scene silence gaps from scene.silence_after (seconds),
+    // falling back to DEFAULT_SCENE_GAP_SECONDS if not specified.
+    const gapSeconds = scenes
+      .filter(s => (s.voice_line ?? s.text ?? '').trim())
+      .map(s => typeof s.silence_after === 'number' ? s.silence_after : DEFAULT_SCENE_GAP_SECONDS);
+    await concatenateAudioFiles(sceneFilePaths, fullTrackPath, gapSeconds);
     console.log(`    ✓ Full track: ${fullTrackName}`);
   }
 
@@ -471,12 +515,14 @@ async function processScript(scriptData, scriptPath) {
       ...audioConfig,
       file_url:          relFullTrack,
       voice_agent_meta: {
-        character:     CHARACTER_DISPLAY_NAME,
-        speaking_rate: speakingRate,
-        pitch_semitones: pitch,
-        encoding:      AUDIO_ENCODING,
-        sample_rate:   SAMPLE_RATE_HZ,
-        generated_at:  new Date().toISOString(),
+        character:       CHARACTER_DISPLAY_NAME,
+        speaking_rate:   globalSpeakingRate,
+        pitch_semitones: globalPitch,
+        per_scene_tone:  true,
+        scene_gap_seconds: DEFAULT_SCENE_GAP_SECONDS,
+        encoding:        AUDIO_ENCODING,
+        sample_rate:     SAMPLE_RATE_HZ,
+        generated_at:    new Date().toISOString(),
       },
     },
     // Update the top-level voice_file field used by VideoTemplate
@@ -679,7 +725,9 @@ module.exports = {
   concatenateAudioFiles,
   normaliseSpeakingRate,
   toneToSemitones,
-  INWORLD_BASE_URL,
+  INWORLD_TTS_URL,
+  DEFAULT_VOICE_ID,
+  DEFAULT_MODEL_ID,
   VOICES_DIR,
   APPROVED_DIR,
 };

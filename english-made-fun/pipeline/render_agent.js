@@ -533,6 +533,9 @@ function mergeAudio(opts) {
  * Compute the absolute SFX tracks (file path + offset from video start)
  * for all scenes in a script, ready to pass to mergeAudio().
  *
+ * Uses the same frame-based rounding as Remotion's buildFramedScenes()
+ * to prevent drift between the visual scene boundaries and audio SFX timing.
+ *
  * @param {object}   scriptData   - Approved script JSON
  * @param {number}   fps          - Frames per second used during render (60)
  * @returns {Array<{filePath:string, offsetSeconds:number, volume:number}>}
@@ -540,12 +543,15 @@ function mergeAudio(opts) {
 function buildSfxTracks(scriptData, fps = 60) {
   const scenes    = scriptData.scenes ?? [];
   const sfxTracks = [];
-  let accSeconds  = 0;
+  let accFrames   = 0;
 
   for (const scene of scenes) {
     const dur = typeof scene.duration === 'number' && scene.duration > 0
       ? scene.duration
       : 3;
+
+    // Use the same rounding as Remotion's buildFramedScenes() to stay in sync
+    const sceneDurFrames = Math.max(1, Math.round(dur * fps));
 
     if (Array.isArray(scene.sfx)) {
       for (const cue of scene.sfx) {
@@ -556,7 +562,9 @@ function buildSfxTracks(scriptData, fps = 60) {
           ? cue.file
           : path.join(PROJECT_ROOT, cue.file);
 
-        const offsetSeconds = accSeconds + (typeof cue.startTime === 'number' ? cue.startTime : 0);
+        // Convert accumulated frames back to seconds for FFmpeg adelay
+        const sceneStartSeconds = accFrames / fps;
+        const offsetSeconds = sceneStartSeconds + (typeof cue.startTime === 'number' ? cue.startTime : 0);
 
         sfxTracks.push({
           filePath:      absPath,
@@ -566,7 +574,7 @@ function buildSfxTracks(scriptData, fps = 60) {
       }
     }
 
-    accSeconds += dur;
+    accFrames += sceneDurFrames;
   }
 
   return sfxTracks;
