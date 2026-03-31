@@ -40,6 +40,8 @@ export interface StickmanSceneData {
 
 export interface StickmanSceneProps {
   sceneData: StickmanSceneData;
+  /** Previous scene's stickman pose — used for entrance transitions */
+  previousPose?: string;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -208,7 +210,7 @@ const TextOverlay: React.FC<{ text: string; effect?: 'correct' | 'wrong' | null 
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData }) => {
+export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData, previousPose }) => {
   const { width, height, fps, durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
 
@@ -232,26 +234,32 @@ export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData }) => {
   const gradCx = interpolate(frame, [0, durationInFrames], [42, 58], { extrapolateRight: 'clamp' });
   const gradCy = interpolate(frame, [0, durationInFrames], [40, 55], { extrapolateRight: 'clamp' });
 
+  const showLocalBg = bg_color !== 'transparent' && bg_color !== '';
+
   return (
     <AbsoluteFill>
 
-      {/* ── Gradient background ──────────────────────────────────────────── */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: `radial-gradient(ellipse at ${gradCx}% ${gradCy}%, ${bg_color} 0%, ${darkerBg} 100%)`,
-        }}
-      />
+      {/* ── Gradient background (skipped when transparent to reveal global bg) */}
+      {showLocalBg && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: `radial-gradient(ellipse at ${gradCx}% ${gradCy}%, ${bg_color} 0%, ${darkerBg} 100%)`,
+          }}
+        />
+      )}
 
       {/* ── Subtle vignette ──────────────────────────────────────────────── */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.4) 100%)',
-        }}
-      />
+      {showLocalBg && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.4) 100%)',
+          }}
+        />
+      )}
 
       {/* ── Background image (uses <Img> to hold render until loaded) ────── */}
       {bg_image && (

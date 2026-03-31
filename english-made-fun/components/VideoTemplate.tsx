@@ -23,6 +23,8 @@ import {
   useDelayRender,
   continueRender,
   cancelRender,
+  spring,
+  interpolate,
 } from 'remotion';
 import { Audio } from '@remotion/media';
 import type { Caption } from '@remotion/captions';
@@ -287,17 +289,133 @@ interface FramedScene {
   scene: SceneData;
   from: number;
   durationInFrames: number;
+  previousPose: string;
 }
 
 function buildFramedScenes(scenes: SceneData[], fps: number): FramedScene[] {
   let acc = 0;
+  let lastPose = 'standing';
   return scenes.map((scene) => {
     const dur = Math.max(1, Math.round(scene.duration * fps));
-    const entry: FramedScene = { scene, from: acc, durationInFrames: dur };
+    const entry: FramedScene = { scene, from: acc, durationInFrames: dur, previousPose: lastPose };
+    if (scene.visual.stickman_action) lastPose = scene.visual.stickman_action;
     acc += dur;
     return entry;
   });
 }
+
+// ─── Quiz Countdown Overlay ──────────────────────────────────────────────────
+// Renders a 3 → 2 → 1 countdown with spring-animated scale.
+// Duration is always 1.5 seconds (90 frames @ 60fps).
+
+const QuizCountdown: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const totalFrames = Math.round(1.5 * fps);       // 90 frames
+  const perNumber = Math.floor(totalFrames / 3);    // 30 frames each
+  const numbers = [3, 2, 1];
+  const idx = Math.min(Math.floor(frame / perNumber), 2);
+  const localFrame = frame - idx * perNumber;
+
+  const s = spring({
+    frame: localFrame,
+    fps,
+    config: { damping: 10, stiffness: 200, mass: 0.7 },
+    durationInFrames: perNumber,
+  });
+  const scale = interpolate(s, [0, 1], [2.5, 1]);
+  const opacity = interpolate(
+    localFrame,
+    [0, 4, perNumber - 4, perNumber],
+    [0, 1, 1, 0],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+  );
+
+  // Pulsing ring behind the number
+  const ringScale = interpolate(s, [0, 1], [0.4, 1.2]);
+  const ringOpacity = interpolate(s, [0, 1], [0.6, 0]);
+
+  return (
+    <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', zIndex: 50 }}>
+      {/* Glow ring */}
+      <div
+        style={{
+          position: 'absolute',
+          width: 260,
+          height: 260,
+          borderRadius: '50%',
+          border: '4px solid #FFD700',
+          transform: `scale(${ringScale})`,
+          opacity: ringOpacity,
+        }}
+      />
+      {/* Number */}
+      <div
+        style={{
+          fontSize: 200,
+          fontWeight: 900,
+          color: '#FFD700',
+          fontFamily: 'sans-serif',
+          transform: `scale(${scale})`,
+          opacity,
+          textShadow: '0 0 40px rgba(255,215,0,0.6), 0 4px 20px rgba(0,0,0,0.8)',
+          lineHeight: 1,
+        }}
+      >
+        {numbers[idx]}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// ─── Global Animated Background ──────────────────────────────────────────────
+// Provides a continuous gradient pan across the entire composition so that
+// the video never feels like a static PowerPoint slide.
+
+const GlobalBackground: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps, durationInFrames } = useVideoConfig();
+
+  // Slow-moving radial gradient center
+  const cx = interpolate(frame, [0, durationInFrames], [35, 65], { extrapolateRight: 'clamp' });
+  const cy = interpolate(frame, [0, durationInFrames], [40, 60], { extrapolateRight: 'clamp' });
+
+  // Subtle hue / warmth shift over the full video duration
+  // Start: cool dark blue → Mid: slightly warmer → End: hint of indigo
+  const progress = frame / durationInFrames;
+  const r = Math.round(interpolate(progress, [0, 0.22, 0.5, 1], [10, 12, 18, 14]));
+  const g = Math.round(interpolate(progress, [0, 0.22, 0.5, 1], [16, 20, 30, 22]));
+  const b = Math.round(interpolate(progress, [0, 0.22, 0.5, 1], [38, 42, 52, 46]));
+  const bgMain = `rgb(${r},${g},${b})`;
+  const bgDark = `rgb(${Math.max(0, r - 6)},${Math.max(0, g - 8)},${Math.max(0, b - 12)})`;
+
+  // Gentle breathing vignette
+  const vignetteOpacity = interpolate(
+    Math.sin((frame / fps) * Math.PI * 0.25),
+    [-1, 1],
+    [0.3, 0.5]
+  );
+
+  return (
+    <>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(ellipse at ${cx}% ${cy}%, ${bgMain} 0%, ${bgDark} 100%)`,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,${vignetteOpacity}) 100%)`,
+        }}
+      />
+    </>
+  );
+};
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
@@ -319,12 +437,15 @@ export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: '#000000' }}>
 
+      {/* ── GLOBAL ANIMATED BACKGROUND ───────────────────────────────────── */}
+      {/* Continuous gradient pan across the whole composition; individual    */}
+      {/* scenes paint over this unless their bg is 'transparent'.           */}
+      <GlobalBackground />
+
       {/* ── VOICE AUDIO ──────────────────────────────────────────────────── */}
-      {/* Starts at frame 0, plays the full voice track for the composition */}
       <Audio src={voiceSrc} volume={1} />
 
       {/* ── SFX AUDIO CUES ───────────────────────────────────────────────── */}
-      {/* Each SFX is wrapped in a Sequence so it starts at the right frame  */}
       {sfxCues.map((cue, i) => (
         <Sequence
           key={`sfx-${i}`}
@@ -342,22 +463,36 @@ export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
       {/* ── SCENE SEQUENCES ──────────────────────────────────────────────── */}
       {/* Each scene gets its own Sequence — useCurrentFrame() resets to 0   */}
       {/* inside each Sequence, so entrance springs restart per scene.        */}
-      {framedScenes.map(({ scene, from, durationInFrames }) => (
+      {framedScenes.map(({ scene, from, durationInFrames, previousPose }) => (
         <Sequence
           key={scene.id}
           from={from}
           durationInFrames={durationInFrames}
-          premountFor={fps} // preload 1 second ahead for smooth transitions
+          premountFor={fps}
         >
-          <Scene scene={scene} />
+          <Scene scene={scene} previousPose={previousPose} />
         </Sequence>
       ))}
 
+      {/* ── QUIZ COUNTDOWN OVERLAYS ──────────────────────────────────────── */}
+      {/* Rendered ABOVE scene sequences so the timer is always visible.     */}
+      {framedScenes
+        .filter(({ scene }) => scene.visual.quizCountdown != null)
+        .map(({ scene, from }) => {
+          const countdownStart = from + Math.round((scene.visual.quizCountdown ?? 0) * fps);
+          const countdownDuration = Math.round(1.5 * fps);
+          return (
+            <Sequence
+              key={`countdown-${scene.id}`}
+              from={countdownStart}
+              durationInFrames={countdownDuration}
+            >
+              <QuizCountdown />
+            </Sequence>
+          );
+        })}
+
       {/* ── CAPTION OVERLAY ──────────────────────────────────────────────── */}
-      {/* Only shown when a timed captions JSON file is provided.            */}
-      {/* Scene components (StickmanScene, TextBurstScene, etc.) render      */}
-      {/* their own text at the TOP — SceneTextOverlay is NOT used as        */}
-      {/* fallback to avoid double-text on every scene.                      */}
       {captions?.file && (
         <CaptionFileOverlay
           captionFile={captions.file}

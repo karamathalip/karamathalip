@@ -58,6 +58,8 @@ const SceneVisualSchema = z.object({
   ruleText: z.string().optional(),
   heroAction: z.string().optional(),
   worldColor: z.string().optional(),
+  // ── quiz countdown ──────────────────────────────────────────────────────────
+  quizCountdown: z.number().optional().describe("Seconds into scene when 3-2-1 countdown starts"),
 });
 
 const SceneDataSchema = z.object({

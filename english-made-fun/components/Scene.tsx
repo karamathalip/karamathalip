@@ -64,6 +64,10 @@ export interface SceneVisual {
   ruleText?: string;
   heroAction?: string;
   worldColor?: string;
+
+  // ── quiz countdown ──────────────────────────────────────────────────────
+  /** Seconds into the scene when the 3-2-1 countdown overlay begins */
+  quizCountdown?: number;
 }
 
 /** One SFX cue attached to a scene */
@@ -90,9 +94,11 @@ export interface SceneData {
 
 export interface SceneProps {
   scene: SceneData;
+  /** Previous scene's stickman pose for entrance transitions */
+  previousPose?: string;
 }
 
-export const Scene: React.FC<SceneProps> = ({ scene }) => {
+export const Scene: React.FC<SceneProps> = ({ scene, previousPose }) => {
   const { visual } = scene;
 
   switch (visual.template) {
@@ -156,6 +162,7 @@ export const Scene: React.FC<SceneProps> = ({ scene }) => {
             bg_image: visual.bg_image,
             effect: visual.effect,
           }}
+          previousPose={previousPose}
         />
       );
   }

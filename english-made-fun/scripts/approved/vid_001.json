@@ -160,7 +160,8 @@
         "backgroundColor": "#0d1b2a",
         "textColor": "#ffffff",
         "emphasis": "highlight",
-        "keywords": ["GONE", "WENT"]
+        "keywords": ["GONE", "WENT"],
+        "quizCountdown": 4.0
       },
       "sfx_prompts": ["whoosh_slide", "correct_ping"],
       "sfx": [

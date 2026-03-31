@@ -227,6 +227,9 @@ function buildInputProps(scriptData) {
       ruleText:   rawVisual.ruleText,
       heroAction: rawVisual.heroAction,
       worldColor: rawVisual.worldColor,
+
+      // ── quiz countdown ─────────────────────────────────────────────────
+      quizCountdown: rawVisual.quizCountdown,
     };
 
     // Strip undefined fields so Remotion's schema validation stays clean

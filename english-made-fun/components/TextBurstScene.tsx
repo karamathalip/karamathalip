@@ -218,13 +218,8 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
   // ── Combined transform for the whole block ────────────────────────────────
   const combinedScale = entranceScale * zoomScale;
 
-  // ── Exit fade: smooth fade out in the last 24 frames ──────────────────────
-  const exitOpacity = interpolate(
-    frame,
-    [duration - 24, duration],
-    [1, 0],
-    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
-  );
+  // ── No exit fade — hard cut for seamless platform looping ──────────────────
+  const exitOpacity = 1;
 
   // ── Highlight mode: pulsing underline bar ─────────────────────────────────
   const highlightBarOpacity = emphasis === 'highlight'
