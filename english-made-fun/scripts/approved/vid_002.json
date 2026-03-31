@@ -1,0 +1,376 @@
+{
+  "video_id": "vid_002",
+  "video_title": "BREAK has 4 meanings — you only know ONE",
+  "format": "word_explosion_visual_build",
+  "topic": "The word BREAK — 4 completely different meanings",
+  "hook": "You use this word every day and you only know ONE of its meanings.",
+  "total_duration_seconds": 48,
+  "viral_score": 85,
+  "status": "approved",
+  "voice_file": "audio/voices/vid_002_voice_full.mp3",
+  "background_music": {
+    "file": "audio/sfx/ambient_study_lofi.mp3",
+    "volume": 0.05
+  },
+  "scenes": [
+    {
+      "scene_id": "hook",
+      "id": "hook",
+      "start": 0,
+      "duration": 3,
+      "type": "hook",
+      "text": "BREAK has 4 meanings. You know 1.",
+      "voice_line": "You use the word <emphasis level=\"strong\">BREAK</emphasis> every single day. <break time=\"0.3s\"/> You only know <emphasis level=\"strong\">one</emphasis> of its four meanings.",
+      "tone": "energetic",
+      "speed": 1.1,
+      "silence_after": 0.2,
+      "stickman_action": "hold_up_four_fingers",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "text_burst",
+        "text": "BREAK has 4 meanings.",
+        "backgroundColor": "#0d0d1a",
+        "textColor": "#00d4ff",
+        "emphasis": "neon_flicker",
+        "keywords": ["BREAK", "4"]
+      },
+      "sfx_prompts": ["whoosh_slide", "explode_pop"],
+      "sfx": [
+        {
+          "file": "audio/sfx/whoosh_slide.mp3",
+          "startTime": 0.1,
+          "volume": 0.5
+        }
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_002_scene01_voice.wav"
+    },
+    {
+      "scene_id": "meaning_1",
+      "id": "meaning_1",
+      "start": 3,
+      "duration": 6,
+      "type": "example",
+      "text": "1. BREAK = to damage or shatter",
+      "voice_line": "<break time=\"0.3s\"/> Meaning one: <break time=\"0.2s\"/> to damage or shatter something. I broke the cup. She broke her arm. <break time=\"0.2s\"/> This is the one everyone knows.",
+      "tone": "calm",
+      "speed": 1.0,
+      "silence_after": 0.3,
+      "stickman_action": "smash_object",
+      "stickman_emotion": "focused",
+      "visual": {
+        "template": "dialogue",
+        "text": "1. BREAK = DAMAGE",
+        "backgroundColor": "#0d0d1a",
+        "textColor": "#ffffff",
+        "meaning_number": "1",
+        "meaning_label": "DAMAGE",
+        "meaning_color": "#ff2d78",
+        "example": "I broke the cup.",
+        "emphasis": "neon_pulse",
+        "keywords": ["DAMAGE", "broke"]
+      },
+      "sfx_prompts": ["shatter_pop"],
+      "sfx": [
+        {
+          "file": "audio/sfx/shatter_pop.mp3",
+          "startTime": 1.0,
+          "volume": 0.5
+        }
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_002_scene02_voice.wav"
+    },
+    {
+      "scene_id": "meaning_2",
+      "id": "meaning_2",
+      "start": 9,
+      "duration": 6,
+      "type": "example",
+      "text": "2. BREAK = a pause or rest",
+      "voice_line": "<break time=\"0.3s\"/> Meaning two: <break time=\"0.2s\"/> a pause or rest. Lunch break. Coffee break. Take a break. <break time=\"0.2s\"/> You hear this in every office every single day.",
+      "tone": "warm",
+      "speed": 1.0,
+      "silence_after": 0.3,
+      "stickman_action": "sit_and_relax",
+      "stickman_emotion": "peaceful",
+      "visual": {
+        "template": "dialogue",
+        "text": "2. BREAK = REST",
+        "backgroundColor": "#0d0d1a",
+        "textColor": "#ffffff",
+        "meaning_number": "2",
+        "meaning_label": "REST",
+        "meaning_color": "#ffe600",
+        "example": "I need a break.",
+        "emphasis": "neon_pulse",
+        "keywords": ["REST", "break"]
+      },
+      "sfx_prompts": ["sparkle_pop"],
+      "sfx": [
+        {
+          "file": "audio/sfx/sparkle_pop.mp3",
+          "startTime": 1.0,
+          "volume": 0.4
+        }
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_002_scene03_voice.wav"
+    },
+    {
+      "scene_id": "meaning_3",
+      "id": "meaning_3",
+      "start": 15,
+      "duration": 7,
+      "type": "example",
+      "text": "3. BREAK = to violate a rule or law",
+      "voice_line": "<break time=\"0.3s\"/> Meaning three: <break time=\"0.2s\"/> to violate a rule. Break the law. Break the rules. Break a promise. <break time=\"0.2s\"/> Completely different from smashing things.",
+      "tone": "serious",
+      "speed": 0.95,
+      "silence_after": 0.3,
+      "stickman_action": "cross_arms_stern",
+      "stickman_emotion": "serious",
+      "visual": {
+        "template": "dialogue",
+        "text": "3. BREAK = VIOLATE",
+        "backgroundColor": "#0d0d1a",
+        "textColor": "#ffffff",
+        "meaning_number": "3",
+        "meaning_label": "VIOLATE",
+        "meaning_color": "#ff6b35",
+        "example": "Do not break the rules.",
+        "emphasis": "neon_pulse",
+        "keywords": ["VIOLATE", "rules"]
+      },
+      "sfx_prompts": ["whoosh_slide"],
+      "sfx": [
+        {
+          "file": "audio/sfx/whoosh_slide.mp3",
+          "startTime": 0.8,
+          "volume": 0.4
+        }
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_002_scene04_voice.wav"
+    },
+    {
+      "scene_id": "meaning_4",
+      "id": "meaning_4",
+      "start": 22,
+      "duration": 7,
+      "type": "example",
+      "text": "4. BREAK = a lucky opportunity",
+      "voice_line": "<break time=\"0.3s\"/> Meaning four: <break time=\"0.2s\"/> a lucky opportunity. That was her <emphasis level=\"strong\">big break</emphasis>. He got his break when a director noticed him. <break time=\"0.2s\"/> Give me a break — meaning give me a chance. <break time=\"0.2s\"/> Or give me a break meaning <emphasis level=\"strong\">stop it</emphasis>.",
+      "tone": "energetic",
+      "speed": 1.05,
+      "silence_after": 0.25,
+      "stickman_action": "lucky_celebration",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "dialogue",
+        "text": "4. BREAK = OPPORTUNITY",
+        "backgroundColor": "#0d0d1a",
+        "textColor": "#ffffff",
+        "meaning_number": "4",
+        "meaning_label": "OPPORTUNITY",
+        "meaning_color": "#39ff14",
+        "example": "That was her big break.",
+        "emphasis": "neon_pulse",
+        "keywords": ["OPPORTUNITY", "big break"]
+      },
+      "sfx_prompts": ["victory_chime", "sparkle_pop"],
+      "sfx": [
+        {
+          "file": "audio/sfx/victory_chime.mp3",
+          "startTime": 1.5,
+          "volume": 0.5
+        },
+        {
+          "file": "audio/sfx/sparkle_pop.mp3",
+          "startTime": 4.0,
+          "volume": 0.4
+        }
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_002_scene05_voice.wav"
+    },
+    {
+      "scene_id": "explosion_reveal",
+      "id": "explosion_reveal",
+      "start": 29,
+      "duration": 6,
+      "type": "payoff",
+      "text": "One word. Four worlds. 💥",
+      "voice_line": "<break time=\"0.5s\"/> One tiny word. Four completely different worlds. <break time=\"0.2s\"/> Damage. Rest. Violate. <emphasis level=\"strong\">Opportunity</emphasis>. <break time=\"0.2s\"/> You just leveled up your English vocabulary.",
+      "tone": "dramatic",
+      "speed": 1.05,
+      "silence_after": 0.3,
+      "stickman_action": "rocket_launch_pose",
+      "stickman_emotion": "triumphant",
+      "visual": {
+        "template": "superpower",
+        "text": "One word. Four worlds. 💥",
+        "backgroundColor": "#0d0d1a",
+        "textColor": "#ffffff",
+        "explosion_labels": ["DAMAGE", "REST", "VIOLATE", "OPPORTUNITY"],
+        "center_word": "BREAK",
+        "center_color": "#00d4ff",
+        "emphasis": "neon_explosion",
+        "keywords": ["BREAK"],
+        "transition": "neon_explosion_climax"
+      },
+      "sfx_prompts": ["explode_pop", "victory_chime"],
+      "sfx": [
+        {
+          "file": "audio/sfx/explode_pop.mp3",
+          "startTime": 0.3,
+          "volume": 0.6
+        },
+        {
+          "file": "audio/sfx/victory_chime.mp3",
+          "startTime": 2.5,
+          "volume": 0.5
+        }
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_002_scene06_voice.wav"
+    },
+    {
+      "scene_id": "mini_story",
+      "id": "mini_story",
+      "start": 35,
+      "duration": 9,
+      "type": "example",
+      "text": "All 4 in one sentence:",
+      "voice_line": "<break time=\"0.3s\"/> All four in one sentence: <break time=\"0.3s\"/> She got her big <emphasis level=\"strong\">break</emphasis> — opportunity — when she refused to <emphasis level=\"strong\">break</emphasis> — violate — the rules, <break time=\"0.2s\"/> took a coffee <emphasis level=\"strong\">break</emphasis> — rest — <break time=\"0.2s\"/> and never <emphasis level=\"strong\">broke</emphasis> — damaged — under pressure.",
+      "tone": "warm",
+      "speed": 0.95,
+      "silence_after": 0.2,
+      "stickman_action": "storytelling_pose",
+      "stickman_emotion": "happy",
+      "visual": {
+        "template": "text_burst",
+        "text": "She got her big break when she refused to break the rules, took a coffee break, and never broke under pressure.",
+        "backgroundColor": "#0d0d1a",
+        "textColor": "#ffffff",
+        "emphasis": "word_by_word_highlight",
+        "keywords": ["break", "broke"]
+      },
+      "sfx_prompts": ["sparkle_pop"],
+      "sfx": [
+        {
+          "file": "audio/sfx/sparkle_pop.mp3",
+          "startTime": 1.0,
+          "volume": 0.35
+        }
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_002_scene07_voice.wav"
+    },
+    {
+      "scene_id": "loop_back",
+      "id": "loop_back",
+      "start": 44,
+      "duration": 4,
+      "type": "hook",
+      "text": "Four meanings. You only knew one. 🔄",
+      "voice_line": "Four meanings. One word you use every single day. <break time=\"0.2s\"/> And you only knew <emphasis level=\"strong\">one</emphasis>.",
+      "tone": "energetic",
+      "speed": 1.1,
+      "silence_after": 0,
+      "stickman_action": "mind_blown",
+      "stickman_emotion": "shocked",
+      "visual": {
+        "template": "text_burst",
+        "text": "Four meanings. You only knew one. 🔄",
+        "backgroundColor": "#0d0d1a",
+        "textColor": "#00d4ff",
+        "emphasis": "neon_flicker",
+        "keywords": ["four", "one"],
+        "animation": {
+          "in": "neon_flicker",
+          "emphasis": "explosion_burst",
+          "out": "hard_cut"
+        }
+      },
+      "sfx_prompts": ["whoosh_slide"],
+      "sfx": [
+        {
+          "file": "audio/sfx/whoosh_slide.mp3",
+          "startTime": 0.1,
+          "volume": 0.5
+        }
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_002_scene08_voice.wav"
+    }
+  ],
+  "audio": {
+    "voice_profile": "Energetic English Coach",
+    "background_music": true,
+    "sfx_enabled": true,
+    "master_volume": 1,
+    "voice_volume": 0.9,
+    "sfx_volume": 0.6,
+    "music_volume": 0.05,
+    "file_url": "audio/voices/vid_002_voice_full.mp3"
+  },
+  "captions": {
+    "style": {
+      "fontSize": 52,
+      "color": "#ffffff",
+      "backgroundColor": "rgba(0,0,0,0.70)",
+      "position": "bottom",
+      "fontWeight": 800
+    }
+  },
+  "packaging": {
+    "titles": [
+      "BREAK has 4 meanings and you only know 1 🤯",
+      "The word BREAK explained in 45 seconds",
+      "1 word. 4 completely different meanings. #BREAK"
+    ],
+    "description": "The word BREAK means so much more than smashing things. Damage, rest, violate, opportunity — all in one tiny word. Level up your vocabulary right now. #englishvocabulary #learnenglish #shorts",
+    "tags": [
+      "vocabulary",
+      "word meanings",
+      "break meaning",
+      "english words",
+      "ESL vocabulary",
+      "learn english",
+      "advanced english",
+      "word of the day",
+      "word explosion",
+      "shorts"
+    ],
+    "thumbnail_prompt": "Dark neon background. Giant glowing word BREAK in electric blue at center surrounded by explosion. Four neon labels radiate outward: DAMAGE in red, REST in yellow, VIOLATE in orange, OPPORTUNITY in green. Bold text top: '1 WORD. 4 MEANINGS.' Neon glow, high contrast."
+  },
+  "viral_triggers": [
+    "curiosity_gap_hook",
+    "knowledge_gap_revelation",
+    "escalating_value_meanings",
+    "mini_story_all_meanings",
+    "vocabulary_level_up",
+    "seamless_loop_ending"
+  ],
+  "viral_prediction": {
+    "score": 85,
+    "decision": "produce",
+    "reasons": [
+      "Curiosity hook with bold claim — you only know ONE — creates instant knowledge gap",
+      "Second-best first: obvious DAMAGE meaning delivered first to establish trust, OPPORTUNITY saved for climax",
+      "Visual state change every meaning with distinct neon colors (pink → yellow → orange → green)",
+      "SSML pacing: strategic breaks before each meaning reveal force active listening",
+      "Mini-story wrapping all 4 meanings is shareable and demonstrates mastery",
+      "Seamless loop: last sentence echoes the hook verbatim, hard_cut creates accidental rewatch"
+    ]
+  }
+}
