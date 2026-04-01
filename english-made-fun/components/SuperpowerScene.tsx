@@ -214,7 +214,8 @@ export const SuperpowerScene: React.FC<SuperpowerSceneProps> = ({
   worldColor = '#7c3aed',
   backgroundColor = '#1a1a2e',
 }) => {
-  const { width, height } = useVideoConfig();
+  const { width, height, durationInFrames } = useVideoConfig();
+  const frame = useCurrentFrame();
 
   // Determine accent color from worldColor (use it directly as accent)
   const accentColor = worldColor;
@@ -227,8 +228,12 @@ export const SuperpowerScene: React.FC<SuperpowerSceneProps> = ({
   const burstCx = stickmanX;
   const burstCy = stickmanY;
 
+  // Ken Burns drift: subtle zoom + pan over scene duration
+  const kbScale = interpolate(frame, [0, durationInFrames], [1.0, 1.03], { extrapolateRight: 'clamp' });
+  const kbTranslateX = interpolate(frame, [0, durationInFrames], [0, -8], { extrapolateRight: 'clamp' });
+
   return (
-    <AbsoluteFill>
+    <AbsoluteFill style={{ transform: `scale(${kbScale}) translateX(${kbTranslateX}px)` }}>
 
       {/* ── World color shift (grey → color) ──────────────────────────────── */}
       <WorldColorShift worldColor={worldColor} backgroundColor={backgroundColor} />

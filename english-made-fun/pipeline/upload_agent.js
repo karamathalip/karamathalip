@@ -46,8 +46,16 @@ const YOUTUBE_CATEGORY_EDUCATION = '27';
 const PLAYLIST_TITLE             = 'English Shorts';
 const UPLOAD_GAP_HOURS           = 4;    // stagger uploads N hours apart
 const MAX_TAGS                   = 500;  // YouTube tag character limit (total)
-const MAX_TITLE_LENGTH           = 100;
+const MAX_TITLE_LENGTH           = 50;   // Shorts titles are truncated aggressively — keep under 50
 const MAX_DESCRIPTION_LENGTH     = 5000;
+
+// ─── Peak-Time Upload Scheduling ──────────────────────────────────────────────
+// Optimal upload windows based on global English-learner audience.
+// These hours (UTC) correspond to peak engagement windows:
+//   12:00 UTC = 7 AM EST / 8 PM SGT
+//   17:00 UTC = 12 PM EST / 1 AM SGT+1
+//   21:00 UTC = 4 PM EST / 5 AM SGT+1
+const PEAK_HOURS_UTC = [12, 17, 21];
 
 const PROJECT_ROOT  = path.join(__dirname, '..');
 const FINAL_DIR     = path.join(PROJECT_ROOT, 'output', 'final');
@@ -176,19 +184,35 @@ async function nextScheduledSlot() {
 
   const now = new Date();
 
-  if (scheduled.length === 0) {
-    // First upload: schedule 1 hour from now
-    return new Date(now.getTime() + 60 * 60 * 1000);
+  // Find the next peak hour slot (UTC) that is at least 1 hour in the future
+  // and not already taken by a scheduled upload.
+  const scheduledHours = new Set(
+    scheduled.map(d => `${d.toISOString().slice(0, 10)}_${d.getUTCHours()}`)
+  );
+
+  for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
+    for (const peakHour of PEAK_HOURS_UTC) {
+      const candidate = new Date(now);
+      candidate.setUTCDate(candidate.getUTCDate() + dayOffset);
+      candidate.setUTCHours(peakHour, 0, 0, 0);
+
+      // Must be at least 1 hour in the future
+      if (candidate <= new Date(now.getTime() + 60 * 60 * 1000)) continue;
+
+      const slotKey = `${candidate.toISOString().slice(0, 10)}_${candidate.getUTCHours()}`;
+      if (!scheduledHours.has(slotKey)) {
+        return candidate;
+      }
+    }
   }
 
-  // Find the latest scheduled time; next slot is GAP hours after it
-  const latest = scheduled[scheduled.length - 1];
-  const candidate = new Date(latest.getTime() + UPLOAD_GAP_HOURS * 60 * 60 * 1000);
+  // Fallback: 4 hours after the latest scheduled upload
+  if (scheduled.length > 0) {
+    const latest = scheduled[scheduled.length - 1];
+    return new Date(latest.getTime() + UPLOAD_GAP_HOURS * 60 * 60 * 1000);
+  }
 
-  // Must be at least 5 minutes in the future
-  return candidate > new Date(now.getTime() + 5 * 60 * 1000)
-    ? candidate
-    : new Date(now.getTime() + UPLOAD_GAP_HOURS * 60 * 60 * 1000);
+  return new Date(now.getTime() + 60 * 60 * 1000);
 }
 
 // ─── Metadata Builder ─────────────────────────────────────────────────────────
@@ -199,48 +223,60 @@ async function nextScheduledSlot() {
  * @param {object} scriptData
  * @returns {{ title: string, description: string, tags: string[] }}
  */
-function buildVideoMetadata(scriptData) {
+/**
+ * Build YouTube video metadata with title rotation, optimized description,
+ * and topic-specific tags for maximum discoverability.
+ *
+ * @param {object} scriptData
+ * @param {number} [batchPosition=0]  Index within batch — rotates through titles
+ * @returns {{ title: string, description: string, tags: string[] }}
+ */
+function buildVideoMetadata(scriptData, batchPosition = 0) {
   const pkg         = scriptData.packaging  ?? {};
   const viralTrigs  = scriptData.viral_triggers ?? [];
 
-  // Title: first packaging title (script_agent generates 3 options)
-  const rawTitle = Array.isArray(pkg.titles) && pkg.titles.length > 0
-    ? pkg.titles[0]
+  // Title: rotate through 3 packaging titles for implicit A/B testing
+  const titles = Array.isArray(pkg.titles) ? pkg.titles.filter(Boolean) : [];
+  const titleIndex = titles.length > 0 ? (batchPosition % titles.length) : 0;
+  const rawTitle = titles.length > 0
+    ? titles[titleIndex]
     : (scriptData.video_title ?? scriptData.title ?? 'English Made Fun');
   const title = truncate(rawTitle, MAX_TITLE_LENGTH);
 
-  // Description: structured from script fields
-  const hook      = scriptData.hook?.selected ?? '';
-  const format    = scriptData.format ?? '';
-  const thumbText = pkg.thumbnail?.text ?? '';
-  const altTitles = Array.isArray(pkg.titles) && pkg.titles.length > 1
-    ? pkg.titles.slice(1).join('\n')
-    : '';
-
+  // Description: optimized for Shorts (only first 2 lines visible before expand)
+  const hook = scriptData.hook?.selected ?? '';
   const descParts = [
-    hook                            ? `${hook}\n`                        : '',
-    thumbText                       ? `${thumbText}\n`                   : '',
-    '---\n',
-    '🎓 English Made Fun — learn English in 60 seconds!\n',
-    format                          ? `Format: ${format}\n`             : '',
-    altTitles                       ? `\n${altTitles}\n`                : '',
-    '\n#EnglishLearning #LearnEnglish #EnglishShorts #ESL #Grammar',
+    hook ? `${hook}` : '',                                         // Line 1: Hook (visible in feed)
+    '💬 Comment your answer below!',                               // Line 2: CTA (visible before expand)
+    '',
+    '📚 English Made Fun — learn English in 60 seconds!',
+    '🔔 New shorts every day',
+    '',
+    '#Shorts #EnglishLearning #Grammar',                           // 3 hashtags max (YouTube best practice)
   ];
-  const description = truncate(descParts.join('').trim(), MAX_DESCRIPTION_LENGTH);
+  const description = truncate(descParts.join('\n').trim(), MAX_DESCRIPTION_LENGTH);
 
-  // Tags: viral_triggers + standard tags; trim to YouTube's 500-char total limit
+  // Tags: topic-specific keywords FIRST, then viral triggers, then standard tags
+  // Extract topic keywords from scenes
+  const topicTags = (scriptData.scenes ?? [])
+    .flatMap(s => s.visual?.elements?.keywords ?? [])
+    .map(k => k.toLowerCase())
+    .filter((v, i, a) => a.indexOf(v) === i);
+
   const standardTags = [
     'English learning', 'learn English', 'English grammar',
     'ESL', 'English for beginners', 'English shorts',
     'English tips', 'speak English', 'English lesson',
   ];
-  const allTags = [...viralTrigs, ...standardTags];
+  const allTags = [...topicTags, ...viralTrigs, ...standardTags];
   const tags    = [];
   let   charCount = 0;
   for (const tag of allTags) {
     if (charCount + tag.length + 1 > MAX_TAGS) break;
-    tags.push(tag);
-    charCount += tag.length + 1;
+    if (!tags.includes(tag)) {
+      tags.push(tag);
+      charCount += tag.length + 1;
+    }
   }
 
   return { title, description, tags };
@@ -317,10 +353,13 @@ async function addToPlaylist(yt, playlistId, youtubeVideoId) {
  * @param {string} videoId           - Our internal video_id (used to find thumb file)
  */
 async function uploadThumbnail(yt, youtubeVideoId, videoId) {
-  const thumbPath = path.join(THUMBS_DIR, `${videoId}_thumb.png`);
+  // Prefer composited thumbnail (with text overlay), fall back to raw
+  const finalThumbPath = path.join(THUMBS_DIR, `${videoId}_thumb_final.png`);
+  const rawThumbPath   = path.join(THUMBS_DIR, `${videoId}_thumb.png`);
+  const thumbPath = (await fs.pathExists(finalThumbPath)) ? finalThumbPath : rawThumbPath;
 
   if (!(await fs.pathExists(thumbPath))) {
-    console.log(`    ⚠  No thumbnail found at: ${thumbPath} — skipping.`);
+    console.log(`    ⚠  No thumbnail found for ${videoId} — skipping.`);
     return;
   }
 
@@ -350,8 +389,8 @@ async function uploadThumbnail(yt, youtubeVideoId, videoId) {
  * @returns {Promise<{ youtubeId: string, url: string }>}
  */
 async function uploadVideo(opts) {
-  const { videoId, finalPath, scriptData, yt, playlistId, scheduledAt } = opts;
-  const { title, description, tags } = buildVideoMetadata(scriptData);
+  const { videoId, finalPath, scriptData, yt, playlistId, scheduledAt, batchPosition = 0 } = opts;
+  const { title, description, tags } = buildVideoMetadata(scriptData, batchPosition);
 
   console.log(`    → Uploading: "${title}"`);
   console.log(`      File: ${path.basename(finalPath)}`);
@@ -475,14 +514,14 @@ async function runUploadBatch() {
 
     try {
       const { youtubeId, url } = await uploadVideo({
-        videoId, finalPath, scriptData, yt, playlistId, scheduledAt,
+        videoId, finalPath, scriptData, yt, playlistId, scheduledAt, batchPosition: i,
       });
 
       const entry = {
         video_id:     videoId,
         youtube_id:   youtubeId,
         url,
-        title:        buildVideoMetadata(scriptData).title,
+        title:        buildVideoMetadata(scriptData, i).title,
         scheduled_at: scheduledAt.toISOString(),
         uploaded_at:  new Date().toISOString(),
         status:       'uploaded',

@@ -50,9 +50,11 @@ const APPROVED_DIR = path.join(SCRIPTS_DIR, 'approved');
 // Embedded verbatim as specified. Do not modify the schema inside.
 
 const SCORING_SYSTEM_PROMPT =
-  'You are a Viral Prediction Agent. Score this video script on viral potential. ' +
-  'Analyse: hook strength (30%), retention structure (25%), emotional impact (15%), ' +
-  'clarity (10%), shareability (10%), novelty (10%). ' +
+  'You are a Viral Prediction Agent and YouTube Shorts algorithm expert. ' +
+  'Score this video script on viral potential using these weighted criteria: ' +
+  'hook strength (25%), first-frame visual stop power (10%), retention structure (20%), ' +
+  'emotional impact (10%), clarity (10%), shareability (10%), novelty (5%), ' +
+  'comment trigger strength (5%), rewatch probability (5%). ' +
   'Decision rules: score ≥ 80 → produce, score 60–79 → revise, score < 60 → reject. ' +
   'Output ONLY valid JSON:\n' +
   '{\n' +
@@ -60,6 +62,12 @@ const SCORING_SYSTEM_PROMPT =
   '  retention_score: number,\n' +
   '  ctr_score: number,\n' +
   '  engagement_score: number,\n' +
+  '  first_frame_stop_score: number (0-100, will the VISUAL of frame 1 make someone stop scrolling?),\n' +
+  '  predicted_dropoff_second: number (at what second will most viewers leave? if <15, score should be <60),\n' +
+  '  rewatch_probability: number (0-100, does the ending create confusion/curiosity that drives a rewatch?),\n' +
+  '  comment_trigger_score: number (0-100, does the script contain elements that compel comments?),\n' +
+  '  thumbnail_ctr_score: number (0-100, based on packaging.thumbnail, would this stand out in a feed?),\n' +
+  '  retention_curve_prediction: [{second: number, retention: number}] (predict retention at seconds 0,3,10,20,30,45),\n' +
   '  strengths: [string],\n' +
   '  weaknesses: [string],\n' +
   '  improvement_suggestions: [string],\n' +

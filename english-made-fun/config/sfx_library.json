@@ -148,6 +148,41 @@
       "prompt_influence": 0.3,
       "category": "background",
       "scene_types": ["background_music"]
+    },
+    "bass_drop_hook": {
+      "prompt": "deep bass drop hit with sub-bass rumble, cinematic impact, attention-grabbing opener, short and punchy",
+      "duration_seconds": 0.8,
+      "prompt_influence": 0.4,
+      "category": "impact",
+      "scene_types": ["hook", "fail_demo", "explosion_reveal"]
+    },
+    "tension_rise": {
+      "prompt": "rising tension string sound, suspenseful ascending tone, builds anticipation, dramatic",
+      "duration_seconds": 2.0,
+      "prompt_influence": 0.4,
+      "category": "suspense",
+      "scene_types": ["hook", "quiz_countdown", "villain"]
+    },
+    "record_scratch": {
+      "prompt": "vinyl record scratch stopping sound, sudden halt, comedic disruption effect",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.3,
+      "category": "transition",
+      "scene_types": ["hook", "fail_demo", "pattern_interrupt"]
+    },
+    "crowd_gasp": {
+      "prompt": "small crowd gasping in surprise, brief shocked reaction, dramatic reveal moment",
+      "duration_seconds": 1.0,
+      "prompt_influence": 0.3,
+      "category": "reaction",
+      "scene_types": ["hook", "mistake_reveal", "explosion_reveal"]
+    },
+    "level_up_game": {
+      "prompt": "retro 8-bit video game level complete sound, pixel achievement jingle, cheerful chip-tune fanfare",
+      "duration_seconds": 1.2,
+      "prompt_influence": 0.4,
+      "category": "achievement",
+      "scene_types": ["payoff", "cta", "fix_demo", "superpower"]
     }
   }
 }

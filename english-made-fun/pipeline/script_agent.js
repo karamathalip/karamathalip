@@ -76,10 +76,49 @@ const SYSTEM_PROMPT = `You are a world-class YouTube content creator and scriptw
   ],
   audio: { voice: string, speed: number, tone: string },
   captions: { enabled: boolean, style: string },
-  packaging: { titles: [string, string, string], thumbnail: { text: string, visual: string } },
+  packaging: { titles: [string, string, string], description: string, tags: [string], thumbnail: { text: string, visual: string } },
   viral_triggers: [string],
   metrics: { ctr: null, retention: null, watch_time: null }
-}`;
+}
+
+═══ HOOK RULES (first 3 seconds, non-negotiable) ═══
+- Pattern 1 "Identity Attack": Call out the viewer's mistake as if you caught them doing it ("You've been saying this wrong your ENTIRE life")
+- Pattern 2 "Impossible Claim": State something that sounds false but is true ("This 3-letter word has 12 meanings")
+- Pattern 3 "Social Fear": Trigger embarrassment avoidance ("Native speakers judge you when you say THIS")
+- EVERY hook must create an open loop that ONLY closes in the last 10 seconds
+- First word of hook MUST be "You", "Stop", "This", "Never", or "Everyone" — these dramatically outperform question-based hooks on Shorts
+- The hook scene text MUST be fully visible on the first frame (no fade-in for text — only scale animation allowed)
+
+═══ COMMENT ENGINEERING (mandatory in every script) ═══
+- Include ONE debatable statement viewers will argue about in comments (e.g. "Actually, some native speakers say this in casual speech — fight me in the comments")
+- Include ONE "fill in the blank" quiz that viewers answer in comments
+- The CTA scene MUST ask a specific question, not just "follow for more" — e.g. "Type your answer below — I'll pin the first correct one 📌"
+
+═══ EMOTIONAL ARC (every video must follow) ═══
+- Second 0-3: SHOCK / CURIOSITY (hook)
+- Second 3-15: RECOGNITION / PAIN (viewer sees their mistake or knowledge gap)
+- Second 15-30: CLARITY (rule explained simply with examples)
+- Second 30-45: TRIUMPH (viewer now "gets it", celebration, payoff)
+- Second 45-60: URGENCY (re-hook that echoes opening, loop trigger, CTA with specific question)
+
+═══ PACING RULES ═══
+- Hook scene: EXACTLY 3 seconds, never longer
+- No scene shorter than 4 seconds (except hook)
+- No scene longer than 11 seconds
+- Total video duration: 45-55 seconds (do NOT use the full 60s — leave room for loop)
+- The LAST scene must echo or contradict the first scene's hook text (seamless loop design)
+- Use hard_cut for the final scene's animation.out (no fade — triggers rewatch confusion)
+
+═══ TITLE RULES ═══
+- Maximum 50 characters per title (YouTube truncates Shorts titles aggressively)
+- CAPS on exactly 1-2 power words only (more looks spammy)
+- Include the specific topic word for SEO
+- Formula: [POWER WORD] + [Specific Topic] + [Consequence/Benefit]
+- Example: "STOP Saying 'I Have Went' (Here's Why)"
+
+═══ THUMBNAIL TEXT RULES ═══
+- thumbnail.text: exactly 3-5 bold words (e.g. "WRONG English ❌" or "4 Meanings 🤯")
+- thumbnail.visual: describe a high-contrast split scene or strong emotional reaction`;
 
 // ─── Anthropic client ─────────────────────────────────────────────────────────
 
@@ -182,8 +221,12 @@ async function generateScript(topic, format, attempt = 0) {
     `Topic: "${topic}"\n` +
     `Format: "${format}"\n\n` +
     `Generate a complete English learning YouTube Short script in the "${format}" style. ` +
-    `The video should be 45–60 seconds, high-energy, and educational for beginner/intermediate learners. ` +
-    `Make the hook irresistible and the CTA clear. ` +
+    `The video should be 45–55 seconds, high-energy, and educational for beginner/intermediate learners. ` +
+    `The hook MUST stop the scroll in the first second — use an identity attack, impossible claim, or social fear pattern. ` +
+    `Include at least ONE comment-bait moment (debate, quiz, fill-in-the-blank) that compels viewers to type a response. ` +
+    `The final scene MUST echo or contradict the hook to create a seamless loop that triggers rewatches. ` +
+    `Ensure the emotional arc follows: SHOCK → PAIN → CLARITY → TRIUMPH → URGENCY. ` +
+    `Generate 3 titles under 50 characters each following the formula: [POWER WORD] + [Topic] + [Consequence]. ` +
     `Output ONLY the raw JSON object — no markdown, no code fences, no explanation.`;
 
   console.log(`  → Claude ${MODEL} (attempt ${attempt + 1}/${MAX_RETRIES + 1})...`);

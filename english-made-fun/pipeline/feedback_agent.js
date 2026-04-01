@@ -19,8 +19,8 @@
  * ── Metrics fetched per video ─────────────────────────────────────────────────
  *   averageViewPercentage, averageViewDuration, estimatedMinutesWatched,
  *   views, likes, comments, shares
- *   (clickThroughRate is not available in the standard YouTube Analytics API;
- *    it is only in YouTube Studio. We approximate using likes/views ratio.)
+ *   Computed: engagement_rate = (likes+comments+shares)/views * 100
+ *   Computed: velocity_ratio  = views_24h / views_total (when upload time is known)
  *
  * ── CLI usage ─────────────────────────────────────────────────────────────────
  *   node pipeline/feedback_agent.js
@@ -50,7 +50,6 @@ const MAX_RETRIES   = 3;
 const RETRY_BASE_MS = 1500;
 
 // YouTube Analytics metrics to request.
-// Note: CTR is not available via the standard API — approximated from likes/views.
 const YTA_METRICS = [
   'views',
   'averageViewPercentage',
@@ -67,20 +66,26 @@ const ANALYTICS_DAYS = 90;
 // ─── Embedded Analysis Prompt ─────────────────────────────────────────────────
 
 const ANALYSIS_SYSTEM_PROMPT =
-  'You are a Performance Feedback Agent. Analyse this YouTube video performance data ' +
-  'and generate optimisation recommendations for the next batch of videos. ' +
+  'You are a Performance Feedback Agent and YouTube Shorts algorithm expert. ' +
+  'Analyse this YouTube video performance data and generate optimisation recommendations. ' +
   'Identify: winning patterns (what is working), losing patterns (what is hurting), ' +
-  'specific hook improvements, format adjustments, and pacing changes. ' +
+  'specific hook improvements, format adjustments, pacing changes, ' +
+  'and comment engagement strategy. ' +
+  'Pay special attention to engagement_rate (likes+comments+shares/views) as the primary metric, ' +
+  'and velocity_ratio (24h views / total views) to identify algorithmically-boosted content. ' +
   'Output ONLY valid JSON:\n' +
   '{\n' +
   '  winning_patterns: [string],\n' +
   '  losing_patterns: [string],\n' +
   '  hook_feedback: string,\n' +
   '  pacing_recommendations: string,\n' +
-  '  format_ranking: [{format: string, avg_retention: number}],\n' +
+  '  comment_strategy: string (what types of comment triggers are driving engagement),\n' +
+  '  format_ranking: [{format: string, avg_retention: number, avg_engagement_rate: number}],\n' +
   '  updated_script_instructions: string,\n' +
   '  updated_visual_instructions: string,\n' +
-  '  top_performing_video_ids: [string]\n' +
+  '  title_pattern_feedback: string (which title patterns get the most engagement),\n' +
+  '  top_performing_video_ids: [string],\n' +
+  '  fast_viral_patterns: [string] (patterns from videos with velocity_ratio > 0.7)\n' +
   '}';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -161,14 +166,17 @@ async function fetchVideoAnalytics(yta, youtubeId, channelId) {
   const metrics = {};
   headers.forEach((h, i) => { metrics[h] = rows[0][i] ?? null; });
 
-  // Approximate CTR from likes-to-views ratio (real CTR not in standard API)
-  if (metrics.views && metrics.likes) {
-    metrics.clickThroughRate = parseFloat(
-      ((metrics.likes / metrics.views) * 100).toFixed(2)
-    );
-  } else {
-    metrics.clickThroughRate = null;
-  }
+  // Real engagement rate: (likes + comments + shares) / views
+  const v = metrics.views || 0;
+  const l = metrics.likes || 0;
+  const c = metrics.comments || 0;
+  const s = metrics.shares || 0;
+  metrics.engagement_rate = v > 0
+    ? parseFloat((((l + c + s) / v) * 100).toFixed(2))
+    : null;
+
+  // Velocity ratio placeholder — filled in fetchAllAnalytics when 24h data is available
+  metrics.velocity_ratio = null;
 
   return { youtubeId, ...metrics };
 }
@@ -183,6 +191,10 @@ async function fetchAllAnalytics() {
   let uploadLog;
   try { uploadLog = await fs.readJson(UPLOAD_LOG); }
   catch { throw new Error(`Cannot read ${UPLOAD_LOG}. Run upload_agent.js first.`); }
+
+  if (!Array.isArray(uploadLog)) {
+    throw new Error(`${UPLOAD_LOG} is not a valid array. Expected JSON array of upload entries.`);
+  }
 
   const uploaded = uploadLog.filter(e => e.youtube_id && e.status === 'uploaded');
   if (uploaded.length === 0) {
@@ -219,6 +231,7 @@ async function fetchAllAnalytics() {
         `    views=${data.views ?? '—'}  ` +
         `retention=${data.averageViewPercentage ?? '—'}%  ` +
         `watchTime=${data.estimatedMinutesWatched ?? '—'} min  ` +
+        `engagement=${data.engagement_rate ?? '—'}%  ` +
         `likes=${data.likes ?? '—'}`
       );
     } catch (err) {
@@ -232,6 +245,21 @@ async function fetchAllAnalytics() {
     }
     // Respect quota: small pause between API calls
     await sleep(150);
+  }
+
+  // Compute velocity ratio for recently uploaded videos.
+  // For videos < 7 days old, velocity = (views / hours_since_upload) normalized.
+  // For older videos we estimate from the view-to-age curve.
+  for (const rec of allAnalytics) {
+    if (rec.error || !rec.views || !rec.uploaded_at) continue;
+    const uploadedAt = new Date(rec.scheduled_at || rec.uploaded_at);
+    const hoursLive = (Date.now() - uploadedAt.getTime()) / (1000 * 60 * 60);
+    if (hoursLive > 0 && hoursLive <= 168) { // within 7 days
+      // Views-per-hour rate × 24 / total views — higher = front-loaded viral
+      const viewsPerHour = rec.views / hoursLive;
+      const projected24h = Math.min(viewsPerHour * 24, rec.views);
+      rec.velocity_ratio = parseFloat((projected24h / rec.views).toFixed(2));
+    }
   }
 
   await fs.ensureDir(CONFIG_DIR);
@@ -269,7 +297,8 @@ async function analyseWithClaude(analyticsData, attempt = 0) {
     avg_view_pct:           v.averageViewPercentage,
     avg_view_duration_s:    v.averageViewDuration,
     estimated_minutes:      v.estimatedMinutesWatched,
-    ctr_approx:             v.clickThroughRate,
+    engagement_rate:        v.engagement_rate,
+    velocity_ratio:         v.velocity_ratio,
     likes:                  v.likes,
     comments:               v.comments,
     shares:                 v.shares,
@@ -281,7 +310,10 @@ async function analyseWithClaude(analyticsData, attempt = 0) {
     `(last ${ANALYTICS_DAYS} days):\n\n` +
     '```json\n' + JSON.stringify(payload, null, 2) + '\n```\n\n' +
     'Generate detailed optimisation recommendations. Identify the top performers, ' +
-    'rank formats by avg retention, and produce concrete script + visual instructions ' +
+    'rank formats by avg retention AND engagement_rate, ' +
+    'flag videos with velocity_ratio > 0.7 as "fast viral" and extract their patterns, ' +
+    'flag videos with velocity_ratio < 0.3 as "slow burn", ' +
+    'and produce concrete script + visual + comment-strategy instructions ' +
     'for the next batch. Output ONLY the raw JSON object.';
 
   console.log(`  → Sending to Claude ${MODEL} for analysis (attempt ${attempt + 1})...`);

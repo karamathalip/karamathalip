@@ -217,8 +217,12 @@ export const DialogueScene: React.FC<DialogueSceneProps> = ({
   });
   const stickmanX = interpolate(stickmanSpring, [0, 1], [-30, width * 0.2]);
 
+  // Ken Burns drift: subtle zoom + pan over scene duration
+  const kbScale = interpolate(frame, [0, durationInFrames], [1.0, 1.03], { extrapolateRight: 'clamp' });
+  const kbTranslateX = interpolate(frame, [0, durationInFrames], [0, -8], { extrapolateRight: 'clamp' });
+
   return (
-    <AbsoluteFill>
+    <AbsoluteFill style={{ transform: `scale(${kbScale}) translateX(${kbTranslateX}px)` }}>
 
       {/* ── Gradient background ──────────────────────────────────────────── */}
       <div

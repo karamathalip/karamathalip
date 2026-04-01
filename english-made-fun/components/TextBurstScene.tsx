@@ -226,12 +226,17 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
     ? interpolate(Math.abs(Math.sin((frame / fps) * Math.PI * 1.2)), [0, 1], [0.3, 0.7])
     : 0;
 
+  // Ken Burns drift: subtle zoom + pan over scene duration
+  const kbScale = interpolate(frame, [0, duration], [1.0, 1.03], { extrapolateRight: 'clamp' });
+  const kbTranslateX = interpolate(frame, [0, duration], [0, -8], { extrapolateRight: 'clamp' });
+
   return (
     <AbsoluteFill
       style={{
         justifyContent: 'center',
         alignItems: 'center',
         padding: '60px 80px',
+        transform: `scale(${kbScale}) translateX(${kbTranslateX}px)`,
       }}
     >
       {/* Animated gradient background */}

@@ -279,6 +279,30 @@ async function synthesizeVoiceLine(text, speakingRate, pitch, attempt = 0) {
 const DEFAULT_SCENE_GAP_SECONDS = 0.25;
 
 /**
+ * Dynamic scene gap map: scene type → silence duration in seconds.
+ * Strategic pauses create tension and improve perceived quality.
+ * The hook has zero gap (slam into content), payoff has dramatic pause.
+ */
+const SCENE_TYPE_GAP_MAP = {
+  hook:        0,      // No gap — slam into the content immediately
+  explanation: 0.30,   // Brief breath for processing
+  example:     0.20,   // Quick transition
+  payoff:      0.80,   // DRAMATIC PAUSE before the reveal
+  CTA:         0.40,   // Slight gap for tone shift
+};
+
+/**
+ * Get the appropriate silence gap for a scene based on its type.
+ * Priority: scene.silence_after (explicit) > SCENE_TYPE_GAP_MAP > DEFAULT_SCENE_GAP_SECONDS
+ */
+function getSceneGap(scene) {
+  if (typeof scene.silence_after === 'number') return scene.silence_after;
+  const sceneType = (scene.type ?? '').toLowerCase();
+  if (SCENE_TYPE_GAP_MAP[sceneType] !== undefined) return SCENE_TYPE_GAP_MAP[sceneType];
+  return DEFAULT_SCENE_GAP_SECONDS;
+}
+
+/**
  * Concatenate multiple audio files into one output file using FFmpeg's
  * concat demuxer. Inserts configurable silence gaps between clips for
  * natural breathing room. Input files can be WAV or MP3; output is always MP3
@@ -498,13 +522,64 @@ async function processScript(scriptData, scriptPath) {
     console.log(`    ✓ Full track already exists — reusing: ${fullTrackName}`);
   } else {
     console.log(`    ↳ Stitching ${sceneFilePaths.length} files into full track...`);
-    // Collect per-scene silence gaps from scene.silence_after (seconds),
-    // falling back to DEFAULT_SCENE_GAP_SECONDS if not specified.
+    // Collect per-scene silence gaps using dynamic scene type map,
+    // falling back to scene.silence_after or DEFAULT_SCENE_GAP_SECONDS.
     const gapSeconds = scenes
       .filter(s => (s.voice_line ?? s.text ?? '').trim())
-      .map(s => typeof s.silence_after === 'number' ? s.silence_after : DEFAULT_SCENE_GAP_SECONDS);
+      .map(s => getSceneGap(s));
     await concatenateAudioFiles(sceneFilePaths, fullTrackPath, gapSeconds);
     console.log(`    ✓ Full track: ${fullTrackName}`);
+  }
+
+  // ── Build combined word-level timestamps for TikTok-style captions ─────
+  // Merges per-scene timestamp files into one unified timeline with absolute
+  // offsets, accounting for scene gaps. This file is consumed by VideoTemplate
+  // for word-by-word caption highlighting.
+  const combinedTimestampsPath = path.join(VOICES_DIR, `${videoId}_captions.json`);
+  const relCaptionsPath = path.relative(path.join(__dirname, '..'), combinedTimestampsPath).replace(/\\/g, '/');
+
+  if (sceneFilePaths.length > 0 && !(await fs.pathExists(combinedTimestampsPath))) {
+    try {
+      const combinedCaptions = [];
+      let accOffsetMs = 0;
+
+      const scenesWithVoice = scenes.filter(s => (s.voice_line ?? s.text ?? '').trim());
+      for (let i = 0; i < scenesWithVoice.length; i++) {
+        const scene = scenesWithVoice[i];
+        const paddedIndex = String(scenes.indexOf(scene) + 1).padStart(2, '0');
+        const tsPath = path.join(VOICES_DIR, `${videoId}_scene${paddedIndex}_timestamps.json`);
+
+        if (await fs.pathExists(tsPath)) {
+          const sceneTimestamps = await fs.readJson(tsPath);
+          for (const wp of sceneTimestamps) {
+            const startMs = parseFloat(String(wp.startTime).replace('s', '')) * 1000 + accOffsetMs;
+            const endMs   = parseFloat(String(wp.endTime).replace('s', '')) * 1000 + accOffsetMs;
+            combinedCaptions.push({
+              text: wp.word + ' ',
+              startMs: Math.round(startMs),
+              endMs: Math.round(endMs),
+              timestampMs: Math.round(startMs),
+              confidence: 1,
+            });
+          }
+          // Get the last word's end time for this scene
+          if (sceneTimestamps.length > 0) {
+            const lastEnd = parseFloat(String(sceneTimestamps[sceneTimestamps.length - 1].endTime).replace('s', '')) * 1000;
+            accOffsetMs += lastEnd;
+          }
+        }
+        // Add gap duration for this scene
+        const gap = getSceneGap(scene);
+        accOffsetMs += gap * 1000;
+      }
+
+      if (combinedCaptions.length > 0) {
+        await fs.writeJson(combinedTimestampsPath, combinedCaptions, { spaces: 2 });
+        console.log(`    ✓ Combined captions: ${path.basename(combinedTimestampsPath)} (${combinedCaptions.length} words)`);
+      }
+    } catch (err) {
+      console.warn(`    ⚠  Could not build combined captions: ${err.message}`);
+    }
   }
 
   // ── Update script JSON with audio paths ──────────────────────────────────
@@ -520,6 +595,7 @@ async function processScript(scriptData, scriptPath) {
         pitch_semitones: globalPitch,
         per_scene_tone:  true,
         scene_gap_seconds: DEFAULT_SCENE_GAP_SECONDS,
+        dynamic_gaps:    true,
         encoding:        AUDIO_ENCODING,
         sample_rate:     SAMPLE_RATE_HZ,
         generated_at:    new Date().toISOString(),
@@ -527,6 +603,8 @@ async function processScript(scriptData, scriptPath) {
     },
     // Update the top-level voice_file field used by VideoTemplate
     voice_file: relFullTrack,
+    // Word-level captions file for TikTok-style highlighting
+    captions_file: relCaptionsPath,
   };
 
   await fs.writeJson(scriptPath, updatedScript, { spaces: 2 });

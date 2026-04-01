@@ -52,6 +52,11 @@ export interface VideoData {
    */
   voice_file: string;
   scenes: SceneData[];
+  /**
+   * Optional path to combined word-level captions JSON produced by voice_agent.
+   * e.g. "scripts/vid_001_captions.json"
+   */
+  captions_file?: string;
   captions?: {
     /**
      * Optional: path to a captions JSON file (array of Caption objects)
@@ -417,17 +422,109 @@ const GlobalBackground: React.FC = () => {
   );
 };
 
+// ─── Progress Bar ─────────────────────────────────────────────────────────────
+// Thin bar at the very bottom showing how far through the video we are.
+
+const ProgressBar: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const pct = (frame / durationInFrames) * 100;
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 4,
+        zIndex: 90,
+        backgroundColor: 'rgba(255,255,255,0.15)',
+      }}
+    >
+      <div
+        style={{
+          width: `${pct}%`,
+          height: '100%',
+          backgroundColor: '#FFD700',
+          borderRadius: '0 2px 2px 0',
+        }}
+      />
+    </div>
+  );
+};
+
+// ─── Pattern Interrupt ─────────────────────────────────────────────────────────
+// Quick flash + scale pulse at a specific frame to re-grab wandering attention.
+// Rendered inside a short Sequence (~12 frames / 0.2s).
+
+const PatternInterrupt: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const totalFrames = Math.round(0.2 * fps); // 12 frames at 60fps
+  const progress = frame / totalFrames;
+
+  const flashOpacity = interpolate(progress, [0, 0.3, 1], [0.6, 0.15, 0], {
+    extrapolateRight: 'clamp',
+  });
+  const scale = interpolate(progress, [0, 0.3, 1], [1.04, 1.01, 1], {
+    extrapolateRight: 'clamp',
+  });
+
+  return (
+    <AbsoluteFill style={{ zIndex: 80 }}>
+      {/* Brief white flash */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundColor: `rgba(255,255,255,${flashOpacity})`,
+          transform: `scale(${scale})`,
+        }}
+      />
+    </AbsoluteFill>
+  );
+};
+
+// ─── Scene Transition Wrapper ─────────────────────────────────────────────────
+// Adds a quick 3-frame fade-in at the start and fade-out at the end of each scene.
+
+const SceneTransition: React.FC<{
+  children: React.ReactNode;
+  durationInFrames: number;
+}> = ({ children, durationInFrames }) => {
+  const frame = useCurrentFrame();
+  const FADE_FRAMES = 3;
+
+  const opacity = interpolate(
+    frame,
+    [0, FADE_FRAMES, durationInFrames - FADE_FRAMES, durationInFrames],
+    [0, 1, 1, 0],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+  );
+
+  return <div style={{ opacity, width: '100%', height: '100%' }}>{children}</div>;
+};
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
-  const { fps } = useVideoConfig();
+  const { fps, durationInFrames } = useVideoConfig();
 
-  const { voice_file, scenes, captions } = jsonData;
+  const { voice_file, scenes, captions, captions_file } = jsonData;
   const captionStyle = mergeCaptionStyle(captions?.style);
+
+  // Resolve caption file: prefer top-level captions_file (from voice_agent),
+  // then fall back to captions.file (legacy)
+  const resolvedCaptionFile = captions_file || captions?.file || null;
 
   // Pre-compute scene frame ranges and SFX cues (pure derivations — stable per render)
   const framedScenes = buildFramedScenes(scenes, fps);
   const sfxCues = buildSfxCues(scenes, fps);
+
+  // Pattern interrupt at ~18s mark (re-grab attention before typical drop-off)
+  const interruptFrame = Math.round(18 * fps);
+  const interruptDuration = Math.round(0.2 * fps);
 
   // Voice src: use staticFile() for relative paths, pass through for URLs
   const voiceSrc = voice_file.startsWith('http')
@@ -438,8 +535,6 @@ export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
     <AbsoluteFill style={{ backgroundColor: '#000000' }}>
 
       {/* ── GLOBAL ANIMATED BACKGROUND ───────────────────────────────────── */}
-      {/* Continuous gradient pan across the whole composition; individual    */}
-      {/* scenes paint over this unless their bg is 'transparent'.           */}
       <GlobalBackground />
 
       {/* ── VOICE AUDIO ──────────────────────────────────────────────────── */}
@@ -460,22 +555,21 @@ export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
         </Sequence>
       ))}
 
-      {/* ── SCENE SEQUENCES ──────────────────────────────────────────────── */}
-      {/* Each scene gets its own Sequence — useCurrentFrame() resets to 0   */}
-      {/* inside each Sequence, so entrance springs restart per scene.        */}
-      {framedScenes.map(({ scene, from, durationInFrames, previousPose }) => (
+      {/* ── SCENE SEQUENCES (with micro-transitions) ─────────────────────── */}
+      {framedScenes.map(({ scene, from, durationInFrames: dur, previousPose }) => (
         <Sequence
           key={scene.id}
           from={from}
-          durationInFrames={durationInFrames}
+          durationInFrames={dur}
           premountFor={fps}
         >
-          <Scene scene={scene} previousPose={previousPose} />
+          <SceneTransition durationInFrames={dur}>
+            <Scene scene={scene} previousPose={previousPose} />
+          </SceneTransition>
         </Sequence>
       ))}
 
       {/* ── QUIZ COUNTDOWN OVERLAYS ──────────────────────────────────────── */}
-      {/* Rendered ABOVE scene sequences so the timer is always visible.     */}
       {framedScenes
         .filter(({ scene }) => scene.visual.quizCountdown != null)
         .map(({ scene, from }) => {
@@ -492,13 +586,25 @@ export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
           );
         })}
 
+      {/* ── PATTERN INTERRUPT (~18s) ─────────────────────────────────────── */}
+      {interruptFrame + interruptDuration < durationInFrames && (
+        <Sequence from={interruptFrame} durationInFrames={interruptDuration}>
+          <PatternInterrupt />
+        </Sequence>
+      )}
+
       {/* ── CAPTION OVERLAY ──────────────────────────────────────────────── */}
-      {captions?.file && (
+      {resolvedCaptionFile ? (
         <CaptionFileOverlay
-          captionFile={captions.file}
+          captionFile={resolvedCaptionFile}
           style={captionStyle}
         />
+      ) : (
+        <SceneTextOverlay scenes={scenes} style={captionStyle} />
       )}
+
+      {/* ── PROGRESS BAR ─────────────────────────────────────────────────── */}
+      <ProgressBar />
 
     </AbsoluteFill>
   );

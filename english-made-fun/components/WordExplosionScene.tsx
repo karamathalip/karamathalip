@@ -236,7 +236,7 @@ export const WordExplosionScene: React.FC<WordExplosionSceneProps> = ({
   accentColor = '#00e5ff',
 }) => {
   const frame = useCurrentFrame();
-  const { fps, width, height } = useVideoConfig();
+  const { fps, width, height, durationInFrames } = useVideoConfig();
 
   // The word shows alone for 1.2s, then meanings start appearing
   const meaningsStartFrame = Math.round(fps * 1.2);
@@ -250,8 +250,12 @@ export const WordExplosionScene: React.FC<WordExplosionSceneProps> = ({
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
   );
 
+  // Ken Burns drift: subtle zoom + pan over scene duration
+  const kbScale = interpolate(frame, [0, durationInFrames], [1.0, 1.03], { extrapolateRight: 'clamp' });
+  const kbTranslateX = interpolate(frame, [0, durationInFrames], [0, -8], { extrapolateRight: 'clamp' });
+
   return (
-    <AbsoluteFill style={{ backgroundColor }}>
+    <AbsoluteFill style={{ backgroundColor, transform: `scale(${kbScale}) translateX(${kbTranslateX}px)` }}>
 
       {/* ── Radial gradient background glow ──────────────────────────────── */}
       <div

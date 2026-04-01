@@ -236,8 +236,12 @@ export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData, previou
 
   const showLocalBg = bg_color !== 'transparent' && bg_color !== '';
 
+  // Ken Burns drift: subtle zoom + pan over scene duration
+  const kbScale = interpolate(frame, [0, durationInFrames], [1.0, 1.03], { extrapolateRight: 'clamp' });
+  const kbTranslateX = interpolate(frame, [0, durationInFrames], [0, -8], { extrapolateRight: 'clamp' });
+
   return (
-    <AbsoluteFill>
+    <AbsoluteFill style={{ transform: `scale(${kbScale}) translateX(${kbTranslateX}px)` }}>
 
       {/* ── Gradient background (skipped when transparent to reveal global bg) */}
       {showLocalBg && (

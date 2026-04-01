@@ -16,11 +16,13 @@
  *   STEP 3  script_agent       — daily: generate 5 scripts, inject intelligence
  *   STEP 4  viral_prediction   — score + filter scripts (approve/reject/revise)
  *   STEP 5  image_agent        — generate scene images + thumbnails
+ *   STEP 5b thumbnail_compositor— composite text overlays onto thumbnails
  *   STEP 6  voice_agent        — generate voice lines + combined track
  *   STEP 7  sfx_agent          — generate sound effects (cached)
  *   STEP 8  render_agent       — render Remotion → MP4, merge audio
  *   STEP 9  upload_agent       — upload to YouTube with scheduling
  *   STEP 10 feedback_agent     — Sunday only (weekly analytics pull)
+ *   STEP 10b daily_pulse_agent — daily quick performance check (last 7 days)
  *   STEP 11 revenue_agent      — 1st of month only (monthly monetisation plan)
  *
  * ── Config files read ─────────────────────────────────────────────────────────
@@ -55,7 +57,7 @@ function loadAgent(name) {
   try {
     return require(path.join(__dirname, name));
   } catch (err) {
-    return { __loadError: err.message };
+    throw new Error(`Failed to load agent '${name}': ${err.message}`);
   }
 }
 
@@ -68,6 +70,7 @@ const DAILY_RUN_LOG   = path.join(CONFIG_DIR, 'daily_run_log.json');
 const AUDIENCE_FILE   = path.join(CONFIG_DIR, 'audience_insights.json');
 const COMPETITOR_FILE = path.join(CONFIG_DIR, 'competitor_insights.json');
 const FEEDBACK_FILE   = path.join(CONFIG_DIR, 'feedback_latest.json');
+const PULSE_FILE      = path.join(CONFIG_DIR, 'daily_pulse.json');
 
 /** Number of scripts to generate each daily run. */
 const SCRIPTS_PER_RUN = 5;
@@ -317,6 +320,8 @@ async function buildEnrichedTopics(topics) {
   let feedbackInstructions  = null;
   let viralHooks            = [];
   let compHooks             = [];
+  let pulseReplicate        = [];
+  let pulseAvoid            = [];
 
   try {
     const fb = await fs.readJson(FEEDBACK_FILE);
@@ -335,8 +340,14 @@ async function buildEnrichedTopics(topics) {
       : [];
   } catch { /* not yet available */ }
 
+  try {
+    const pulse = await fs.readJson(PULSE_FILE);
+    pulseReplicate = (pulse.replicate ?? []).map(v => v.title).slice(0, 3);
+    pulseAvoid     = (pulse.avoid ?? []).map(v => v.title).slice(0, 3);
+  } catch { /* not yet available */ }
+
   // Nothing to inject — return raw topics
-  if (!feedbackInstructions && viralHooks.length === 0 && compHooks.length === 0) {
+  if (!feedbackInstructions && viralHooks.length === 0 && compHooks.length === 0 && pulseReplicate.length === 0 && pulseAvoid.length === 0) {
     return topics;
   }
 
@@ -351,6 +362,12 @@ async function buildEnrichedTopics(topics) {
   }
   if (compHooks.length > 0) {
     parts.push(`COMPETITOR HOOK PATTERNS (do better): ${compHooks.join(' | ')}`);
+  }
+  if (pulseReplicate.length > 0) {
+    parts.push(`REPLICATE (these performed well recently): ${pulseReplicate.join(' | ')}`);
+  }
+  if (pulseAvoid.length > 0) {
+    parts.push(`AVOID (these underperformed recently): ${pulseAvoid.join(' | ')}`);
   }
 
   const injection = parts.join('\n');
@@ -435,7 +452,6 @@ async function run() {
         })
       : async () => {
           const { runCompetitorAgent } = loadAgent('./competitor_agent');
-          if (runCompetitorAgent.__loadError) throw new Error(runCompetitorAgent.__loadError);
           return runCompetitorAgent();
         },
   });
@@ -453,7 +469,6 @@ async function run() {
         })
       : async () => {
           const { runAudienceAgent } = loadAgent('./audience_agent');
-          if (runAudienceAgent.__loadError) throw new Error(runAudienceAgent.__loadError);
           return runAudienceAgent();
         },
   });
@@ -472,7 +487,6 @@ async function run() {
         })
       : async () => {
           const { runBatch } = loadAgent('./script_agent');
-          if (runBatch.__loadError) throw new Error(runBatch.__loadError);
           return runBatch(enrichedTopics);
         },
   });
@@ -493,7 +507,6 @@ async function run() {
         })
       : async () => {
           const { runViralBatch } = loadAgent('./viral_prediction_agent');
-          if (runViralBatch.__loadError) throw new Error(runViralBatch.__loadError);
           // Pass saved script file paths directly if available
           const filePaths = scriptResult?.saved ?? [];
           return runViralBatch(filePaths.length > 0 ? filePaths : undefined);
@@ -511,8 +524,19 @@ async function run() {
         })
       : async () => {
           const { runImageBatch } = loadAgent('./image_agent');
-          if (runImageBatch.__loadError) throw new Error(runImageBatch.__loadError);
           return runImageBatch();
+        },
+  });
+
+  // ── STEP 5b: thumbnail_compositor ─────────────────────────────────────
+  await runStep({
+    num:  5.5,
+    name: 'thumbnail_compositor (text overlays)',
+    fn: DRY_RUN
+      ? dryRunStub('thumbnail_compositor', { composited: topics.length })
+      : async () => {
+          const { runThumbnailCompositor } = loadAgent('./thumbnail_compositor');
+          return runThumbnailCompositor();
         },
   });
 
@@ -524,7 +548,6 @@ async function run() {
       ? dryRunStub('voice_agent', { processed: topics.length, failed: 0 })
       : async () => {
           const { runVoiceBatch } = loadAgent('./voice_agent');
-          if (runVoiceBatch.__loadError) throw new Error(runVoiceBatch.__loadError);
           return runVoiceBatch();
         },
   });
@@ -539,7 +562,6 @@ async function run() {
         })
       : async () => {
           const { runSfxBatch } = loadAgent('./sfx_agent');
-          if (runSfxBatch.__loadError) throw new Error(runSfxBatch.__loadError);
           return runSfxBatch();
         },
   });
@@ -558,7 +580,6 @@ async function run() {
         })
       : async () => {
           const { runRenderBatch } = loadAgent('./render_agent');
-          if (runRenderBatch.__loadError) throw new Error(runRenderBatch.__loadError);
           return runRenderBatch();
         },
   });
@@ -578,7 +599,6 @@ async function run() {
         })
       : async () => {
           const { runUploadBatch } = loadAgent('./upload_agent');
-          if (runUploadBatch.__loadError) throw new Error(runUploadBatch.__loadError);
           return runUploadBatch();
         },
   });
@@ -604,8 +624,22 @@ async function run() {
         })
       : async () => {
           const { runFeedbackAgent } = loadAgent('./feedback_agent');
-          if (runFeedbackAgent.__loadError) throw new Error(runFeedbackAgent.__loadError);
           return runFeedbackAgent();
+        },
+  });
+
+  // ── STEP 10b: daily_pulse_agent (daily) ───────────────────────────────
+  await runStep({
+    num:        10.5,
+    name:       'daily_pulse_agent (quick performance check)',
+    fn: DRY_RUN
+      ? dryRunStub('daily_pulse_agent', {
+          videos_checked: 3,
+          replicate: [], avoid: [], neutral: [],
+        })
+      : async () => {
+          const { runDailyPulse } = loadAgent('./daily_pulse_agent');
+          return runDailyPulse();
         },
   });
 
@@ -622,7 +656,6 @@ async function run() {
         })
       : async () => {
           const { runRevenueAgent } = loadAgent('./revenue_agent');
-          if (runRevenueAgent.__loadError) throw new Error(runRevenueAgent.__loadError);
           return runRevenueAgent();
         },
   });
