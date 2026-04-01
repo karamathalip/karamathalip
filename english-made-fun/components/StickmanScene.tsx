@@ -16,7 +16,7 @@ import {
   Img,
   staticFile,
 } from 'remotion';
-import { Stickman, type Pose, type Emotion } from './Stickman';
+import { Stickman, resolveStickmanEmotion, resolveStickmanPose } from './Stickman';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -223,8 +223,8 @@ export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData, previou
     effect,
   } = sceneData;
 
-  const pose = stickman_action as Pose;
-  const emotion = stickman_emotion as Emotion;
+  const pose = resolveStickmanPose(stickman_action);
+  const emotion = resolveStickmanEmotion(stickman_emotion);
 
   const stickmanX = width / 2;
   const stickmanY = height * 0.58;
@@ -268,7 +268,7 @@ export const StickmanScene: React.FC<StickmanSceneProps> = ({ sceneData, previou
       {/* ── Background image (uses <Img> to hold render until loaded) ────── */}
       {bg_image && (
         <Img
-          src={bg_image.startsWith('http') ? bg_image : staticFile(bg_image)}
+          src={/^(https?:|data:|file:)/i.test(bg_image) ? bg_image : staticFile(bg_image)}
           style={{
             position: 'absolute',
             inset: 0,

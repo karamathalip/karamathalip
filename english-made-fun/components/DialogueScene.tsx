@@ -13,6 +13,8 @@ import {
   spring,
   interpolate,
   AbsoluteFill,
+  Img,
+  staticFile,
 } from 'remotion';
 import { Stickman, type Emotion } from './Stickman';
 
@@ -27,8 +29,12 @@ export interface DialogueSceneProps {
   bubbleColor?: string;
   /** Speaker's stickman emotion */
   emotion?: string;
+  /** Speaker's scripted action / pose */
+  stickmanAction?: string;
   /** Background color for the scene */
   backgroundColor?: string;
+  /** Optional generated background plate */
+  backgroundImage?: string;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -185,7 +191,9 @@ export const DialogueScene: React.FC<DialogueSceneProps> = ({
   text,
   bubbleColor = '#2563eb',
   emotion = 'happy',
+  stickmanAction = 'standing',
   backgroundColor = '#1a1a2e',
+  backgroundImage,
 }) => {
   const { width, height, fps, durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -207,6 +215,9 @@ export const DialogueScene: React.FC<DialogueSceneProps> = ({
   const darkerBg = darkenHex(backgroundColor, 30);
   const gradCx = interpolate(frame, [0, durationInFrames], [38, 62], { extrapolateRight: 'clamp' });
   const gradCy = interpolate(frame, [0, durationInFrames], [42, 55], { extrapolateRight: 'clamp' });
+  const backgroundSrc = backgroundImage
+    ? (/^(https?:|data:|file:)/i.test(backgroundImage) ? backgroundImage : staticFile(backgroundImage))
+    : null;
 
   // ── Stickman entry spring ─────────────────────────────────────────────────
   const stickmanSpring = spring({
@@ -224,12 +235,29 @@ export const DialogueScene: React.FC<DialogueSceneProps> = ({
   return (
     <AbsoluteFill style={{ transform: `scale(${kbScale}) translateX(${kbTranslateX}px)` }}>
 
+      {backgroundSrc && (
+        <Img
+          src={backgroundSrc}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: 0.5,
+            filter: 'saturate(1.04) contrast(1.06) brightness(0.97)',
+            transform: 'scale(1.06)',
+          }}
+        />
+      )}
+
       {/* ── Gradient background ──────────────────────────────────────────── */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           background: `radial-gradient(ellipse at ${gradCx}% ${gradCy}%, ${backgroundColor} 0%, ${darkerBg} 100%)`,
+          opacity: backgroundSrc ? 0.56 : 1,
         }}
       />
 
@@ -238,13 +266,13 @@ export const DialogueScene: React.FC<DialogueSceneProps> = ({
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.35) 100%)',
+          background: `radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,${backgroundSrc ? '0.2' : '0.35'}) 100%)`,
         }}
       />
 
       {/* ── Stickman: left side of screen ────────────────────────────────── */}
       <Stickman
-        pose="standing"
+        pose={stickmanAction}
         emotion={emotion as Emotion}
         x={stickmanX}
         y={height * 0.58}

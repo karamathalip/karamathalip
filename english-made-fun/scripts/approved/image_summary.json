@@ -1,0 +1,19 @@
+{
+  "run_at": "2026-04-01T04:54:35.218Z",
+  "total": 1,
+  "processed": [
+    {
+      "fileName": "vid_004.json",
+      "video_id": "vid_004",
+      "images_generated": 4,
+      "images_cached": 0,
+      "images_reused": 0,
+      "cost_estimate": 0.02
+    }
+  ],
+  "failed": [],
+  "total_generated": 4,
+  "total_cached": 0,
+  "total_reused": 0,
+  "total_cost_estimate": 0.02
+}

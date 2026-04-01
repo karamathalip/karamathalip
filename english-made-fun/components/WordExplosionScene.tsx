@@ -15,6 +15,8 @@ import {
   Easing,
   AbsoluteFill,
   Sequence,
+  Img,
+  staticFile,
 } from 'remotion';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -29,6 +31,8 @@ export interface WordExplosionSceneProps {
   word: string;
   meanings: MeaningItem[];
   backgroundColor?: string;
+  /** Optional generated background plate */
+  backgroundImage?: string;
   /** Neon accent color for glow effects */
   accentColor?: string;
 }
@@ -233,6 +237,7 @@ export const WordExplosionScene: React.FC<WordExplosionSceneProps> = ({
   word,
   meanings,
   backgroundColor = '#0d0d1a',
+  backgroundImage,
   accentColor = '#00e5ff',
 }) => {
   const frame = useCurrentFrame();
@@ -253,9 +258,28 @@ export const WordExplosionScene: React.FC<WordExplosionSceneProps> = ({
   // Ken Burns drift: subtle zoom + pan over scene duration
   const kbScale = interpolate(frame, [0, durationInFrames], [1.0, 1.03], { extrapolateRight: 'clamp' });
   const kbTranslateX = interpolate(frame, [0, durationInFrames], [0, -8], { extrapolateRight: 'clamp' });
+  const backgroundSrc = backgroundImage
+    ? (/^(https?:|data:|file:)/i.test(backgroundImage) ? backgroundImage : staticFile(backgroundImage))
+    : null;
 
   return (
     <AbsoluteFill style={{ backgroundColor, transform: `scale(${kbScale}) translateX(${kbTranslateX}px)` }}>
+
+      {backgroundSrc && (
+        <Img
+          src={backgroundSrc}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: 0.16,
+            filter: 'saturate(0.9) contrast(1.04)',
+            transform: 'scale(1.08)',
+          }}
+        />
+      )}
 
       {/* ── Radial gradient background glow ──────────────────────────────── */}
       <div

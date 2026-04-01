@@ -1,18 +1,18 @@
 {
-  "run_at": "2026-03-31T22:22:05.043Z",
+  "run_at": "2026-04-01T05:10:03.673Z",
   "total": 1,
   "processed": [
     {
-      "fileName": "vid_001.json",
-      "video_id": "vid_001",
-      "scenes_generated": 7,
-      "full_track": "audio/voices/vid_001_voice_full.mp3",
-      "char_count": 579,
-      "cost_estimate": 0.0034739999999999997,
+      "fileName": "vid_004.json",
+      "video_id": "vid_004",
+      "scenes_generated": 8,
+      "full_track": "audio/voices/vid_004_voice_full.mp3",
+      "char_count": 445,
+      "cost_estimate": 0.00267,
       "skipped_scenes": []
     }
   ],
   "failed": [],
-  "total_char_count": 579,
-  "total_cost_estimate": 0.0034739999999999997
+  "total_char_count": 445,
+  "total_cost_estimate": 0.00267
 }

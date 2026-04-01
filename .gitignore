@@ -122,3 +122,8 @@ images/
 # Audio files
 *.mp3
 *.wav
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg

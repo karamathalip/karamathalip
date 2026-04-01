@@ -109,6 +109,7 @@ export const Scene: React.FC<SceneProps> = ({ scene, previousPose }) => {
         <TextBurstScene
           text={visual.text ?? ''}
           backgroundColor={visual.backgroundColor ?? visual.bg_color ?? '#1a1a2e'}
+          backgroundImage={visual.bg_image}
           textColor={visual.textColor ?? '#ffffff'}
           emphasis={visual.emphasis ?? 'pop'}
           keywords={visual.keywords ?? []}
@@ -123,7 +124,9 @@ export const Scene: React.FC<SceneProps> = ({ scene, previousPose }) => {
           text={visual.text ?? ''}
           bubbleColor={visual.bubbleColor ?? '#2563eb'}
           emotion={visual.emotion ?? visual.stickman_emotion ?? 'happy'}
+          stickmanAction={visual.stickman_action ?? 'standing'}
           backgroundColor={visual.backgroundColor ?? visual.bg_color ?? '#1a1a2e'}
+          backgroundImage={visual.bg_image}
         />
       );
 
@@ -134,6 +137,7 @@ export const Scene: React.FC<SceneProps> = ({ scene, previousPose }) => {
           word={visual.word ?? visual.text ?? 'WORD'}
           meanings={visual.meanings ?? []}
           backgroundColor={visual.backgroundColor ?? visual.bg_color ?? '#0d0d1a'}
+          backgroundImage={visual.bg_image}
           accentColor={visual.accentColor ?? '#00e5ff'}
         />
       );
@@ -146,6 +150,7 @@ export const Scene: React.FC<SceneProps> = ({ scene, previousPose }) => {
           heroAction={visual.heroAction ?? visual.stickman_action ?? 'hero_pose'}
           worldColor={visual.worldColor ?? '#7c3aed'}
           backgroundColor={visual.backgroundColor ?? visual.bg_color ?? '#1a1a2e'}
+          backgroundImage={visual.bg_image}
         />
       );
 

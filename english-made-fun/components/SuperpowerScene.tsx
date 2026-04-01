@@ -15,8 +15,10 @@ import {
   interpolate,
   Easing,
   AbsoluteFill,
+  Img,
+  staticFile,
 } from 'remotion';
-import { Stickman, type Pose } from './Stickman';
+import { Stickman } from './Stickman';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -32,6 +34,8 @@ export interface SuperpowerSceneProps {
   worldColor?: string;
   /** Scene background (base color before tint) */
   backgroundColor?: string;
+  /** Optional generated background plate */
+  backgroundImage?: string;
 }
 
 // ─── Glowing Rule Text ────────────────────────────────────────────────────────
@@ -115,7 +119,8 @@ const RuleWeapon: React.FC<{
 const WorldColorShift: React.FC<{
   worldColor: string;
   backgroundColor: string;
-}> = ({ worldColor, backgroundColor }) => {
+  hasBackgroundImage?: boolean;
+}> = ({ worldColor, backgroundColor, hasBackgroundImage = false }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -139,6 +144,7 @@ const WorldColorShift: React.FC<{
           inset: 0,
           backgroundColor,
           filter: `saturate(${saturation})`,
+          opacity: hasBackgroundImage ? 0.52 : 1,
         }}
       />
       {/* Color tint overlay */}
@@ -147,7 +153,7 @@ const WorldColorShift: React.FC<{
           position: 'absolute',
           inset: 0,
           backgroundColor: worldColor,
-          opacity: tintOpacity,
+          opacity: hasBackgroundImage ? tintOpacity * 0.5 : tintOpacity,
         }}
       />
     </>
@@ -213,6 +219,7 @@ export const SuperpowerScene: React.FC<SuperpowerSceneProps> = ({
   heroAction = 'hero_pose',
   worldColor = '#7c3aed',
   backgroundColor = '#1a1a2e',
+  backgroundImage,
 }) => {
   const { width, height, durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -227,6 +234,9 @@ export const SuperpowerScene: React.FC<SuperpowerSceneProps> = ({
   // Power burst center = stickman hip position
   const burstCx = stickmanX;
   const burstCy = stickmanY;
+  const backgroundSrc = backgroundImage
+    ? (/^(https?:|data:|file:)/i.test(backgroundImage) ? backgroundImage : staticFile(backgroundImage))
+    : null;
 
   // Ken Burns drift: subtle zoom + pan over scene duration
   const kbScale = interpolate(frame, [0, durationInFrames], [1.0, 1.03], { extrapolateRight: 'clamp' });
@@ -235,15 +245,31 @@ export const SuperpowerScene: React.FC<SuperpowerSceneProps> = ({
   return (
     <AbsoluteFill style={{ transform: `scale(${kbScale}) translateX(${kbTranslateX}px)` }}>
 
+      {backgroundSrc && (
+        <Img
+          src={backgroundSrc}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: 0.52,
+            filter: 'saturate(1.05) contrast(1.08) brightness(0.98)',
+            transform: 'scale(1.08)',
+          }}
+        />
+      )}
+
       {/* ── World color shift (grey → color) ──────────────────────────────── */}
-      <WorldColorShift worldColor={worldColor} backgroundColor={backgroundColor} />
+      <WorldColorShift worldColor={worldColor} backgroundColor={backgroundColor} hasBackgroundImage={Boolean(backgroundSrc)} />
 
       {/* ── Power burst rays ──────────────────────────────────────────────── */}
       <PowerBurst cx={burstCx} cy={burstCy} accentColor={accentColor} />
 
       {/* ── Stickman hero ─────────────────────────────────────────────────── */}
       <Stickman
-        pose={heroAction as Pose}
+        pose={heroAction}
         emotion="victorious"
         x={stickmanX}
         y={stickmanY}

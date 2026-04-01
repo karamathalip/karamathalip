@@ -38,7 +38,15 @@ export type Pose =
   | 'fly_off'
   | 'cameo_wave'
   | 'shocked'
-  | 'epic_win';
+  | 'epic_win'
+  | 'hold_up_four_fingers'
+  | 'smash_object'
+  | 'sit_and_relax'
+  | 'cross_arms_stern'
+  | 'lucky_celebration'
+  | 'storytelling_pose'
+  | 'mind_blown'
+  | 'rocket_launch_pose';
 
 export type Emotion =
   | 'happy'
@@ -51,9 +59,9 @@ export type Emotion =
 
 export interface StickmanProps {
   /** Which full-body pose to display */
-  pose?: Pose;
+  pose?: Pose | string;
   /** Expression on the stickman's face */
-  emotion?: Emotion;
+  emotion?: Emotion | string;
   /** Reserved for future action triggers (e.g. 'talk', 'blink') */
   action?: string;
   /** Horizontal center of the stickman's hip in composition pixels */
@@ -291,7 +299,148 @@ const SKELETONS: Record<Pose, Skeleton> = {
     lLegX: -36,  lLegY:  28,
     rLegX:  36,  rLegY:  28,
   },
+
+  // ── hold_up_four_fingers: one arm raised high while counting off a list
+  hold_up_four_fingers: {
+    headCx: -4,  headCy: -66,
+    spineX1: 0,  spineY1: -50,  spineX2: 0,   spineY2: 0,
+    shoulderX: 0, shoulderY: -38,
+    lArmX: -36,  lArmY: -10,
+    rArmX:  18,  rArmY: -72,
+    lLegX: -20,  lLegY:  38,
+    rLegX:  20,  rLegY:  38,
+  },
+
+  // ── smash_object: hard follow-through after striking something fragile
+  smash_object: {
+    headCx: 10,  headCy: -60,
+    spineX1: 6,  spineY1: -44,  spineX2: -4,  spineY2: 4,
+    shoulderX: 2, shoulderY: -32,
+    lArmX: -30,  lArmY: -40,
+    rArmX:  52,  rArmY:  -6,
+    lLegX: -24,  lLegY:  40,
+    rLegX:  18,  rLegY:  34,
+  },
+
+  // ── sit_and_relax: seated, leaning back, one hand up in a relaxed pose
+  sit_and_relax: {
+    headCx: -12, headCy: -42,
+    spineX1: -4, spineY1: -28,  spineX2: 6,   spineY2: 8,
+    shoulderX: -1, shoulderY: -18,
+    lArmX: -30,  lArmY: -38,
+    rArmX:  36,  rArmY:  -4,
+    lLegX:  42,  lLegY:  24,
+    rLegX:  62,  rLegY:  24,
+  },
+
+  // ── cross_arms_stern: still stance with arms folded tightly across chest
+  cross_arms_stern: {
+    headCx: 0,   headCy: -62,
+    spineX1: 0,  spineY1: -46,  spineX2: 0,   spineY2: 0,
+    shoulderX: 0, shoulderY: -34,
+    lArmX:  20,  lArmY: -16,
+    rArmX: -20,  rArmY: -16,
+    lLegX: -18,  lLegY:  38,
+    rLegX:  18,  rLegY:  38,
+  },
+
+  // ── lucky_celebration: asymmetrical jump with one hand punching upward
+  lucky_celebration: {
+    headCx: 0,   headCy: -74,
+    spineX1: 0,  spineY1: -58,  spineX2: 0,   spineY2: -10,
+    shoulderX: 0, shoulderY: -46,
+    lArmX: -50,  lArmY: -66,
+    rArmX:  38,  rArmY: -78,
+    lLegX: -36,  lLegY:  26,
+    rLegX:  20,  rLegY:  10,
+  },
+
+  // ── storytelling_pose: one hand to chest, one hand gesturing outward
+  storytelling_pose: {
+    headCx: 0,   headCy: -62,
+    spineX1: 0,  spineY1: -46,  spineX2: 0,   spineY2: 0,
+    shoulderX: 0, shoulderY: -34,
+    lArmX: -16,  lArmY:  -2,
+    rArmX:  52,  rArmY: -26,
+    lLegX: -18,  lLegY:  38,
+    rLegX:  18,  rLegY:  38,
+  },
+
+  // ── mind_blown: head tilted back, arms wide, body reacting in disbelief
+  mind_blown: {
+    headCx: 0,   headCy: -68,
+    spineX1: 0,  spineY1: -52,  spineX2: 0,   spineY2: 0,
+    shoulderX: 0, shoulderY: -40,
+    lArmX: -54,  lArmY: -36,
+    rArmX:  54,  rArmY: -36,
+    lLegX: -24,  lLegY:  40,
+    rLegX:  24,  rLegY:  40,
+  },
+
+  // ── rocket_launch_pose: diagonal launch stance before blasting upward
+  rocket_launch_pose: {
+    headCx: -14, headCy: -70,
+    spineX1: -6, spineY1: -54,  spineX2: 16,  spineY2: -18,
+    shoulderX: 5, shoulderY: -42,
+    lArmX: -22,  lArmY: -70,
+    rArmX:  34,  rArmY: -72,
+    lLegX:  10,  lLegY:  30,
+    rLegX:  34,  rLegY:   8,
+  },
 };
+
+const POSE_ALIASES: Record<string, Pose> = {
+  hold_up_four_fingers: 'pointing',
+  smash_object: 'shocked',
+  sit_and_relax: 'winking',
+  cross_arms_stern: 'hero_pose',
+  lucky_celebration: 'celebrate',
+  storytelling_pose: 'pointing',
+  mind_blown: 'shocked',
+  rocket_launch_pose: 'fly_off',
+};
+
+const EMOTION_ALIASES: Record<string, Emotion> = {
+  focused: 'neutral',
+  peaceful: 'happy',
+  serious: 'neutral',
+  triumphant: 'victorious',
+  energetic: 'excited',
+  calm: 'neutral',
+};
+
+export function resolveStickmanPose(rawPose?: Pose | string): Pose {
+  if (!rawPose) return 'standing';
+
+  const normalized = String(rawPose).trim().toLowerCase().replace(/[\s-]+/g, '_');
+
+  if (Object.prototype.hasOwnProperty.call(SKELETONS, normalized)) {
+    return normalized as Pose;
+  }
+
+  return POSE_ALIASES[normalized] ?? 'standing';
+}
+
+export function resolveStickmanEmotion(rawEmotion?: Emotion | string): Emotion {
+  if (!rawEmotion) return 'neutral';
+
+  const normalized = String(rawEmotion).trim().toLowerCase().replace(/[\s-]+/g, '_');
+  const validEmotion: Emotion[] = [
+    'happy',
+    'sad',
+    'shocked',
+    'victorious',
+    'confused',
+    'excited',
+    'neutral',
+  ];
+
+  if ((validEmotion as string[]).includes(normalized)) {
+    return normalized as Emotion;
+  }
+
+  return EMOTION_ALIASES[normalized] ?? 'neutral';
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FACE / EMOTION RENDERERS
@@ -401,8 +550,8 @@ function Face({
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const Stickman: React.FC<StickmanProps> = ({
-  pose = 'standing',
-  emotion = 'neutral',
+  pose: rawPose = 'standing',
+  emotion: rawEmotion = 'neutral',
   action,
   x = 540,
   y = 960,
@@ -412,6 +561,8 @@ export const Stickman: React.FC<StickmanProps> = ({
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  const pose = resolveStickmanPose(rawPose);
+  const emotion = resolveStickmanEmotion(rawEmotion);
   const sk = SKELETONS[pose] ?? SKELETONS.standing;
   const limbSW = 4;   // limb stroke width
   const headSW = 3;   // head circle stroke width
@@ -436,7 +587,7 @@ export const Stickman: React.FC<StickmanProps> = ({
     config: { damping: 14, stiffness: 100, mass: 1.0 },
   });
   const jumpOffsetY =
-    pose === 'jumping' || pose === 'celebrate' || pose === 'epic_win'
+    pose === 'jumping' || pose === 'celebrate' || pose === 'epic_win' || pose === 'lucky_celebration'
       ? interpolate(jumpSpring, [0, 1], [0, -28], { extrapolateRight: 'clamp' })
       : 0;
 
@@ -474,7 +625,7 @@ export const Stickman: React.FC<StickmanProps> = ({
     durationInFrames: 24,
   });
   const shockScale =
-    pose === 'shocked'
+    pose === 'shocked' || pose === 'mind_blown' || pose === 'smash_object'
       ? interpolate(shockSpring, [0, 1], [0.8, 1.15], { extrapolateRight: 'clamp' })
       : 1;
 
@@ -485,7 +636,7 @@ export const Stickman: React.FC<StickmanProps> = ({
     config: { damping: 12, stiffness: 120, mass: 0.9 },
   });
   const celebScale =
-    pose === 'celebrate' || pose === 'epic_win'
+    pose === 'celebrate' || pose === 'epic_win' || pose === 'lucky_celebration'
       ? interpolate(celebSpring, [0, 1], [0.6, 1.08], { extrapolateRight: 'clamp' })
       : 1;
 
@@ -497,19 +648,27 @@ export const Stickman: React.FC<StickmanProps> = ({
     config: { damping: 18, stiffness: 280 },
     durationInFrames: 14,
   });
+  const storyGestureX =
+    pose === 'storytelling_pose'
+      ? Math.sin((frame / fps) * Math.PI * 1.2) * 6
+      : 0;
+  const countingBounceY =
+    pose === 'hold_up_four_fingers'
+      ? Math.sin((frame / fps) * Math.PI * 1.4) * 3
+      : 0;
   const pointedArmX =
-    pose === 'pointing'
+    pose === 'pointing' || pose === 'storytelling_pose'
       ? interpolate(pointSpring, [0, 1], [sk.shoulderX, sk.rArmX])
       : sk.rArmX;
   const pointedArmY =
-    pose === 'pointing'
+    pose === 'pointing' || pose === 'storytelling_pose'
       ? interpolate(pointSpring, [0, 1], [sk.shoulderY, sk.rArmY])
-      : sk.rArmY;
+      : sk.rArmY + countingBounceY;
 
   // ── FLY / FLY_OFF — eased upward drift over time ─────────────────────────
   // Uses interpolate directly against frame so the body keeps drifting.
   const flyOffsetY =
-    pose === 'flying' || pose === 'fly_off'
+    pose === 'flying' || pose === 'fly_off' || pose === 'rocket_launch_pose'
       ? interpolate(frame, [0, fps * 2], [0, -55], {
           extrapolateRight: 'clamp',
           easing: Easing.out(Easing.quad),
@@ -517,7 +676,7 @@ export const Stickman: React.FC<StickmanProps> = ({
       : 0;
   // fly_off tilts the body progressively as it launches
   const flyRotate =
-    pose === 'fly_off'
+    pose === 'fly_off' || pose === 'rocket_launch_pose'
       ? interpolate(frame, [0, fps * 1.5], [0, -18], {
           extrapolateRight: 'clamp',
           easing: Easing.in(Easing.quad),
@@ -526,7 +685,7 @@ export const Stickman: React.FC<StickmanProps> = ({
 
   // ── HERO_POSE — subtle idle sway (sine oscillation, no spring needed) ─────
   const heroSway =
-    pose === 'hero_pose'
+    pose === 'hero_pose' || pose === 'cross_arms_stern' || pose === 'sit_and_relax'
       ? Math.sin((frame / fps) * Math.PI * 0.7) * 2.5
       : 0;
 
@@ -565,13 +724,13 @@ export const Stickman: React.FC<StickmanProps> = ({
 
   // ── SHOCKED EXCLAMATION fade-in ───────────────────────────────────────────
   const exclamOpacity =
-    pose === 'shocked' || emotion === 'shocked'
+    pose === 'shocked' || pose === 'mind_blown' || emotion === 'shocked'
       ? interpolate(shockSpring, [0, 1], [0, 1], { extrapolateRight: 'clamp' })
       : 0;
 
   // ── SPEED LINES fade-in (fly / fly_off) ──────────────────────────────────
   const speedLineOpacity =
-    pose === 'flying' || pose === 'fly_off'
+    pose === 'flying' || pose === 'fly_off' || pose === 'rocket_launch_pose'
       ? interpolate(frame, [0, 8], [0, 0.55], { extrapolateRight: 'clamp' })
       : 0;
 
@@ -672,9 +831,46 @@ export const Stickman: React.FC<StickmanProps> = ({
          */}
         <line
           x1={sk.shoulderX}        y1={sk.shoulderY}
-          x2={pointedArmX + waveOscX} y2={pointedArmY}
+          x2={pointedArmX + waveOscX + storyGestureX} y2={pointedArmY}
           stroke={color} strokeWidth={limbSW} strokeLinecap="round"
         />
+
+        {/* ── HOLD_UP_FOUR_FINGERS — floating count markers by raised hand ── */}
+        {pose === 'hold_up_four_fingers' && (
+          <>
+            {[0, 1, 2, 3].map((index) => (
+              <line
+                key={index}
+                x1={sk.rArmX + 4 + index * 4}
+                y1={sk.rArmY - 18}
+                x2={sk.rArmX + 4 + index * 4}
+                y2={sk.rArmY - 30}
+                stroke="#FFD700"
+                strokeWidth={2.2}
+                strokeLinecap="round"
+              />
+            ))}
+          </>
+        )}
+
+        {/* ── SMASH_OBJECT — little shard burst at the impact point ───────── */}
+        {pose === 'smash_object' && (
+          <>
+            {[[-8, -12, -18, -28], [0, -6, 10, -18], [8, -14, 18, -30], [12, -2, 24, -6]].map((shard, index) => (
+              <line
+                key={index}
+                x1={sk.rArmX + shard[0]}
+                y1={sk.rArmY + shard[1]}
+                x2={sk.rArmX + shard[2]}
+                y2={sk.rArmY + shard[3]}
+                stroke="#8BE9FD"
+                strokeWidth={2.2}
+                strokeLinecap="round"
+                opacity={0.9}
+              />
+            ))}
+          </>
+        )}
 
         {/* ── FACEPALM HAND CIRCLE (overlays the face) ──────────────── */}
         {pose === 'facepalm' && (
@@ -687,7 +883,7 @@ export const Stickman: React.FC<StickmanProps> = ({
         )}
 
         {/* ── THUMBS UP — small thumb nub above fist ────────────────── */}
-        {sk.extra === 'thumb' && sk.thumbCx !== undefined && (
+        {sk.extra === 'thumb' && sk.thumbCx !== undefined && sk.thumbCy !== undefined && (
           <>
             {/* Fist bump */}
             <circle cx={sk.thumbCx} cy={sk.thumbCy} r={4} fill={color} />
@@ -725,7 +921,7 @@ export const Stickman: React.FC<StickmanProps> = ({
         </g>
 
         {/* ── HERO POSE — pulsing aura ring ─────────────────────────── */}
-        {pose === 'hero_pose' && (
+        {(pose === 'hero_pose' || pose === 'cross_arms_stern') && (
           <circle
             cx={sk.headCx} cy={sk.headCy}
             r={interpolate(
@@ -738,7 +934,7 @@ export const Stickman: React.FC<StickmanProps> = ({
         )}
 
         {/* ── CELEBRATE / EPIC_WIN — particle burst ─────────────────── */}
-        {(pose === 'celebrate' || pose === 'epic_win') && (
+        {(pose === 'celebrate' || pose === 'epic_win' || pose === 'lucky_celebration') && (
           <g opacity={particleOpacity}>
             {[0, 45, 90, 135, 180, 225, 270, 315].map((angleDeg, i) => {
               const rad = (angleDeg * Math.PI) / 180;
@@ -754,8 +950,64 @@ export const Stickman: React.FC<StickmanProps> = ({
           </g>
         )}
 
+        {/* ── SIT_AND_RELAX — seat line + mug cue for the resting meaning ─── */}
+        {pose === 'sit_and_relax' && (
+          <>
+            <line
+              x1={-48}
+              y1={24}
+              x2={76}
+              y2={24}
+              stroke="rgba(255,255,255,0.22)"
+              strokeWidth={3}
+              strokeLinecap="round"
+            />
+            <rect
+              x={42}
+              y={-6}
+              width={12}
+              height={14}
+              rx={2}
+              stroke="#FFD166"
+              strokeWidth={2}
+              fill="none"
+            />
+            <path
+              d="M 54,-2 Q 61,-1 55,5"
+              stroke="#FFD166"
+              strokeWidth={2}
+              fill="none"
+              strokeLinecap="round"
+            />
+          </>
+        )}
+
+        {/* ── MIND_BLOWN — radiating burst lines around the head ───────────── */}
+        {pose === 'mind_blown' && (
+          <>
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angleDeg, index) => {
+              const rad = (angleDeg * Math.PI) / 180;
+              const inner = HEAD_R + 8;
+              const outer = HEAD_R + 22;
+              return (
+                <line
+                  key={index}
+                  x1={sk.headCx + Math.cos(rad) * inner}
+                  y1={sk.headCy + Math.sin(rad) * inner}
+                  x2={sk.headCx + Math.cos(rad) * outer}
+                  y2={sk.headCy + Math.sin(rad) * outer}
+                  stroke="#FFD700"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  opacity={0.85}
+                />
+              );
+            })}
+          </>
+        )}
+
         {/* ── FLYING / FLY_OFF — horizontal speed lines ─────────────── */}
-        {(pose === 'flying' || pose === 'fly_off') && (
+        {(pose === 'flying' || pose === 'fly_off' || pose === 'rocket_launch_pose') && (
           <>
             {[0, 9, 18, 27].map((yOff, i) => (
               <line
@@ -784,7 +1036,9 @@ const ALL_POSES: Pose[] = [
   'standing', 'falling', 'jumping', 'flying', 'hero_pose',
   'facepalm', 'victory_pose', 'winking', 'thumbs_up', 'pointing',
   'celebrate', 'trip', 'sword_glow', 'fly_off', 'cameo_wave',
-  'shocked', 'epic_win',
+  'shocked', 'epic_win', 'hold_up_four_fingers', 'smash_object',
+  'sit_and_relax', 'cross_arms_stern', 'lucky_celebration',
+  'storytelling_pose', 'mind_blown', 'rocket_launch_pose',
 ];
 
 const ALL_EMOTIONS: Emotion[] = [

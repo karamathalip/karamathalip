@@ -1,0 +1,349 @@
+{
+  "video_id": "vid_003",
+  "video_title": "One letter that makes you sound fluent instantly",
+  "format": "fail_fix_stickman_skit",
+  "topic": "She go vs She goes — third person singular S",
+  "hook": "This one tiny letter separates beginners from fluent speakers.",
+  "total_duration_seconds": 60.22,
+  "viral_score": 84,
+  "status": "approved",
+  "scenes": [
+    {
+      "scene_id": "hook",
+      "id": "hook",
+      "start": 0,
+      "duration": 4.95,
+      "type": "hook",
+      "text": "One letter. Beginner or fluent.",
+      "voice_line": "ONE tiny letter. That is all that separates beginner from fluent.",
+      "tone": "energetic",
+      "speed": 1.08,
+      "silence_after": 0.25,
+      "stickman_action": "point_at_viewer",
+      "stickman_emotion": "shocked",
+      "visual": {
+        "template": "text_burst",
+        "text": "ONE letter.",
+        "backgroundColor": "#1a1a2e",
+        "textColor": "#ff6b35",
+        "emphasis": "shake",
+        "keywords": [
+          "ONE"
+        ]
+      },
+      "sfx_prompts": [
+        "whoosh_slide",
+        "fail_boop"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_003_scene01_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_003_scene01_sfx1.mp3",
+          "startTime": 0.08,
+          "volume": 0.34
+        },
+        {
+          "file": "audio/sfx/vid_003_scene01_sfx2.mp3",
+          "startTime": 1.35,
+          "volume": 0.2
+        }
+      ]
+    },
+    {
+      "scene_id": "fail_demo",
+      "id": "fail_demo",
+      "start": 4.95,
+      "duration": 8.45,
+      "type": "example",
+      "text": "She go to school every day.",
+      "voice_line": "You said: She GO to school every day. Every native speaker just cringed. HARD.",
+      "tone": "serious",
+      "speed": 0.96,
+      "silence_after": 0.2,
+      "stickman_action": "trip_and_fall",
+      "stickman_emotion": "confused",
+      "visual": {
+        "template": "stickman",
+        "text": "\"She go to school every day.\"",
+        "stickman_action": "trip_and_fall",
+        "stickman_emotion": "confused",
+        "bg_color": "#2d1b1b",
+        "effect": "wrong"
+      },
+      "sfx_prompts": [
+        "trip_whoosh",
+        "fall_thud"
+      ],
+      "use_image": true,
+      "image_prompt": "Moody school corridor background plate for an English-learning short, embarrassed student energy, subtle motion streaks, red danger accents, empty center space for stickman and captions, no text, no watermark",
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_003_scene02_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_003_scene02_sfx1.mp3",
+          "startTime": 0.12,
+          "volume": 0.32
+        },
+        {
+          "file": "audio/sfx/vid_003_scene02_sfx2.mp3",
+          "startTime": 1.55,
+          "volume": 0.26
+        }
+      ],
+      "image_file": "images/vid_003_scene02.png"
+    },
+    {
+      "scene_id": "explain_rule",
+      "id": "explain_rule",
+      "start": 13.4,
+      "duration": 10.87,
+      "type": "explanation",
+      "text": "He / She / It = always add S",
+      "voice_line": "Here is the rule. When the subject is he, she, or it, you ALWAYS add S to the verb in the present simple. He goes. She walks. It runs.",
+      "tone": "calm",
+      "speed": 1,
+      "silence_after": 0.3,
+      "stickman_action": "write_on_board",
+      "stickman_emotion": "explaining",
+      "visual": {
+        "template": "stickman",
+        "text": "HE / SHE / IT\nADD S",
+        "stickman_action": "write_on_board",
+        "stickman_emotion": "explaining",
+        "bg_color": "#16213e"
+      },
+      "sfx_prompts": [
+        "whoosh_slide"
+      ],
+      "use_image": true,
+      "image_prompt": "Clean modern classroom background plate with a large chalkboard showing grammar structure shapes and arrows, deep blue academic lighting, clear empty foreground for stickman presenter, educational but cinematic, no readable text, no watermark",
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_003_scene03_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_003_scene03_sfx1.mp3",
+          "startTime": 0.65,
+          "volume": 0.22
+        }
+      ],
+      "image_file": "images/vid_003_scene03.png"
+    },
+    {
+      "scene_id": "fix_demo",
+      "id": "fix_demo",
+      "start": 24.27,
+      "duration": 11.07,
+      "type": "payoff",
+      "text": "She GOES to school every day.",
+      "voice_line": "Now say it right. She GOES to school every day. He WORKS at a hospital. It COSTS too much. Hear that S? That is fluency.",
+      "tone": "energetic",
+      "speed": 1.04,
+      "silence_after": 0.25,
+      "stickman_action": "epic_win",
+      "stickman_emotion": "victorious",
+      "visual": {
+        "template": "stickman",
+        "text": "\"She GOES to school every day.\" ✓",
+        "stickman_action": "epic_win",
+        "stickman_emotion": "victorious",
+        "bg_color": "#0f3460",
+        "effect": "correct"
+      },
+      "sfx_prompts": [
+        "victory_chime",
+        "sparkle_pop"
+      ],
+      "use_image": true,
+      "image_prompt": "Bright triumphant classroom background plate for a grammar success moment, confident learner energy, green and gold success glow, subtle celebratory particles, clean central composition for stickman hero pose, no text, no watermark",
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_003_scene04_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_003_scene04_sfx1.mp3",
+          "startTime": 0.6,
+          "volume": 0.3
+        },
+        {
+          "file": "audio/sfx/vid_003_scene04_sfx2.mp3",
+          "startTime": 2.4,
+          "volume": 0.24
+        }
+      ],
+      "image_file": "images/vid_003_scene04.png"
+    },
+    {
+      "scene_id": "examples_rapid",
+      "id": "examples_rapid",
+      "start": 35.34,
+      "duration": 14.13,
+      "type": "example",
+      "text": "He works. She runs. It rains.",
+      "voice_line": "He workS. She runS. It rainS. My dog barkS. Your teacher explainS. My phone dieS. If it is he, she, or it, add that S and never forget it again.",
+      "tone": "energetic",
+      "speed": 1.05,
+      "silence_after": 0.2,
+      "stickman_action": "pointing",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "text_burst",
+        "text": "HE WORKS\nSHE RUNS\nIT RAINS",
+        "backgroundColor": "#1a1a2e",
+        "textColor": "#2ed573",
+        "emphasis": "highlight",
+        "keywords": [
+          "WORKS",
+          "RUNS",
+          "RAINS"
+        ]
+      },
+      "sfx_prompts": [
+        "sparkle_pop"
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_003_scene05_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_003_scene05_sfx1.mp3",
+          "startTime": 0.35,
+          "volume": 0.2
+        }
+      ]
+    },
+    {
+      "scene_id": "memory_trick",
+      "id": "memory_trick",
+      "start": 49.47,
+      "duration": 7.11,
+      "type": "explanation",
+      "text": "SHE, HE, IT demand an S.",
+      "voice_line": "Memory trick. SHE, HE, IT. They are royalty. They demand an S. Always.",
+      "tone": "warm",
+      "speed": 1,
+      "silence_after": 0.2,
+      "stickman_action": "standing",
+      "stickman_emotion": "happy",
+      "visual": {
+        "template": "dialogue",
+        "text": "SHE + HE + IT = add S",
+        "speaker": "Memory Trick",
+        "bubbleColor": "#1e3a5f",
+        "emotion": "happy",
+        "backgroundColor": "#16213e"
+      },
+      "sfx_prompts": [
+        "sparkle_pop"
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_003_scene06_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_003_scene06_sfx1.mp3",
+          "startTime": 0.5,
+          "volume": 0.18
+        }
+      ]
+    },
+    {
+      "scene_id": "loop_back",
+      "id": "loop_back",
+      "start": 56.58,
+      "duration": 3.64,
+      "type": "hook",
+      "text": "One letter. Are you adding it?",
+      "voice_line": "One letter is all it takes. Are you adding it?",
+      "tone": "energetic",
+      "speed": 1.08,
+      "silence_after": 0,
+      "stickman_action": "point_up",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "text_burst",
+        "text": "Are you adding it?",
+        "backgroundColor": "#1a1a2e",
+        "textColor": "#ff6b35",
+        "emphasis": "pop",
+        "keywords": [
+          "adding"
+        ]
+      },
+      "sfx_prompts": [
+        "whoosh_slide"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_003_scene07_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_003_scene07_sfx1.mp3",
+          "startTime": 0.12,
+          "volume": 0.3
+        }
+      ]
+    }
+  ],
+  "audio": {
+    "voice_profile": "Energetic English Coach",
+    "background_music": false,
+    "sfx_enabled": true,
+    "master_volume": 1,
+    "voice_volume": 0.9,
+    "sfx_volume": 0.45,
+    "file_url": "audio/voices/vid_003_voice_full.mp3",
+    "voice_agent_meta": {
+      "character": "Energetic English Coach",
+      "speaking_rate": 1,
+      "pitch_semitones": 0,
+      "per_scene_tone": true,
+      "scene_gap_seconds": 0.45,
+      "dynamic_gaps": true,
+      "ssml_supported": false,
+      "voice_line_rewritten_for_tts": true,
+      "encoding": "WAV",
+      "sample_rate": 48000,
+      "generated_at": "2026-04-01T03:50:39.038Z"
+    }
+  },
+  "captions": {
+    "style": {
+      "fontSize": 52,
+      "color": "#ffffff",
+      "backgroundColor": "rgba(0,0,0,0.70)",
+      "position": "bottom",
+      "fontWeight": 800
+    }
+  },
+  "packaging": {
+    "titles": [
+      "One letter that makes you sound fluent instantly",
+      "She GO vs She GOES — stop this mistake NOW",
+      "The -S rule every English learner forgets"
+    ],
+    "description": "Third person singular S is one of the most common mistakes ESL learners make. One rule, fixed forever: he, she, and it always get an S in the present simple.",
+    "tags": [
+      "english grammar",
+      "third person s",
+      "she goes",
+      "present simple",
+      "ESL mistakes",
+      "learn english",
+      "grammar rules",
+      "fluent english"
+    ],
+    "thumbnail_prompt": "Two cartoon stickmen. Left side dark red: embarrassed figure, red X, speech bubble 'She GO'. Right side bright blue-green: confident figure, crown, green checkmark, speech bubble 'She GOES'. Giant glowing letter S between them. Bold text: ONE LETTER. ALL THE DIFFERENCE.",
+    "thumbnail": {
+      "image_file": "thumbnails/vid_003_thumb.png"
+    }
+  },
+  "viral_triggers": [
+    "one_tiny_change_hook",
+    "native_speaker_cringe_moment",
+    "rapid_example_revelation",
+    "royal_memory_device",
+    "instant_fluency_promise"
+  ],
+  "voice_file": "audio/voices/vid_003_voice_full.mp3"
+}

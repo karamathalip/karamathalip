@@ -108,8 +108,8 @@ cd english-made-fun
 # 2. Install dependencies
 npm install
 
-# 3. Create your .env file
-cp .env.example .env   # or create manually (see below)
+# 3. Create your .env file manually
+# There is no committed .env.example in this repo.
 
 # 4. Run the pre-flight check (validates everything + auto-creates folders)
 node pipeline/setup_check.js --fix
@@ -639,20 +639,12 @@ This validates everything and auto-creates missing folders. Run it first if anyt
 ### Logs
 
 ```bash
-# Per-run timing and step status
-cat config/daily_run_log.json | node -e "process.stdin.on('data',d=>console.log(JSON.parse(d).pop()))"
-
-# Render status
-cat output/final/render_log.json
-
-# Upload history
-cat config/upload_log.json
-
-# Latest feedback analysis
-cat config/feedback_latest.json
-
-# Daily pulse signals
-cat config/daily_pulse.json
+# PowerShell examples (Windows)
+Get-Content config/daily_run_log.json
+Get-Content output/final/render_log.json
+Get-Content config/upload_log.json
+Get-Content config/feedback_latest.json
+Get-Content config/daily_pulse.json
 ```
 
 ### Dry Run

@@ -4,7 +4,7 @@
     "file": "audio/sfx/2a6f16068e630485271baaab93bff07f.mp3",
     "duration_seconds": 2,
     "created_at": "2026-03-31T22:24:01.605Z",
-    "hits": 2
+    "hits": 11
   },
   "b0d7712d7cf56390d423b7adb7c90887": {
     "prompt": "wrong_buzzer",
@@ -32,6 +32,62 @@
     "file": "audio/sfx/9ab81bc33c6120fd8296cf80cd7fbd64.mp3",
     "duration_seconds": 2,
     "created_at": "2026-03-31T22:24:07.789Z",
+    "hits": 10
+  },
+  "cc3c450d9cd063044a956fa08d1a2de2": {
+    "prompt": "explode_pop",
+    "file": "audio/sfx/cc3c450d9cd063044a956fa08d1a2de2.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-04-01T01:06:25.001Z",
+    "hits": 1
+  },
+  "9438b66b1ee039dfada197e9112873bc": {
+    "prompt": "shatter_pop",
+    "file": "audio/sfx/9438b66b1ee039dfada197e9112873bc.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-04-01T01:06:26.420Z",
+    "hits": 0
+  },
+  "466b7a425424a6abd3600c0721c30c5c": {
+    "prompt": "victory_chime",
+    "file": "audio/sfx/466b7a425424a6abd3600c0721c30c5c.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-04-01T01:06:27.811Z",
+    "hits": 4
+  },
+  "d29354952bae34e1cc46f6881ef8e5ef": {
+    "prompt": "fail_boop",
+    "file": "audio/sfx/d29354952bae34e1cc46f6881ef8e5ef.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-04-01T03:50:41.462Z",
+    "hits": 0
+  },
+  "b4d9622ef4f45278073810b4e08de77c": {
+    "prompt": "trip_whoosh",
+    "file": "audio/sfx/b4d9622ef4f45278073810b4e08de77c.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-04-01T03:50:42.855Z",
+    "hits": 0
+  },
+  "2ec1880859adbf459b2401d4ecf75298": {
+    "prompt": "fall_thud",
+    "file": "audio/sfx/2ec1880859adbf459b2401d4ecf75298.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-04-01T03:50:44.206Z",
+    "hits": 0
+  },
+  "f4ed24b727383ea184095b0be6b3601b": {
+    "prompt": "magic_whoosh",
+    "file": "audio/sfx/f4ed24b727383ea184095b0be6b3601b.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-04-01T04:55:39.796Z",
+    "hits": 1
+  },
+  "5aa69c6815213909a21ed7183823fca5": {
+    "prompt": "power_chime",
+    "file": "audio/sfx/5aa69c6815213909a21ed7183823fca5.mp3",
+    "duration_seconds": 2,
+    "created_at": "2026-04-01T04:55:41.226Z",
     "hits": 1
   }
 }

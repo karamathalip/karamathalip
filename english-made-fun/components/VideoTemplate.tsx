@@ -21,8 +21,6 @@ import {
   Sequence,
   staticFile,
   useDelayRender,
-  continueRender,
-  cancelRender,
   spring,
   interpolate,
 } from 'remotion';
@@ -39,6 +37,7 @@ export interface CaptionStyle {
   fontSize?: number;
   color?: string;
   backgroundColor?: string;
+  fontFamily?: string;
   /** 'bottom' | 'middle' | 'top' */
   position?: 'bottom' | 'middle' | 'top';
   fontWeight?: number | string;
@@ -51,6 +50,7 @@ export interface VideoData {
    * e.g. "audio/voices/ep001_narrator.mp3"
    */
   voice_file: string;
+  render_embedded_audio?: boolean;
   scenes: SceneData[];
   /**
    * Optional path to combined word-level captions JSON produced by voice_agent.
@@ -78,24 +78,338 @@ export interface VideoTemplateProps {
 // If no file, falls back to showing the currently active scene's text.
 
 const SWITCH_CAPTIONS_EVERY_MS = 1800;
+const SUBTITLE_FONT_STACK = '"Arial Black", "Trebuchet MS", "Segoe UI", "Segoe UI Emoji", sans-serif';
+const MOBILE_SAFE_SUBTITLE_BOTTOM = 210;
+const MOBILE_SUBTITLE_SIDE_PADDING = 56;
+const MOBILE_SUBTITLE_MAX_WIDTH = 900;
+
 const DEFAULT_CAPTION_STYLE: Required<CaptionStyle> = {
-  fontSize: 52,
+  fontSize: 60,
   color: '#ffffff',
-  backgroundColor: 'rgba(0,0,0,0.65)',
+  backgroundColor: 'rgba(8,10,24,0.82)',
+  fontFamily: SUBTITLE_FONT_STACK,
   position: 'bottom',
-  fontWeight: 800,
+  fontWeight: 900,
+};
+
+type SubtitleTheme = {
+  accent: string;
+  accentSoft: string;
+  glow: string;
+  emoji: string;
+  badge: string;
+};
+
+type SubtitleLayout = {
+  mode: 'compact' | 'full';
+  bottom: number;
+  sidePadding: number;
+  maxWidth: number;
+  cardPadding: string;
+  borderRadius: number;
+  gap: number;
+  iconSize: number;
+  iconFontSize: number;
+  fontSize: number;
+  lineHeight: number;
+  badgeVisible: boolean;
+  badgeFontSize: number;
+  badgeMarginBottom: number;
+  combineWindowMs: number;
+};
+
+type SubtitlePart = {
+  text: string;
+  isActive?: boolean;
+};
+
+function getActiveSceneAtFrame(scenes: SceneData[], fps: number, frame: number): SceneData | null {
+  let accFrames = 0;
+
+  for (const scene of scenes) {
+    const dur = Math.max(1, Math.round(scene.duration * fps));
+    if (frame >= accFrames && frame < accFrames + dur) {
+      return scene;
+    }
+    accFrames += dur;
+  }
+
+  return scenes[scenes.length - 1] ?? null;
+}
+
+function getSubtitleTheme(scene: SceneData | null, text: string): SubtitleTheme {
+  const source = `${scene?.id ?? ''} ${scene?.visual.text ?? ''} ${text}`.toLowerCase();
+
+  if (/damage|shatter|cup|arm|smash/.test(source)) {
+    return {
+      accent: '#ff5f7a',
+      accentSoft: '#ffb347',
+      glow: 'rgba(255, 95, 122, 0.45)',
+      emoji: '💥',
+      badge: 'Damage Meaning',
+    };
+  }
+
+  if (/rest|coffee|lunch|pause|relax/.test(source)) {
+    return {
+      accent: '#ffd84d',
+      accentSoft: '#7ef7c7',
+      glow: 'rgba(255, 216, 77, 0.42)',
+      emoji: '☕',
+      badge: 'Rest Meaning',
+    };
+  }
+
+  if (/violate|rule|rules|law|promise/.test(source)) {
+    return {
+      accent: '#ff8a3d',
+      accentSoft: '#ffd166',
+      glow: 'rgba(255, 138, 61, 0.40)',
+      emoji: '🚫',
+      badge: 'Rule Meaning',
+    };
+  }
+
+  if (/opportunity|chance|director|noticed|big break/.test(source)) {
+    return {
+      accent: '#39ff88',
+      accentSoft: '#fff176',
+      glow: 'rgba(57, 255, 136, 0.38)',
+      emoji: '🌟',
+      badge: 'Chance Meaning',
+    };
+  }
+
+  if (/worlds|vocabulary|level up|superpower|unlocked/.test(source)) {
+    return {
+      accent: '#8b5cf6',
+      accentSoft: '#f472b6',
+      glow: 'rgba(139, 92, 246, 0.40)',
+      emoji: '🚀',
+      badge: 'Level Up',
+    };
+  }
+
+  if (/four meanings|one word|only knew one|hook/.test(source)) {
+    return {
+      accent: '#00d4ff',
+      accentSoft: '#8cf7ff',
+      glow: 'rgba(0, 212, 255, 0.40)',
+      emoji: '🤯',
+      badge: 'Word Alert',
+    };
+  }
+
+  return {
+    accent: '#60a5fa',
+    accentSoft: '#facc15',
+    glow: 'rgba(96, 165, 250, 0.38)',
+    emoji: '📚',
+    badge: 'English Boost',
+  };
+}
+
+function getSubtitleLayout(scene: SceneData | null, text: string): SubtitleLayout {
+  const template = scene?.visual.template ?? 'stickman';
+  const sceneType = (scene as { type?: string } | null)?.type ?? '';
+  const isCompactScene = template === 'text_burst' || sceneType === 'hook';
+  const isDenseCopy = text.replace(/\s+/g, ' ').trim().length > 58;
+
+  if (isCompactScene || isDenseCopy) {
+    return {
+      mode: 'compact',
+      bottom: 132,
+      sidePadding: 40,
+      maxWidth: 760,
+      cardPadding: '12px 18px 14px',
+      borderRadius: 22,
+      gap: 12,
+      iconSize: 44,
+      iconFontSize: 26,
+      fontSize: 44,
+      lineHeight: 1.02,
+      badgeVisible: false,
+      badgeFontSize: 16,
+      badgeMarginBottom: 0,
+      combineWindowMs: 1050,
+    };
+  }
+
+  return {
+    mode: 'full',
+    bottom: MOBILE_SAFE_SUBTITLE_BOTTOM,
+    sidePadding: MOBILE_SUBTITLE_SIDE_PADDING,
+    maxWidth: MOBILE_SUBTITLE_MAX_WIDTH,
+    cardPadding: '18px 22px 20px',
+    borderRadius: 28,
+    gap: 18,
+    iconSize: 64,
+    iconFontSize: 36,
+    fontSize: stylelessFontSize(scene),
+    lineHeight: 1.08,
+    badgeVisible: true,
+    badgeFontSize: 22,
+    badgeMarginBottom: 8,
+    combineWindowMs: SWITCH_CAPTIONS_EVERY_MS,
+  };
+}
+
+function stylelessFontSize(scene: SceneData | null) {
+  const template = scene?.visual.template ?? 'stickman';
+  if (template === 'superpower') return 56;
+  return 60;
+}
+
+function subtitleTokenColor(rawText: string, isActive: boolean, theme: SubtitleTheme, style: Required<CaptionStyle>) {
+  const token = rawText.toLowerCase().replace(/[^a-z0-9']/g, '');
+
+  if (!token) return style.color;
+  if (isActive) return theme.accent;
+  if (/break|broke/.test(token)) return '#ffe66d';
+  if (/damage|rest|violate|opportunity|rules|worlds|chance|coffee|law/.test(token)) return theme.accentSoft;
+  return style.color;
+}
+
+const SubtitleLine: React.FC<{
+  parts: SubtitlePart[];
+  style: Required<CaptionStyle>;
+  theme: SubtitleTheme;
+  layout: SubtitleLayout;
+}> = ({ parts, style, theme, layout }) => (
+  <p
+    style={{
+      margin: 0,
+      fontSize: layout.fontSize,
+      fontFamily: style.fontFamily,
+      fontWeight: style.fontWeight,
+      whiteSpace: 'pre-wrap',
+      textAlign: 'left',
+      lineHeight: layout.lineHeight,
+      letterSpacing: 0.3,
+      textShadow: '0 6px 18px rgba(0,0,0,0.45)',
+      WebkitTextStroke: '1.2px rgba(3,6,18,0.72)',
+    }}
+  >
+    {parts.map((part, index) => (
+      <span
+        key={`${index}-${part.text}`}
+        style={{
+          color: subtitleTokenColor(part.text, Boolean(part.isActive), theme, style),
+        }}
+      >
+        {part.text}
+      </span>
+    ))}
+  </p>
+);
+
+const SubtitleCard: React.FC<{
+  style: Required<CaptionStyle>;
+  theme: SubtitleTheme;
+  layout: SubtitleLayout;
+  children: React.ReactNode;
+}> = ({ style, theme, layout, children }) => {
+  const positionStyle = captionPositionStyle(style.position, layout);
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        ...positionStyle,
+        left: 0,
+        right: 0,
+        padding: `0 ${layout.sidePadding}px`,
+        display: 'flex',
+        justifyContent: 'center',
+        pointerEvents: 'none',
+        zIndex: 60,
+      }}
+    >
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: layout.maxWidth,
+          borderRadius: layout.borderRadius,
+          padding: layout.cardPadding,
+          background: `linear-gradient(135deg, ${theme.accent}22 0%, ${style.backgroundColor} 46%, rgba(255,255,255,0.05) 100%)`,
+          border: `2px solid ${theme.accentSoft}`,
+          boxShadow: `0 18px 42px rgba(0,0,0,0.45), 0 0 28px ${theme.glow}`,
+          backdropFilter: 'blur(12px)',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          gap: layout.gap,
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: 18,
+            right: 18,
+            top: 0,
+            height: 6,
+            borderRadius: 999,
+            background: `linear-gradient(90deg, ${theme.accent}, ${theme.accentSoft})`,
+          }}
+        />
+
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            minWidth: layout.iconSize,
+            width: layout.iconSize,
+            height: layout.iconSize,
+            borderRadius: '50%',
+            background: `radial-gradient(circle at 30% 30%, ${theme.accentSoft}, ${theme.accent})`,
+            boxShadow: `0 0 22px ${theme.glow}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: layout.iconFontSize,
+            flexShrink: 0,
+          }}
+        >
+          <span style={{ fontFamily: '"Segoe UI Emoji", "Apple Color Emoji", sans-serif' }}>{theme.emoji}</span>
+        </div>
+
+        <div style={{ position: 'relative', zIndex: 2, flex: 1, minWidth: 0 }}>
+          {layout.badgeVisible ? (
+            <div
+              style={{
+                marginBottom: layout.badgeMarginBottom,
+                color: theme.accentSoft,
+                fontSize: layout.badgeFontSize,
+                fontFamily: style.fontFamily,
+                fontWeight: 900,
+                letterSpacing: 2.2,
+                textTransform: 'uppercase',
+                textShadow: `0 0 14px ${theme.glow}`,
+              }}
+            >
+              {theme.badge}
+            </div>
+          ) : null}
+          {children}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 // ── Async caption loader ───────────────────────────────────────────────────
 
 const CaptionFileOverlay: React.FC<{
   captionFile: string;
+  scenes: SceneData[];
   style: Required<CaptionStyle>;
-}> = ({ captionFile, style }) => {
+}> = ({ captionFile, scenes, style }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const [captions, setCaptions] = useState<Caption[] | null>(null);
-  const [handle] = useState(() => useDelayRender('caption-load'));
+  const { delayRender, continueRender, cancelRender } = useDelayRender();
+  const [handle] = useState(() => delayRender('caption-load'));
 
   const fetchCaptions = useCallback(async () => {
     try {
@@ -117,66 +431,51 @@ const CaptionFileOverlay: React.FC<{
 
   if (!captions) return null;
 
-  // Group captions into TikTok-style pages for word highlighting
-  const { pages } = createTikTokStyleCaptions({
+  const activeScene = getActiveSceneAtFrame(scenes, fps, frame);
+  const defaultPages = createTikTokStyleCaptions({
     captions,
     combineTokensWithinMilliseconds: SWITCH_CAPTIONS_EVERY_MS,
-  });
+  }).pages;
+
+  const compactPages = createTikTokStyleCaptions({
+    captions,
+    combineTokensWithinMilliseconds: 1050,
+  }).pages;
 
   const currentMs = (frame / fps) * 1000;
+  const initialPage = defaultPages.find((page, index) => {
+    const nextStart = defaultPages[index + 1]?.startMs ?? Infinity;
+    return page.startMs <= currentMs && currentMs < nextStart;
+  });
 
-  // Find the page that covers the current timestamp
-  const activePage = pages.find(
-    (page, i) => {
-      const nextStart = pages[i + 1]?.startMs ?? Infinity;
-      return page.startMs <= currentMs && currentMs < nextStart;
-    }
+  const layout = getSubtitleLayout(
+    activeScene,
+    initialPage?.tokens.map((token) => token.text).join('') ?? activeScene?.visual.text ?? ''
   );
+  const pages = layout.mode === 'compact' ? compactPages : defaultPages;
+
+  const activePage = pages.find((page, index) => {
+    const nextStart = pages[index + 1]?.startMs ?? Infinity;
+    return page.startMs <= currentMs && currentMs < nextStart;
+  });
 
   if (!activePage) return null;
 
-  const positionStyle = captionPositionStyle(style.position);
+  const pageText = activePage.tokens.map((token) => token.text).join('');
+  const theme = getSubtitleTheme(activeScene, pageText);
 
   return (
-    <div style={{ position: 'absolute', ...positionStyle, left: 0, right: 0, padding: '16px 48px' }}>
-      <div
-        style={{
-          backgroundColor: style.backgroundColor,
-          borderRadius: 12,
-          padding: '14px 28px',
-          display: 'inline-block',
-          maxWidth: '90%',
-          margin: '0 auto',
-        }}
-      >
-        <p
-          style={{
-            margin: 0,
-            fontSize: style.fontSize,
-            fontFamily: 'sans-serif',
-            fontWeight: style.fontWeight,
-            whiteSpace: 'pre-wrap',
-            textAlign: 'center',
-            lineHeight: 1.35,
-          }}
-        >
-          {activePage.tokens.map((token) => {
-            const isActive =
-              token.fromMs <= currentMs && token.toMs > currentMs;
-            return (
-              <span
-                key={token.fromMs}
-                style={{
-                  color: isActive ? '#FFD700' : style.color,
-                }}
-              >
-                {token.text}
-              </span>
-            );
-          })}
-        </p>
-      </div>
-    </div>
+    <SubtitleCard style={style} theme={theme} layout={layout}>
+      <SubtitleLine
+        parts={activePage.tokens.map((token) => ({
+          text: token.text,
+          isActive: token.fromMs <= currentMs && token.toMs > currentMs,
+        }))}
+        style={style}
+        theme={theme}
+        layout={layout}
+      />
+    </SubtitleCard>
   );
 };
 
@@ -189,68 +488,37 @@ const SceneTextOverlay: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Find which scene is currently playing
-  let accFrames = 0;
-  let activeText = '';
-  for (const scene of scenes) {
-    const dur = Math.round(scene.duration * fps);
-    if (frame >= accFrames && frame < accFrames + dur) {
-      activeText = scene.visual.text ?? '';
-      break;
-    }
-    accFrames += dur;
-  }
+  const activeScene = getActiveSceneAtFrame(scenes, fps, frame);
+  const activeText = activeScene?.visual.text ?? '';
 
   if (!activeText) return null;
 
-  const positionStyle = captionPositionStyle(style.position);
+  const theme = getSubtitleTheme(activeScene, activeText);
+  const layout = getSubtitleLayout(activeScene, activeText);
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        ...positionStyle,
-        left: 0,
-        right: 0,
-        padding: '0 48px 48px',
-        display: 'flex',
-        justifyContent: 'center',
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: style.backgroundColor,
-          borderRadius: 14,
-          padding: '16px 32px',
-          maxWidth: '88%',
-        }}
-      >
-        <p
-          style={{
-            margin: 0,
-            color: style.color,
-            fontSize: style.fontSize,
-            fontFamily: 'sans-serif',
-            fontWeight: style.fontWeight,
-            textAlign: 'center',
-            lineHeight: 1.3,
-          }}
-        >
-          {activeText}
-        </p>
-      </div>
-    </div>
+    <SubtitleCard style={style} theme={theme} layout={layout}>
+      <SubtitleLine
+        parts={activeText.split(/(\s+)/).filter(Boolean).map((part) => ({ text: part }))}
+        style={style}
+        theme={theme}
+        layout={layout}
+      />
+    </SubtitleCard>
   );
 };
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-function captionPositionStyle(position: CaptionStyle['position']) {
+function captionPositionStyle(position: CaptionStyle['position'], layout: SubtitleLayout) {
   switch (position) {
-    case 'top':    return { top: 60 };
-    case 'middle': return { top: '40%' };
+    case 'top':
+      return { top: 96 };
+    case 'middle':
+      return { top: '58%', transform: 'translateY(-50%)' };
     case 'bottom':
-    default:       return { bottom: 60 };
+    default:
+      return { bottom: layout.bottom };
   }
 }
 
@@ -511,8 +779,9 @@ const SceneTransition: React.FC<{
 export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
   const { fps, durationInFrames } = useVideoConfig();
 
-  const { voice_file, scenes, captions, captions_file } = jsonData;
+  const { voice_file, scenes, captions, render_embedded_audio, captions_file } = jsonData;
   const captionStyle = mergeCaptionStyle(captions?.style);
+  const shouldRenderEmbeddedAudio = render_embedded_audio !== false;
 
   // Resolve caption file: prefer top-level captions_file (from voice_agent),
   // then fall back to captions.file (legacy)
@@ -538,15 +807,14 @@ export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
       <GlobalBackground />
 
       {/* ── VOICE AUDIO ──────────────────────────────────────────────────── */}
-      <Audio src={voiceSrc} volume={1} />
+      {shouldRenderEmbeddedAudio && <Audio src={voiceSrc} volume={1} />}
 
       {/* ── SFX AUDIO CUES ───────────────────────────────────────────────── */}
-      {sfxCues.map((cue, i) => (
+      {shouldRenderEmbeddedAudio && sfxCues.map((cue, i) => (
         <Sequence
           key={`sfx-${i}`}
           from={cue.startFrame}
           layout="none"
-          premountFor={fps}
         >
           <Audio
             src={cue.file.startsWith('http') ? cue.file : staticFile(cue.file)}
@@ -561,7 +829,6 @@ export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
           key={scene.id}
           from={from}
           durationInFrames={dur}
-          premountFor={fps}
         >
           <SceneTransition durationInFrames={dur}>
             <Scene scene={scene} previousPose={previousPose} />
@@ -597,6 +864,7 @@ export const VideoTemplate: React.FC<VideoTemplateProps> = ({ jsonData }) => {
       {resolvedCaptionFile ? (
         <CaptionFileOverlay
           captionFile={resolvedCaptionFile}
+          scenes={scenes}
           style={captionStyle}
         />
       ) : (

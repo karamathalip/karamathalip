@@ -20,6 +20,7 @@
  * ── CLI usage ─────────────────────────────────────────────────────────────────
  *   node pipeline/render_agent.js                        # all approved scripts
  *   node pipeline/render_agent.js scripts/approved/x.json [...]
+ *   node pipeline/render_agent.js --force scripts/approved/x.json
  *   node pipeline/render_agent.js --show-log             # print render log
  *
  * ── Config variables (top of file) ────────────────────────────────────────────
@@ -45,7 +46,7 @@ const os                      = require('os');
 
 const RENDER_CONCURRENCY  = 3;        // browser tabs for parallel frame rendering
 const RENDER_TIMEOUT_MS   = 120_000;  // per-frame timeout (ms); increase for slow machines
-const FORCE_RERENDER      = false;    // set true to re-render already-completed videos
+const FORCE_RERENDER      = process.argv.includes('--force') || process.env.FORCE_RERENDER === '1';
 
 // ─── Paths ────────────────────────────────────────────────────────────────────
 
@@ -56,6 +57,18 @@ const VIDEOS_DIR    = path.join(PROJECT_ROOT, 'videos');
 const FINAL_DIR     = path.join(PROJECT_ROOT, 'output', 'final');
 const VOICES_DIR    = path.join(PROJECT_ROOT, 'audio', 'voices');
 const RENDER_LOG    = path.join(FINAL_DIR, 'render_log.json');
+const RENDER_SOURCE_FILES = [
+  ENTRY_POINT,
+  path.join(PROJECT_ROOT, 'src', 'Root.tsx'),
+  path.join(PROJECT_ROOT, 'components', 'VideoTemplate.tsx'),
+  path.join(PROJECT_ROOT, 'components', 'Scene.tsx'),
+  path.join(PROJECT_ROOT, 'components', 'Stickman.tsx'),
+  path.join(PROJECT_ROOT, 'components', 'StickmanScene.tsx'),
+  path.join(PROJECT_ROOT, 'components', 'DialogueScene.tsx'),
+  path.join(PROJECT_ROOT, 'components', 'TextBurstScene.tsx'),
+  path.join(PROJECT_ROOT, 'components', 'WordExplosionScene.tsx'),
+  path.join(PROJECT_ROOT, 'components', 'SuperpowerScene.tsx'),
+];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -68,6 +81,36 @@ function toRelative(absPath) {
   return path.relative(PROJECT_ROOT, absPath).replace(/\\/g, '/');
 }
 
+function stageStaticImage(candidatePath, videoId) {
+  if (!candidatePath) return null;
+  if (/^(https?:|data:|file:)/i.test(candidatePath)) return candidatePath;
+
+  const absoluteSource = path.isAbsolute(candidatePath)
+    ? candidatePath
+    : path.join(PROJECT_ROOT, candidatePath);
+
+  if (!fs.existsSync(absoluteSource)) {
+    return candidatePath;
+  }
+
+  const ext = path.extname(absoluteSource).toLowerCase();
+  const mimeType = ext === '.jpg' || ext === '.jpeg'
+    ? 'image/jpeg'
+    : ext === '.webp'
+      ? 'image/webp'
+      : 'image/png';
+  const fileBuffer = fs.readFileSync(absoluteSource);
+  return `data:${mimeType};base64,${fileBuffer.toString('base64')}`;
+}
+
+function primeStaticImages(scriptData) {
+  const videoId = scriptData.video_id ?? 'unknown';
+  for (const scene of scriptData.scenes ?? []) {
+    stageStaticImage(scene?.image_file, videoId);
+    stageStaticImage(scene?.visual?.bg_image, videoId);
+  }
+}
+
 /** Stat a file for size in MB; returns null if file doesn't exist. */
 async function fileSizeMB(filePath) {
   try {
@@ -76,6 +119,29 @@ async function fileSizeMB(filePath) {
   } catch {
     return null;
   }
+}
+
+async function fileMtimeMs(filePath) {
+  try {
+    const stat = await fs.stat(filePath);
+    return stat.mtimeMs;
+  } catch {
+    return 0;
+  }
+}
+
+async function outputIsCurrent(outputPath, inputPaths) {
+  if (!(await fs.pathExists(outputPath))) return false;
+
+  const outputMtimeMs = await fileMtimeMs(outputPath);
+  for (const inputPath of inputPaths) {
+    if (!inputPath) continue;
+    if ((await fileMtimeMs(inputPath)) > outputMtimeMs) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // ─── Render Log ───────────────────────────────────────────────────────────────
@@ -159,15 +225,30 @@ function buildInputProps(scriptData) {
 
   // ── Caption style ───────────────────────────────────────────────────────
   const captionStyle = scriptData.captions?.style ?? {
-    fontSize:        52,
+    fontSize:        60,
     color:           '#ffffff',
-    backgroundColor: 'rgba(0,0,0,0.65)',
+    backgroundColor: 'rgba(8,10,24,0.82)',
+    fontFamily:      '"Arial Black", "Trebuchet MS", "Segoe UI", "Segoe UI Emoji", sans-serif',
     position:        'bottom',
-    fontWeight:      800,
+    fontWeight:      900,
   };
 
+  const resolveExistingProjectFile = (candidatePath) => {
+    if (!candidatePath) return null;
+
+    const absolutePath = path.isAbsolute(candidatePath)
+      ? candidatePath
+      : path.join(PROJECT_ROOT, candidatePath);
+
+    return fs.existsSync(absolutePath) ? candidatePath : null;
+  };
+
+  const resolvedCaptionFile =
+    resolveExistingProjectFile(scriptData.captions_file) ??
+    resolveExistingProjectFile(scriptData.captions?.file);
+
   const captions = {
-    ...(scriptData.captions?.file ? { file: scriptData.captions.file } : {}),
+    ...(resolvedCaptionFile ? { file: resolvedCaptionFile } : {}),
     style: captionStyle,
   };
 
@@ -196,6 +277,8 @@ function buildInputProps(scriptData) {
       inferTemplate(rawScene)
     );
 
+    const stagedImage = stageStaticImage(rawVisual.bg_image ?? rawScene.image_file, videoId);
+
     const visual = {
       template,
 
@@ -204,7 +287,7 @@ function buildInputProps(scriptData) {
       stickman_action:  rawVisual.stickman_action  ?? rawScene.stickman_action,
       stickman_emotion: rawVisual.stickman_emotion ?? rawScene.stickman_emotion,
       bg_color:         rawVisual.bg_color         ?? rawScene.bg_color,
-      bg_image:         rawVisual.bg_image         ?? rawScene.image_file,  // image_agent output
+      bg_image:         stagedImage,  // image_agent output staged into public/ for Remotion
       effect:           rawVisual.effect           ?? null,
 
       // ── text_burst ──────────────────────────────────────────────────────
@@ -258,6 +341,7 @@ function buildInputProps(scriptData) {
     jsonData: {
       title:      scriptData.video_title ?? scriptData.title ?? videoId,
       voice_file: voiceFile,
+      render_embedded_audio: false,
       scenes,
       captions,
     },
@@ -423,12 +507,13 @@ async function renderVideo(scriptData, bundleLocation, outputPath) {
  * @param {string}   opts.voicePath        - Full voice track MP3
  * @param {Array<{filePath:string, offsetSeconds:number, volume:number}>} opts.sfxTracks
  * @param {object}   [opts.backgroundMusic] - { filePath, volume } for ambient layer
+ * @param {number}   [opts.totalDurationSeconds] - Video total duration for music fade-out
  * @param {string}   opts.outputPath       - Final MP4 output path
  * @returns {Promise<void>}
  */
 function mergeAudio(opts) {
   return new Promise((resolve, reject) => {
-    const { silentVideoPath, voicePath, sfxTracks, backgroundMusic, outputPath } = opts;
+    const { silentVideoPath, voicePath, sfxTracks, backgroundMusic, totalDurationSeconds, outputPath } = opts;
 
     const cmd = ffmpeg();
 
@@ -467,7 +552,8 @@ function mergeAudio(opts) {
     if (hasBgMusic) {
       // Background music: loop if shorter than video, apply volume, fade in/out
       const bgVol = typeof backgroundMusic.volume === 'number' ? backgroundMusic.volume : 0.08;
-      filterParts.push(`[${inputIndex}:a]aloop=loop=-1:size=2e+09,volume=${bgVol},afade=t=in:d=2,afade=t=out:st=51:d=4[bgm]`);
+      const fadeOutStart = Math.max(0, (totalDurationSeconds ?? 51) - 4);
+      filterParts.push(`[${inputIndex}:a]aloop=loop=-1:size=2e+09,volume=${bgVol},afade=t=in:d=2,afade=t=out:st=${fadeOutStart}:d=4[bgm]`);
       mixInputs.push('[bgm]');
       inputIndex++;
     }
@@ -604,8 +690,40 @@ async function processScript(scriptData, scriptPath, bundleLocation) {
   const silentPath  = path.join(VIDEOS_DIR, `${videoId}.mp4`);
   const finalPath   = path.join(FINAL_DIR,  `${videoId}_final.mp4`);
 
+  const voiceRelative =
+    scriptData.voice_file ??
+    scriptData.audio?.file_url ??
+    `audio/voices/${videoId}_voice_full.mp3`;
+
+  const voicePath = path.isAbsolute(voiceRelative)
+    ? voiceRelative
+    : path.join(PROJECT_ROOT, voiceRelative);
+
+  const sfxTracks = buildSfxTracks(scriptData);
+
+  let backgroundMusic = null;
+  if (scriptData.background_music?.file) {
+    const bgPath = path.isAbsolute(scriptData.background_music.file)
+      ? scriptData.background_music.file
+      : path.join(PROJECT_ROOT, scriptData.background_music.file);
+    if (await fs.pathExists(bgPath)) {
+      backgroundMusic = {
+        filePath: bgPath,
+        volume: scriptData.background_music.volume ?? 0.08,
+      };
+    }
+  }
+
   // ── Skip if final output already exists and FORCE_RERENDER is false ──────
-  if (!FORCE_RERENDER && await fs.pathExists(finalPath)) {
+  const renderInputs = [
+    scriptPath,
+    voicePath,
+    backgroundMusic?.filePath,
+    ...sfxTracks.map(track => track.filePath),
+    ...RENDER_SOURCE_FILES,
+  ];
+
+  if (!FORCE_RERENDER && await outputIsCurrent(finalPath, renderInputs)) {
     console.log(`    ✓ Already rendered — skipping: ${path.basename(finalPath)}`);
     const sizeMB = await fileSizeMB(finalPath);
     return {
@@ -624,36 +742,15 @@ async function processScript(scriptData, scriptPath, bundleLocation) {
   const renderMs = Date.now() - renderStart;
   console.log(`    ✓ Render done in ${(renderMs / 1000).toFixed(1)}s → ${path.basename(silentPath)}`);
 
-  // ── Step 2: Locate voice track ────────────────────────────────────────────
-  const voiceRelative =
-    scriptData.voice_file ??
-    scriptData.audio?.file_url ??
-    `audio/voices/${videoId}_voice_full.mp3`;
-
-  const voicePath = path.isAbsolute(voiceRelative)
-    ? voiceRelative
-    : path.join(PROJECT_ROOT, voiceRelative);
-
   if (!(await fs.pathExists(voicePath))) {
     console.warn(`    ⚠  Voice file not found: ${voiceRelative}`);
     console.warn(`       Run voice_agent.js first, or place the MP3 at that path.`);
   }
 
-  // ── Step 3: Build SFX track list ──────────────────────────────────────────
-  const sfxTracks = buildSfxTracks(scriptData);
-
   // ── Step 3b: Background music ────────────────────────────────────────────
-  let backgroundMusic = null;
   if (scriptData.background_music?.file) {
-    const bgPath = path.isAbsolute(scriptData.background_music.file)
-      ? scriptData.background_music.file
-      : path.join(PROJECT_ROOT, scriptData.background_music.file);
-    if (await fs.pathExists(bgPath)) {
-      backgroundMusic = {
-        filePath: bgPath,
-        volume: scriptData.background_music.volume ?? 0.08,
-      };
-      console.log(`    → Background music: ${path.basename(bgPath)} (vol=${backgroundMusic.volume})`);
+    if (backgroundMusic) {
+      console.log(`    → Background music: ${path.basename(backgroundMusic.filePath)} (vol=${backgroundMusic.volume})`);
     } else {
       console.warn(`    ⚠  Background music not found: ${scriptData.background_music.file}`);
     }
@@ -671,6 +768,7 @@ async function processScript(scriptData, scriptPath, bundleLocation) {
     voicePath,
     sfxTracks,
     backgroundMusic,
+    totalDurationSeconds: scriptData.total_duration_seconds,
     outputPath:      finalPath,
   });
 
@@ -738,6 +836,15 @@ async function runRenderBatch(filePaths) {
   console.log(`  Batch       : ${targets.length} script${targets.length !== 1 ? 's' : ''}`);
   console.log(`  Output dir  : ${FINAL_DIR}`);
   console.log(`${divider}\n`);
+
+  for (const scriptPath of targets) {
+    try {
+      const scriptData = await fs.readJson(scriptPath);
+      primeStaticImages(scriptData);
+    } catch {
+      // Ignore here; the normal per-script read below will report concrete failures.
+    }
+  }
 
   // Bundle once for the whole batch
   let bundleLocation;

@@ -156,6 +156,78 @@ function toneToSemitones(tone) {
   return 0.0;
 }
 
+/**
+ * Rewrite SSML-like markup into plain text that Inworld TTS will speak naturally.
+ * This endpoint accepts a plain "text" field; it should not receive raw tags.
+ */
+function rewriteVoiceLineForInworld(text) {
+  if (!text) return '';
+
+  let rewritten = String(text);
+
+  rewritten = rewritten.replace(
+    /<emphasis\b[^>]*>([\s\S]*?)<\/emphasis>/gi,
+    (_, inner) => {
+      const clean = String(inner).trim();
+      if (!clean) return '';
+      return clean.length <= 24 ? clean.toUpperCase() : clean;
+    }
+  );
+
+  rewritten = rewritten.replace(/<break\b[^>]*time="([0-9.]+)s"\s*\/?>/gi, (_, seconds) => {
+    const duration = parseFloat(seconds);
+    if (!Number.isFinite(duration) || duration <= 0.1) return ' ';
+    if (duration >= 0.45) return '... ';
+    if (duration >= 0.2) return ', ';
+    return ' ';
+  });
+
+  rewritten = rewritten.replace(/<[^>]+>/g, ' ');
+  rewritten = rewritten.replace(/([.!?;:])\s*,\s*/g, '$1 ');
+  rewritten = rewritten.replace(/,\s*,+/g, ', ');
+  rewritten = rewritten.replace(/^\s*[,.;:!?-]+\s*/g, '');
+  rewritten = rewritten.replace(/\s+[,.!?;:]/g, (match) => match.trimStart());
+  rewritten = rewritten.replace(/\s*[—–-]\s*/g, ', ');
+  rewritten = rewritten.replace(/\s+/g, ' ').trim();
+
+  return rewritten;
+}
+
+function getLastTimestampSeconds(wordTimestamps) {
+  if (!Array.isArray(wordTimestamps) || wordTimestamps.length === 0) return null;
+  const last = wordTimestamps[wordTimestamps.length - 1];
+  const rawEnd = typeof last?.endTime === 'string'
+    ? last.endTime.replace('s', '')
+    : last?.endTime;
+  const seconds = parseFloat(String(rawEnd));
+  return Number.isFinite(seconds) ? seconds : null;
+}
+
+function probeAudioDurationSeconds(filePath) {
+  return new Promise((resolve) => {
+    ffmpeg.ffprobe(filePath, (error, metadata) => {
+      if (error) {
+        console.warn(`      ⚠  Could not probe audio duration for ${path.basename(filePath)}: ${error.message}`);
+        resolve(null);
+        return;
+      }
+
+      const seconds = metadata?.format?.duration;
+      resolve(Number.isFinite(seconds) ? seconds : null);
+    });
+  });
+}
+
+function roundSeconds(value) {
+  return Math.round(value * 100) / 100;
+}
+
+function getMinimumSceneDuration(scene) {
+  const sceneType = (scene?.type ?? '').toLowerCase();
+  if (sceneType === 'hook') return 3.0;
+  return 4.0;
+}
+
 // ─── Inworld API: List Voices (stub) ──────────────────────────────────────────
 
 /**
@@ -276,7 +348,7 @@ async function synthesizeVoiceLine(text, speakingRate, pitch, attempt = 0) {
  * Creates natural breathing room between scenes. Controlled per-scene
  * via scene.silence_after (seconds) in the script JSON; this is the fallback.
  */
-const DEFAULT_SCENE_GAP_SECONDS = 0.25;
+const DEFAULT_SCENE_GAP_SECONDS = 0.45;
 
 /**
  * Dynamic scene gap map: scene type → silence duration in seconds.
@@ -284,22 +356,27 @@ const DEFAULT_SCENE_GAP_SECONDS = 0.25;
  * The hook has zero gap (slam into content), payoff has dramatic pause.
  */
 const SCENE_TYPE_GAP_MAP = {
-  hook:        0,      // No gap — slam into the content immediately
-  explanation: 0.30,   // Brief breath for processing
-  example:     0.20,   // Quick transition
-  payoff:      0.80,   // DRAMATIC PAUSE before the reveal
-  CTA:         0.40,   // Slight gap for tone shift
+  hook:        0.35,   // Quick beat before the first teaching point lands
+  explanation: 0.55,   // Give viewers time to process the rule
+  example:     0.65,   // Vocabulary clips need a deliberate absorb pause
+  payoff:      0.85,   // Strongest hold before the climax lands
+  cta:         0.55,   // Leave a beat before the final ask
 };
 
 /**
  * Get the appropriate silence gap for a scene based on its type.
- * Priority: scene.silence_after (explicit) > SCENE_TYPE_GAP_MAP > DEFAULT_SCENE_GAP_SECONDS
+ * Older scripts often carry very short silence_after values, so we treat the
+ * type-based pacing map as a minimum rather than letting those clips rush.
  */
 function getSceneGap(scene) {
-  if (typeof scene.silence_after === 'number') return scene.silence_after;
+  const explicitGap = typeof scene.silence_after === 'number'
+    ? Math.max(0, scene.silence_after)
+    : null;
   const sceneType = (scene.type ?? '').toLowerCase();
-  if (SCENE_TYPE_GAP_MAP[sceneType] !== undefined) return SCENE_TYPE_GAP_MAP[sceneType];
-  return DEFAULT_SCENE_GAP_SECONDS;
+  const recommendedGap = SCENE_TYPE_GAP_MAP[sceneType] ?? DEFAULT_SCENE_GAP_SECONDS;
+
+  if (explicitGap == null) return recommendedGap;
+  return Math.max(explicitGap, recommendedGap);
 }
 
 /**
@@ -454,11 +531,13 @@ async function processScript(scriptData, scriptPath) {
   const sceneFilePaths = [];   // absolute paths, in scene order
   let totalChars       = 0;
   let skippedScenes    = [];
+  const spokenDurations = new Array(scenes.length).fill(null);
 
   for (let i = 0; i < scenes.length; i++) {
     const scene      = scenes[i];
     const sceneIndex = i + 1;
-    const voiceLine  = (scene.voice_line ?? scene.text ?? '').trim();
+    const rawVoiceLine = (scene.voice_line ?? scene.text ?? '').trim();
+    const voiceLine = rewriteVoiceLineForInworld(rawVoiceLine);
 
     if (!voiceLine) {
       console.log(`    [scene ${sceneIndex}/${scenes.length}] ⚠  No voice_line — skipping.`);
@@ -479,6 +558,7 @@ async function processScript(scriptData, scriptPath) {
     const paddedIndex = String(sceneIndex).padStart(2, '0');
     const fileName    = `${videoId}_scene${paddedIndex}_voice.wav`;
     const filePath    = path.join(VOICES_DIR, fileName);
+    const tsPath      = path.join(VOICES_DIR, `${videoId}_scene${paddedIndex}_timestamps.json`);
 
     console.log(
       `    [scene ${sceneIndex}/${scenes.length}] ` +
@@ -489,15 +569,27 @@ async function processScript(scriptData, scriptPath) {
     // Skip if file already exists (allows re-runs to resume without re-billing)
     if (await fs.pathExists(filePath)) {
       console.log(`      ✓ Already exists — reusing: ${fileName}`);
+      if (await fs.pathExists(tsPath)) {
+        const existingTimestamps = await fs.readJson(tsPath);
+        spokenDurations[i] = getLastTimestampSeconds(existingTimestamps);
+      }
+
+      if (spokenDurations[i] == null) {
+        spokenDurations[i] = await probeAudioDurationSeconds(filePath);
+      }
     } else {
       const result = await synthesizeVoiceLine(voiceLine, sceneSpeakingRate, scenePitch);
       await fs.writeFile(filePath, result.audio);
       console.log(`      ✓ Saved: ${fileName}  (${result.audio.length} bytes)`);
+      spokenDurations[i] = getLastTimestampSeconds(result.wordTimestamps);
 
       // Save word timestamps alongside the WAV for future caption/kinetic text use
       if (result.wordTimestamps && result.wordTimestamps.length > 0) {
-        const tsPath = path.join(VOICES_DIR, `${videoId}_scene${paddedIndex}_timestamps.json`);
         await fs.writeJson(tsPath, result.wordTimestamps, { spaces: 2 });
+      }
+
+      if (spokenDurations[i] == null) {
+        spokenDurations[i] = await probeAudioDurationSeconds(filePath);
       }
     }
 
@@ -507,6 +599,7 @@ async function processScript(scriptData, scriptPath) {
     // Attach voice file path back onto the scene object
     scenes[i] = {
       ...scene,
+      voice_line: voiceLine,
       voice_file: path.relative(path.join(__dirname, '..'), filePath).replace(/\\/g, '/'),
     };
   }
@@ -518,9 +611,8 @@ async function processScript(scriptData, scriptPath) {
 
   if (sceneFilePaths.length === 0) {
     console.log(`    ⚠  No voice lines found — full track not generated.`);
-  } else if (await fs.pathExists(fullTrackPath)) {
-    console.log(`    ✓ Full track already exists — reusing: ${fullTrackName}`);
   } else {
+    await fs.remove(fullTrackPath);
     console.log(`    ↳ Stitching ${sceneFilePaths.length} files into full track...`);
     // Collect per-scene silence gaps using dynamic scene type map,
     // falling back to scene.silence_after or DEFAULT_SCENE_GAP_SECONDS.
@@ -538,7 +630,9 @@ async function processScript(scriptData, scriptPath) {
   const combinedTimestampsPath = path.join(VOICES_DIR, `${videoId}_captions.json`);
   const relCaptionsPath = path.relative(path.join(__dirname, '..'), combinedTimestampsPath).replace(/\\/g, '/');
 
-  if (sceneFilePaths.length > 0 && !(await fs.pathExists(combinedTimestampsPath))) {
+  await fs.remove(combinedTimestampsPath);
+
+  if (sceneFilePaths.length > 0) {
     try {
       const combinedCaptions = [];
       let accOffsetMs = 0;
@@ -582,10 +676,35 @@ async function processScript(scriptData, scriptPath) {
     }
   }
 
+  const hasCombinedCaptions = await fs.pathExists(combinedTimestampsPath);
+
+  // ── Re-time scenes from actual spoken durations ─────────────────────────
+  let nextStart = 0;
+  const retimedScenes = scenes.map((scene, index) => {
+    const spokenDuration = spokenDurations[index];
+    const trailingGap = index < scenes.length - 1 ? getSceneGap(scene) : 0;
+    const minimumDuration = getMinimumSceneDuration(scene);
+    const targetDuration = spokenDuration == null
+      ? (typeof scene.duration === 'number' && scene.duration > 0 ? scene.duration : minimumDuration)
+      : Math.max(minimumDuration, spokenDuration + trailingGap);
+
+    const duration = roundSeconds(targetDuration);
+    const start = roundSeconds(nextStart);
+    nextStart += duration;
+
+    return {
+      ...scene,
+      start,
+      duration,
+    };
+  });
+  const totalDurationSeconds = roundSeconds(nextStart);
+
   // ── Update script JSON with audio paths ──────────────────────────────────
   const updatedScript = {
     ...scriptData,
-    scenes,
+    total_duration_seconds: totalDurationSeconds,
+    scenes: retimedScenes,
     audio: {
       ...audioConfig,
       file_url:          relFullTrack,
@@ -596,6 +715,8 @@ async function processScript(scriptData, scriptPath) {
         per_scene_tone:  true,
         scene_gap_seconds: DEFAULT_SCENE_GAP_SECONDS,
         dynamic_gaps:    true,
+        ssml_supported:  false,
+        voice_line_rewritten_for_tts: true,
         encoding:        AUDIO_ENCODING,
         sample_rate:     SAMPLE_RATE_HZ,
         generated_at:    new Date().toISOString(),
@@ -604,7 +725,7 @@ async function processScript(scriptData, scriptPath) {
     // Update the top-level voice_file field used by VideoTemplate
     voice_file: relFullTrack,
     // Word-level captions file for TikTok-style highlighting
-    captions_file: relCaptionsPath,
+    ...(hasCombinedCaptions ? { captions_file: relCaptionsPath } : {}),
   };
 
   await fs.writeJson(scriptPath, updatedScript, { spaces: 2 });

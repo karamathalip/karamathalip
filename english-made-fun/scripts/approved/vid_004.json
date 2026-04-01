@@ -1,0 +1,433 @@
+{
+  "video_id": "vid_004",
+  "video_title": "MUCH vs MANY — the rule nobody taught you",
+  "format": "rule_as_superpower_metaphor",
+  "topic": "Much vs Many — the countability superpower",
+  "hook": "Two words. One rule. Most learners pick randomly and hope for the best.",
+  "total_duration_seconds": 44.79,
+  "viral_score": 84,
+  "status": "approved",
+  "scenes": [
+    {
+      "scene_id": "hook",
+      "id": "hook",
+      "start": 0,
+      "duration": 5.11,
+      "type": "hook",
+      "text": "MUCH or MANY? You are guessing.",
+      "voice_line": "Much or many? Stop guessing. Ask one question.",
+      "tone": "dramatic",
+      "stickman_action": "dramatic_point_at_camera",
+      "stickman_emotion": "intense",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#0a0a1a",
+        "text_color": "#f7c948",
+        "split_words": [
+          "MUCH",
+          "vs",
+          "MANY"
+        ],
+        "animation": {
+          "in": "lightning_strike",
+          "emphasis": "shake",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "whoosh_slide",
+        "magic_whoosh"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_004_scene01_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_004_scene01_sfx1.mp3",
+          "startTime": 0.08,
+          "volume": 0.28
+        },
+        {
+          "file": "audio/sfx/vid_004_scene01_sfx2.mp3",
+          "startTime": 0.96,
+          "volume": 0.16
+        }
+      ]
+    },
+    {
+      "scene_id": "hero_pose",
+      "id": "hero_pose",
+      "start": 5.11,
+      "duration": 5.59,
+      "type": "explanation",
+      "text": "The superpower: Can you COUNT it?",
+      "voice_line": "Here is the rule. Can you count it? That is the whole rule.",
+      "tone": "dramatic",
+      "stickman_action": "hero_cape_pose",
+      "stickman_emotion": "heroic",
+      "visual": {
+        "template": "superpower",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "formula": "Can you COUNT it?",
+        "formula_color": "#f7c948",
+        "animation": {
+          "in": "hero_landing",
+          "emphasis": "cape_flutter",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "power_chime",
+        "magic_whoosh"
+      ],
+      "use_image": true,
+      "visual_priority": "high_emotion",
+      "image_prompt": "Heroic grammar-superpower background plate for an English learning short dramatic cinematic arena or classroom, gold-highlighted rule energy, empowered educational mood, epic but clean framing Scene context: The superpower: Can you COUNT it?. Your superpower question is this: Can you count it? That is all you need to ask. Can I count this thing? Yes or no. That is the whole rule.. Mood: high_emotion, heroic, dramatic. Vertical 9:16 background plate only for a foreground stickman and captions. No words, letters, subtitles, speech bubbles, logos, watermarks, or extra foreground character. Leave clean negative space in the center and upper-middle for on-screen text.",
+      "image_file": "images/vid_004_scene02.png",
+      "voice_file": "audio/voices/vid_004_scene02_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_004_scene02_sfx1.mp3",
+          "startTime": 0.55,
+          "volume": 0.2
+        },
+        {
+          "file": "audio/sfx/vid_004_scene02_sfx2.mp3",
+          "startTime": 0.1,
+          "volume": 0.14
+        }
+      ]
+    },
+    {
+      "scene_id": "many_rule",
+      "id": "many_rule",
+      "start": 10.7,
+      "duration": 6.75,
+      "type": "explanation",
+      "text": "Can count it? → MANY",
+      "voice_line": "If you can count it, use many. Many books. Many people. Many days.",
+      "tone": "energetic",
+      "stickman_action": "count_on_fingers",
+      "stickman_emotion": "focused",
+      "visual": {
+        "template": "stickman",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "rule_card": {
+          "word": "MANY",
+          "rule": "countable nouns",
+          "examples": [
+            "many books",
+            "many people",
+            "many days"
+          ],
+          "color": "#2ed573"
+        },
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "pulse_callout",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "sparkle_pop"
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_004_scene03_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_004_scene03_sfx1.mp3",
+          "startTime": 0.48,
+          "volume": 0.18
+        }
+      ]
+    },
+    {
+      "scene_id": "much_rule",
+      "id": "much_rule",
+      "start": 17.45,
+      "duration": 6.31,
+      "type": "explanation",
+      "text": "Cannot count it? → MUCH",
+      "voice_line": "If you cannot count it, use much. Much water. Much time. Much love.",
+      "tone": "calm",
+      "stickman_action": "shake_head_no",
+      "stickman_emotion": "focused",
+      "visual": {
+        "template": "stickman",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "rule_card": {
+          "word": "MUCH",
+          "rule": "uncountable nouns",
+          "examples": [
+            "much water",
+            "much time",
+            "much love"
+          ],
+          "color": "#ff6b35"
+        },
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "pulse_callout",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "sparkle_pop"
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_004_scene04_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_004_scene04_sfx1.mp3",
+          "startTime": 0.52,
+          "volume": 0.16
+        }
+      ]
+    },
+    {
+      "scene_id": "contrast_battle",
+      "id": "contrast_battle",
+      "start": 23.76,
+      "duration": 6.05,
+      "type": "example",
+      "text": "MANY books. MUCH knowledge. MANY questions. MUCH advice.",
+      "voice_line": "Many books, but much knowledge. Many questions, but much advice.",
+      "tone": "energetic",
+      "stickman_action": "rapid_compare_gesture",
+      "stickman_emotion": "excited",
+      "visual": {
+        "template": "dialogue",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "battle_pairs": [
+          {
+            "many": "many books",
+            "much": "much knowledge"
+          },
+          {
+            "many": "many questions",
+            "much": "much advice"
+          }
+        ],
+        "animation": {
+          "in": "slide_up",
+          "emphasis": "rapid_reveal",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "whoosh_slide",
+        "victory_chime"
+      ],
+      "use_image": true,
+      "visual_priority": "high_emotion",
+      "image_prompt": "Heroic grammar-superpower background plate for an English learning short dramatic cinematic arena or classroom, gold-highlighted rule energy, empowered educational mood, epic but clean framing Scene context: MANY books. MUCH knowledge. MANY questions. MUCH advice.. Watch. Many books — you count books. Much knowledge — you cannot count knowledge. Many questions — count them. Much advice — cannot count advice. Feel the differe. Mood: high_emotion, excited, energetic. Vertical 9:16 background plate only for a foreground stickman and captions. No words, letters, subtitles, speech bubbles, logos, watermarks, or extra foreground character. Leave clean negative space in the center and upper-middle for on-screen text.",
+      "image_file": "images/vid_004_scene05.png",
+      "voice_file": "audio/voices/vid_004_scene05_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_004_scene05_sfx1.mp3",
+          "startTime": 0.12,
+          "volume": 0.22
+        },
+        {
+          "file": "audio/sfx/vid_004_scene05_sfx2.mp3",
+          "startTime": 1.45,
+          "volume": 0.18
+        }
+      ]
+    },
+    {
+      "scene_id": "quick_wins",
+      "id": "quick_wins",
+      "start": 29.81,
+      "duration": 5.23,
+      "type": "explanation",
+      "text": "3 quick wins to say TODAY:",
+      "voice_line": "Use these today: much time, many people, so much love.",
+      "tone": "warm",
+      "stickman_action": "write_on_board",
+      "stickman_emotion": "happy",
+      "visual": {
+        "template": "text_burst",
+        "background_color": "#0a0a1a",
+        "text_color": "#f7c948",
+        "list": [
+          "I don't have much time.",
+          "How many people are coming?",
+          "There is so much love."
+        ],
+        "animation": {
+          "in": "fade",
+          "emphasis": "line_by_line_reveal",
+          "out": "fade"
+        }
+      },
+      "sfx_prompts": [
+        "sparkle_pop"
+      ],
+      "use_image": false,
+      "visual_priority": "standard",
+      "voice_file": "audio/voices/vid_004_scene06_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_004_scene06_sfx1.mp3",
+          "startTime": 0.4,
+          "volume": 0.16
+        }
+      ]
+    },
+    {
+      "scene_id": "power_reveal",
+      "id": "power_reveal",
+      "start": 35.04,
+      "duration": 6.39,
+      "type": "payoff",
+      "text": "One question. Zero confusion.",
+      "voice_line": "One question fixes it. Count it? Many. No count? Much.",
+      "tone": "dramatic",
+      "stickman_action": "power_up_glowing",
+      "stickman_emotion": "triumphant",
+      "visual": {
+        "template": "superpower",
+        "background_color": "#0a0a1a",
+        "text_color": "#ffffff",
+        "lightning_effect": true,
+        "formula_reveal": "COUNT? → MANY  |  NO COUNT? → MUCH",
+        "animation": {
+          "in": "zoom_punch",
+          "emphasis": "lightning_burst",
+          "out": "fade"
+        },
+        "transition": "dark_to_bright_reveal"
+      },
+      "sfx_prompts": [
+        "power_chime",
+        "victory_chime"
+      ],
+      "use_image": true,
+      "visual_priority": "high_emotion",
+      "image_prompt": "Heroic grammar-superpower background plate for an English learning short dramatic cinematic arena or classroom, gold-highlighted rule energy, empowered educational mood, epic but clean framing Scene context: One question. Zero confusion.. One question changes everything. Can you count it? Yes — many. No — much. You will never confuse these again. Grammar superpower unlocked.. Mood: high_emotion, triumphant, dramatic. Vertical 9:16 background plate only for a foreground stickman and captions. No words, letters, subtitles, speech bubbles, logos, watermarks, or extra foreground character. Leave clean negative space in the center and upper-middle for on-screen text.",
+      "image_file": "images/vid_004_scene07.png",
+      "voice_file": "audio/voices/vid_004_scene07_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_004_scene07_sfx1.mp3",
+          "startTime": 0.22,
+          "volume": 0.22
+        },
+        {
+          "file": "audio/sfx/vid_004_scene07_sfx2.mp3",
+          "startTime": 1.55,
+          "volume": 0.18
+        }
+      ]
+    },
+    {
+      "scene_id": "loop_back",
+      "id": "loop_back",
+      "start": 41.43,
+      "duration": 3.36,
+      "type": "hook",
+      "text": "Can you count it? That is the whole rule.",
+      "voice_line": "Can you count it? That is the rule.",
+      "tone": "energetic",
+      "stickman_action": "power_pose",
+      "stickman_emotion": "triumphant",
+      "visual": {
+        "template": "superpower",
+        "background_color": "#0a0a1a",
+        "text_color": "#f7c948",
+        "animation": {
+          "in": "lightning_strike",
+          "emphasis": "pulse",
+          "out": "hard_cut"
+        }
+      },
+      "sfx_prompts": [
+        "whoosh_slide"
+      ],
+      "use_image": false,
+      "visual_priority": "high_emotion",
+      "voice_file": "audio/voices/vid_004_scene08_voice.wav",
+      "sfx": [
+        {
+          "file": "audio/sfx/vid_004_scene08_sfx1.mp3",
+          "startTime": 0.12,
+          "volume": 0.2
+        }
+      ]
+    }
+  ],
+  "audio": {
+    "voice_profile": "Energetic English Coach",
+    "background_music": false,
+    "sfx_enabled": true,
+    "master_volume": 1,
+    "voice_volume": 0.9,
+    "sfx_volume": 0.4,
+    "file_url": "audio/voices/vid_004_voice_full.mp3",
+    "voice_agent_meta": {
+      "character": "Energetic English Coach",
+      "speaking_rate": 1,
+      "pitch_semitones": 0,
+      "per_scene_tone": true,
+      "scene_gap_seconds": 0.45,
+      "dynamic_gaps": true,
+      "ssml_supported": false,
+      "voice_line_rewritten_for_tts": true,
+      "encoding": "WAV",
+      "sample_rate": 48000,
+      "generated_at": "2026-04-01T05:10:17.732Z"
+    }
+  },
+  "captions": {
+    "style": {
+      "fontSize": 52,
+      "color": "#ffffff",
+      "backgroundColor": "rgba(0,0,0,0.70)",
+      "position": "bottom",
+      "fontWeight": 800
+    }
+  },
+  "packaging": {
+    "titles": [
+      "MUCH vs MANY — the rule nobody taught you ⚡",
+      "Stop guessing MUCH or MANY — one question fixes it",
+      "The grammar superpower that ends MUCH/MANY confusion"
+    ],
+    "description": "Much or many? Stop guessing forever with this one simple question: Can you count it? If yes, MANY. If no, MUCH. Grammar superpower unlocked.",
+    "tags": [
+      "much vs many",
+      "english grammar",
+      "countable uncountable",
+      "ESL grammar",
+      "grammar rules",
+      "learn english",
+      "grammar superpower",
+      "english tips"
+    ],
+    "thumbnail_prompt": "Hero stickman with cape and lightning. Left side glowing green: word MANY with countable icons (books, people, apples). Right side glowing orange: word MUCH with uncountable icons (water, time, love). Center: electric question mark '?'. Bold text: CAN YOU COUNT IT? Dark background, superhero style.",
+    "thumbnail": {
+      "image_file": "thumbnails/vid_004_thumb.png"
+    }
+  },
+  "viral_triggers": [
+    "rhetorical_question_hook",
+    "single_rule_simplification",
+    "rapid_contrast_examples",
+    "meta_humor_cta",
+    "grammar_superpower_identity"
+  ],
+  "metrics": {
+    "ctr": null,
+    "retention": null,
+    "watch_time": null
+  },
+  "voice_file": "audio/voices/vid_004_voice_full.mp3"
+}

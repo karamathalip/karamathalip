@@ -1,19 +1,19 @@
 {
-  "run_at": "2026-03-31T22:23:59.711Z",
+  "run_at": "2026-04-01T04:55:38.010Z",
   "total": 1,
   "processed": [
     {
-      "fileName": "vid_001.json",
-      "video_id": "vid_001",
-      "sfx_generated": 5,
-      "sfx_cached": 4,
-      "char_count": 105,
-      "cost_estimate": 0.0315
+      "fileName": "vid_004.json",
+      "video_id": "vid_004",
+      "sfx_generated": 2,
+      "sfx_cached": 10,
+      "char_count": 141,
+      "cost_estimate": 0.0423
     }
   ],
   "failed": [],
-  "total_api_calls": 5,
-  "total_cache_hits": 4,
-  "total_char_count": 105,
-  "total_cost_estimate": 0.0315
+  "total_api_calls": 2,
+  "total_cache_hits": 10,
+  "total_char_count": 141,
+  "total_cost_estimate": 0.0423
 }

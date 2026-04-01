@@ -70,11 +70,12 @@ const SceneDataSchema = z.object({
 });
 
 const CaptionStyleSchema = z.object({
-  fontSize: z.number().default(52),
+  fontSize: z.number().default(60),
   color: z.string().default("#ffffff"),
-  backgroundColor: z.string().default("rgba(0,0,0,0.65)"),
+  backgroundColor: z.string().default("rgba(8,10,24,0.82)"),
+  fontFamily: z.string().default('"Arial Black", "Trebuchet MS", "Segoe UI", "Segoe UI Emoji", sans-serif'),
   position: z.enum(["bottom", "middle", "top"]).default("bottom"),
-  fontWeight: z.union([z.number(), z.string()]).default(800),
+  fontWeight: z.union([z.number(), z.string()]).default(900),
 });
 
 // Top-level schema — passed to <Composition schema={...}>
@@ -83,6 +84,7 @@ export const VideoTemplateSchema = z.object({
   jsonData: z.object({
     title: z.string().describe("Video title — used as default output filename"),
     voice_file: z.string().describe("Voice audio path relative to public/"),
+    render_embedded_audio: z.boolean().optional().default(true),
     scenes: z.array(SceneDataSchema).min(1),
     captions: z
       .object({
@@ -103,6 +105,7 @@ const defaultProps: VideoTemplateInput = {
   jsonData: {
     title: "English Made Fun - Present Tense",
     voice_file: "audio/voices/ep001_narrator.mp3",
+    render_embedded_audio: true,
     scenes: [
       {
         id: "intro",
@@ -175,11 +178,12 @@ const defaultProps: VideoTemplateInput = {
     ],
     captions: {
       style: {
-        fontSize: 52,
+        fontSize: 60,
         color: "#ffffff",
-        backgroundColor: "rgba(0,0,0,0.70)",
+        backgroundColor: "rgba(8,10,24,0.82)",
+        fontFamily: '"Arial Black", "Trebuchet MS", "Segoe UI", "Segoe UI Emoji", sans-serif',
         position: "bottom",
-        fontWeight: 800,
+        fontWeight: 900,
       },
     },
   },
@@ -195,8 +199,8 @@ const FPS = 60;
 const calculateVideoMetadata: CalculateMetadataFunction<VideoTemplateInput> = async ({
   props,
 }) => {
-  const totalSeconds = props.jsonData.scenes.reduce(
-    (sum, scene) => sum + scene.duration,
+  const totalFrames = props.jsonData.scenes.reduce(
+    (sum, scene) => sum + Math.max(1, Math.round(scene.duration * FPS)),
     0
   );
 
@@ -207,8 +211,8 @@ const calculateVideoMetadata: CalculateMetadataFunction<VideoTemplateInput> = as
     .replace(/^-|-$/g, "");
 
   return {
-    // Every scene's duration is converted to frames at 60fps and summed
-    durationInFrames: Math.max(FPS, Math.ceil(totalSeconds * FPS)),
+    // Match the same per-scene frame rounding used inside VideoTemplate.
+    durationInFrames: Math.max(FPS, totalFrames),
     defaultOutName: `${slug}.mp4`,
   };
 };
@@ -219,7 +223,7 @@ export const Root: React.FC = () => {
   return (
     <>
       {/* ── PRIMARY: Full video pipeline output ─────────────────────────── */}
-      <Composition
+      <Composition<typeof VideoTemplateSchema, VideoTemplateInput>
         id="VideoTemplate"
         component={VideoTemplate}
         // Placeholder duration — overridden by calculateMetadata at render time

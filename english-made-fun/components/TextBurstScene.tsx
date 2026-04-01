@@ -14,6 +14,8 @@ import {
   interpolate,
   Easing,
   AbsoluteFill,
+  Img,
+  staticFile,
 } from 'remotion';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -25,6 +27,8 @@ export interface TextBurstSceneProps {
   text: string;
   /** Scene background color */
   backgroundColor?: string;
+  /** Optional generated background plate */
+  backgroundImage?: string;
   /** Text color */
   textColor?: string;
   /** Animation emphasis mode */
@@ -179,6 +183,7 @@ const AnimatedBackground: React.FC<{
 export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
   text,
   backgroundColor = '#1a1a2e',
+  backgroundImage,
   textColor = '#ffffff',
   emphasis = 'pop',
   keywords = [],
@@ -229,6 +234,9 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
   // Ken Burns drift: subtle zoom + pan over scene duration
   const kbScale = interpolate(frame, [0, duration], [1.0, 1.03], { extrapolateRight: 'clamp' });
   const kbTranslateX = interpolate(frame, [0, duration], [0, -8], { extrapolateRight: 'clamp' });
+  const backgroundSrc = backgroundImage
+    ? (/^(https?:|data:|file:)/i.test(backgroundImage) ? backgroundImage : staticFile(backgroundImage))
+    : null;
 
   return (
     <AbsoluteFill
@@ -239,6 +247,22 @@ export const TextBurstScene: React.FC<TextBurstSceneProps> = ({
         transform: `scale(${kbScale}) translateX(${kbTranslateX}px)`,
       }}
     >
+      {backgroundSrc && (
+        <Img
+          src={backgroundSrc}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: 0.18,
+            filter: 'saturate(0.88) contrast(1.02)',
+            transform: 'scale(1.08)',
+          }}
+        />
+      )}
+
       {/* Animated gradient background */}
       <AnimatedBackground
         backgroundColor={backgroundColor}

@@ -2,35 +2,22 @@
  * pipeline/image_agent.js
  *
  * Generates scene images and video thumbnails for approved scripts using
- * two AI image models selected by visual_priority / scene type:
- *
- *   • DALL·E 3 (OpenAI)         — high_emotion scenes + all thumbnails
- *   • Stable Diffusion XL 1.0   — all other use_image=true scenes
- *     via Together AI inference API
+ * Wavespeed FLUX.
  *
  * ── Prerequisites ─────────────────────────────────────────────────────────────
  *   .env must contain:
- *     OPENAI_API_KEY=<your-openai-key>
- *     TOGETHER_API_KEY=<your-together-ai-key>
+ *     WAVESPEED_API_KEY=<your-wavespeed-key>
  *
- * ── Model selection logic ─────────────────────────────────────────────────────
- *   visual_priority === "high_emotion"  →  DALL·E 3
- *   scene.type      === "thumbnail"     →  DALL·E 3
- *   packaging.thumbnail (always)        →  DALL·E 3
- *   everything else (use_image=true)    →  Stable Diffusion XL via Together AI
- *
- * ── Stable Diffusion (Together AI) ───────────────────────────────────────────
- *   POST https://api.together.xyz/inference
- *   model   : stabilityai/stable-diffusion-xl-base-1.0
- *   size    : 512x512, steps: 25
- *   prompt suffix appended to every SD prompt:
- *     ", colorful semi-cartoon style, high contrast, clean composition,
- *      minimal background, expressive emotion, optimized for short-form video"
- *
- * ── DALL·E 3 (OpenAI) ─────────────────────────────────────────────────────────
- *   POST https://api.openai.com/v1/images/generations
- *   model: dall-e-3, size: 1024x1024, quality: standard
- *   Response: url (CDN link, expires ~60 min) — downloaded immediately
+ * ── Wavespeed FLUX ────────────────────────────────────────────────────────────
+ *   POST https://api.wavespeed.ai/api/v3/wavespeed-ai/flux-dev-ultra-fast
+ *   model   : wavespeed-ai/flux-dev-ultra-fast
+ *   size    : 1024*1024
+ *   output  : png
+ *   polling : GET https://api.wavespeed.ai/api/v3/predictions/{id}/result
+ *   prompt suffix appended to every prompt:
+ *     ", cinematic educational illustration, bold readable composition,
+ *      clean background layers, expressive motion, high contrast,
+ *      optimized for vertical short-form video"
  *
  * ── Caching ───────────────────────────────────────────────────────────────────
  *   Cache key : MD5(full_prompt_string)
@@ -72,21 +59,48 @@ const fs     = require('fs-extra');
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-// ── Together AI ───────────────────────────────────────────────────────────────
-const TOGETHER_INFERENCE_URL = 'https://api.together.xyz/inference';
-const SD_MODEL               = 'stabilityai/stable-diffusion-xl-base-1.0';
-const SD_WIDTH               = 512;
-const SD_HEIGHT              = 512;
-const SD_STEPS               = 25;
-const SD_STYLE_SUFFIX        =
-  ', colorful semi-cartoon style, high contrast, clean composition, ' +
-  'minimal background, expressive emotion, optimized for short-form video';
+// ── Wavespeed FLUX ───────────────────────────────────────────────────────────
+const WAVESPEED_API_BASE   = 'https://api.wavespeed.ai/api/v3';
+const FLUX_MODEL           = 'wavespeed-ai/flux-dev-ultra-fast';
+const FLUX_SIZE            = '1024*1024';
+const FLUX_STYLE_SUFFIX    =
+  ', cinematic educational illustration, bold readable composition, ' +
+  'clean background layers, expressive motion, high contrast, ' +
+  'optimized for vertical short-form video';
+const FLUX_OUTPUT_FORMAT   = 'png';
+const FLUX_GUIDANCE_SCALE  = 3.5;
+const FLUX_INFERENCE_STEPS = 28;
+const FLUX_NUM_IMAGES      = 1;
+const FLUX_POLL_INTERVAL_MS = 2500;
+const FLUX_POLL_TIMEOUT_MS  = 120000;
+const AUTO_IMAGE_LIMIT      = 3;
 
-// ── OpenAI DALL·E 3 ───────────────────────────────────────────────────────────
-const OPENAI_IMAGES_URL = 'https://api.openai.com/v1/images/generations';
-const DALLE_MODEL       = 'dall-e-3';
-const DALLE_SIZE        = '1024x1024';
-const DALLE_QUALITY     = 'standard';
+const AUTO_IMAGE_TEMPLATES = new Set([
+  'stickman',
+  'dialogue',
+  'text_burst',
+  'superpower',
+  'word_explosion',
+]);
+
+const FORMAT_PROMPT_STYLES = {
+  fail_fix_stickman_skit: {
+    base: 'Cinematic classroom-comedy background plate for an English grammar short',
+    visualLanguage: 'relatable school or everyday interior, red-to-green correction energy, clean composition, subtle storytelling props',
+  },
+  word_explosion_visual_build: {
+    base: 'Bold vocabulary-concept background plate for an English word-meanings short',
+    visualLanguage: 'dark neon editorial atmosphere, symbolic objects, layered depth, strong negative space, semantic visual metaphors',
+  },
+  rule_as_superpower_metaphor: {
+    base: 'Heroic grammar-superpower background plate for an English learning short',
+    visualLanguage: 'dramatic cinematic arena or classroom, gold-highlighted rule energy, empowered educational mood, epic but clean framing',
+  },
+  default: {
+    base: 'Clean cinematic background plate for an English learning short',
+    visualLanguage: 'editorial illustration, focused educational mood, clear visual hierarchy, generous negative space',
+  },
+};
 
 // ── Retry / timing ────────────────────────────────────────────────────────────
 const MAX_RETRIES   = 3;
@@ -101,10 +115,8 @@ const CACHE_INDEX    = path.join(IMAGES_DIR, 'cache_index.json');
 const REUSE_LIBRARY  = path.join(IMAGES_DIR, 'reuse_library.json');
 
 // ── Cost estimates ─────────────────────────────────────────────────────────────
-// Together AI SD XL: ~$0.0128 per image (512×512, as of mid-2025)
-// OpenAI DALL·E 3 standard 1024×1024: ~$0.040 per image
-const COST_SD    = 0.0128;
-const COST_DALLE = 0.040;
+// Estimated per-image price from Wavespeed FLUX Dev Ultra Fast docs.
+const COST_FLUX = 0.005;
 
 // ── Reuse library: seed keys and their generation prompts ─────────────────────
 // These are pre-generated once and reused across all scripts.
@@ -112,30 +124,30 @@ const REUSE_LIBRARY_SEEDS = {
   confused_person: {
     prompt:    'A cartoon stickman character looking confused, head tilted, ' +
                'question marks floating around, bright yellow background',
-    model:     'dalle',
+    model:     'flux',
   },
   celebrating_person: {
     prompt:    'A cartoon stickman character celebrating with arms raised, ' +
                'confetti and stars exploding around them, vibrant colorful background',
-    model:     'dalle',
+    model:     'flux',
   },
   shocked_person: {
     prompt:    'A cartoon stickman character with a shocked expression, ' +
                'mouth wide open, eyes huge, electric energy radiating outward, ' +
                'bold colors',
-    model:     'dalle',
+    model:     'flux',
   },
   classroom_scene: {
     prompt:    'A bright cartoon classroom scene with colorful desks, blackboard ' +
                'with English grammar on it, pencils and books, cheerful atmosphere, ' +
                'semi-cartoon style',
-    model:     'sd',
+    model:     'flux',
   },
   victory_moment: {
     prompt:    'A cartoon stickman character in a triumphant victory pose, ' +
                'trophy, gold stars, green checkmarks, celebration energy, ' +
                'high contrast bright background',
-    model:     'dalle',
+    model:     'flux',
   },
 };
 
@@ -164,33 +176,141 @@ function isRetryable(error) {
 
 /** Validate env keys and return them. Throws a descriptive error if missing. */
 function getEnvKeys() {
-  const openaiKey   = process.env.OPENAI_API_KEY;
-  const togetherKey = process.env.TOGETHER_API_KEY;
-  const missing = [];
-  if (!openaiKey)   missing.push('OPENAI_API_KEY');
-  if (!togetherKey) missing.push('TOGETHER_API_KEY');
-  if (missing.length) {
+  const wavespeedKey = process.env.WAVESPEED_API_KEY;
+  if (!wavespeedKey) {
     throw new Error(
-      `Missing required environment variable(s): ${missing.join(', ')}\n` +
-      'Add them to english-made-fun/.env:\n' +
-      '  OPENAI_API_KEY=sk-...\n' +
-      '  TOGETHER_API_KEY=<your-together-ai-key>'
+      'Missing required environment variable: WAVESPEED_API_KEY\n' +
+      'Set it in english-made-fun/.env or export it before running image_agent.'
     );
   }
-  return { openaiKey, togetherKey };
+  return { wavespeedKey };
 }
 
 /**
  * Determine which model to use for a given scene context.
  *
  * @param {{ visual_priority?: string, type?: string, isThumbnail?: boolean }} ctx
- * @returns {'dalle' | 'sd'}
+ * @returns {'flux'}
  */
 function selectModel(ctx) {
-  if (ctx.isThumbnail)                         return 'dalle';
-  if ((ctx.visual_priority ?? '').toLowerCase() === 'high_emotion') return 'dalle';
-  if ((ctx.type ?? '').toLowerCase() === 'thumbnail')               return 'dalle';
-  return 'sd';
+  return 'flux';
+}
+
+function stripSsml(text) {
+  return String(text ?? '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function sceneTemplate(scene) {
+  return scene?.visual?.template ?? scene?.template ?? null;
+}
+
+function sceneSupportsAutoImage(scene) {
+  return AUTO_IMAGE_TEMPLATES.has(sceneTemplate(scene));
+}
+
+function formatPromptStyle(format) {
+  return FORMAT_PROMPT_STYLES[format] ?? FORMAT_PROMPT_STYLES.default;
+}
+
+function buildSceneContext(scene) {
+  const visual = scene.visual ?? {};
+  const parts = [
+    scene.text,
+    visual.text,
+    visual.example,
+    visual.meaning_label,
+    visual.rule_display,
+    visual.rule_card?.word,
+    visual.rule_card?.rule,
+    stripSsml(scene.voice_line),
+  ]
+    .filter(Boolean)
+    .map((item) => String(item).replace(/\s+/g, ' ').trim());
+
+  return parts.join('. ').slice(0, 220);
+}
+
+function buildAutoImagePrompt(scene, scriptData, sceneIndex) {
+  const style = formatPromptStyle(scriptData.format);
+  const context = buildSceneContext(scene);
+  const mood = [scene.visual_priority, scene.stickman_emotion, scene.tone]
+    .filter(Boolean)
+    .join(', ');
+
+  return [
+    style.base,
+    style.visualLanguage,
+    `Scene context: ${context || `scene ${sceneIndex + 1} from ${scriptData.video_title ?? scriptData.topic ?? 'the video'}`}.`,
+    mood ? `Mood: ${mood}.` : null,
+    'Vertical 9:16 background plate only for a foreground stickman and captions.',
+    'No words, letters, subtitles, speech bubbles, logos, watermarks, or extra foreground character.',
+    'Leave clean negative space in the center and upper-middle for on-screen text.',
+  ]
+    .filter(Boolean)
+    .join(' ');
+}
+
+function scoreSceneForAutoImage(scene, sceneIndex) {
+  if (!sceneSupportsAutoImage(scene)) return -1;
+
+  const template = sceneTemplate(scene);
+  const combinedText = `${scene.text ?? ''} ${stripSsml(scene.voice_line)}`.toLowerCase();
+  let score = 0;
+
+  if (scene.type === 'payoff') score += 5;
+  else if (scene.type === 'example') score += 4;
+  else if (scene.type === 'explanation') score += 3;
+  else if (scene.type === 'hook') score += 1;
+
+  if (scene.visual_priority === 'high_emotion') score += 2;
+
+  if (template === 'superpower' || template === 'word_explosion') score += 2;
+  else if (template === 'stickman' || template === 'dialogue') score += 1;
+
+  if (/opportunity|victory|correct|gone|goes|power|superpower|rule|break/i.test(combinedText)) {
+    score += 1;
+  }
+
+  // Bias toward the core middle scenes rather than the opening/closing hooks.
+  score -= Math.abs(sceneIndex - 2) * 0.05;
+
+  return score;
+}
+
+function prepareScriptForImages(scriptData) {
+  const scenes = (scriptData.scenes ?? []).map((scene) => ({ ...scene }));
+
+  const rankedCandidates = scenes
+    .map((scene, sceneIndex) => ({
+      scene,
+      sceneIndex,
+      score: scoreSceneForAutoImage(scene, sceneIndex),
+    }))
+    .filter((entry) => entry.score >= 0)
+    .sort((a, b) => b.score - a.score || a.sceneIndex - b.sceneIndex);
+
+  const selectedIndexes = new Set(
+    rankedCandidates.slice(0, AUTO_IMAGE_LIMIT).map((entry) => entry.sceneIndex)
+  );
+
+  const preparedScenes = scenes.map((scene, sceneIndex) => {
+    const prepared = { ...scene };
+
+    if (selectedIndexes.has(sceneIndex)) {
+      prepared.use_image = true;
+    }
+
+    if (prepared.use_image && sceneSupportsAutoImage(prepared) && !prepared.image_prompt) {
+      prepared.image_prompt = buildAutoImagePrompt(prepared, scriptData, sceneIndex);
+    }
+
+    return prepared;
+  });
+
+  return { ...scriptData, scenes: preparedScenes };
 }
 
 // ─── Cache ────────────────────────────────────────────────────────────────────
@@ -251,164 +371,94 @@ async function downloadImage(url, outputPath) {
   await fs.writeFile(outputPath, Buffer.from(response.data));
 }
 
-// ─── Together AI: Stable Diffusion XL ────────────────────────────────────────
+async function pollFluxResult(resultUrl, wavespeedKey) {
+  const startedAt = Date.now();
 
-/**
- * Generate an image using Stable Diffusion XL via the Together AI inference API.
- *
- * Endpoint: POST https://api.together.xyz/inference
- * Auth:     Authorization: Bearer <TOGETHER_API_KEY>
- * Body (JSON):
- * {
- *   "model": "stabilityai/stable-diffusion-xl-base-1.0",
- *   "prompt": "<full prompt with style suffix>",
- *   "width": 512,
- *   "height": 512,
- *   "steps": 25,
- *   "n": 1,
- *   "response_format": "base64"
- * }
- * Response (JSON):
- * {
- *   "output": {
- *     "choices": [{ "image_base64": "<base64 PNG bytes>" }]
- *   },
- *   // alternatively: "choices": [{ "image_base64": "..." }]
- * }
- *
- * Docs: https://docs.together.ai/docs/inference-models#image-models
- *
- * @param {string} prompt     - Full generation prompt (style suffix NOT yet appended)
- * @param {number} [attempt]
- * @returns {Promise<Buffer>} - Raw PNG bytes
- */
-async function generateSD(prompt, attempt = 0) {
-  const { togetherKey } = getEnvKeys();
-  const fullPrompt = prompt + SD_STYLE_SUFFIX;
-
-  const requestBody = {
-    model:           SD_MODEL,
-    prompt:          fullPrompt,
-    width:           SD_WIDTH,
-    height:          SD_HEIGHT,
-    steps:           SD_STEPS,
-    n:               1,
-    response_format: 'base64',
-  };
-
-  try {
-    const response = await axios.post(TOGETHER_INFERENCE_URL, requestBody, {
+  while (Date.now() - startedAt < FLUX_POLL_TIMEOUT_MS) {
+    const response = await axios.get(resultUrl, {
       headers: {
-        Authorization:  `Bearer ${togetherKey}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${wavespeedKey}`,
       },
-      timeout: 120000,   // SDXL can take up to 90s on Together AI cold starts
+      timeout: 60000,
     });
 
-    // Together AI response shape may vary by SDK version:
-    //   response.data.output.choices[0].image_base64
-    //   response.data.choices[0].image_base64
-    const data    = response.data;
-    const choices = data?.output?.choices ?? data?.choices ?? [];
-    const b64     = choices[0]?.image_base64
-                 ?? choices[0]?.b64_json
-                 ?? data?.output?.image_base64;
+    const data = response.data?.data ?? {};
+    const status = data.status;
+    const outputs = Array.isArray(data.outputs) ? data.outputs : [];
 
-    if (!b64) {
-      throw new Error(
-        'Together AI response missing image_base64. ' +
-        `Keys: [${Object.keys(data ?? {}).join(', ')}]`
-      );
+    if (outputs.length > 0) {
+      return outputs[0];
     }
 
-    return Buffer.from(b64, 'base64');
-
-  } catch (error) {
-    const exhausted = attempt >= MAX_RETRIES;
-    const retryable = isRetryable(error);
-
-    if (!exhausted && retryable) {
-      const backoffMs = Math.pow(2, attempt) * RETRY_BASE_MS;
-      const status    = error.response?.status;
-      const msg       = error.response?.data?.error ?? error.message;
-      console.warn(`      ⚠  Together AI ${status ? `[HTTP ${status}]` : 'network'}: ${String(msg).slice(0, 120)}`);
-      console.log(`      ↺  Retrying SD in ${(backoffMs / 1000).toFixed(1)}s...`);
-      await sleep(backoffMs);
-      return generateSD(prompt, attempt + 1);
+    if (status === 'failed') {
+      throw new Error(data.error || 'Prediction failed without an error message');
     }
 
-    const status = error.response?.status;
-    const msg    = error.response?.data?.error ?? error.message;
-    throw new Error(
-      `Stable Diffusion (Together AI) failed${status ? ` [HTTP ${status}]` : ''}: ${msg}\n` +
-      `  prompt: "${fullPrompt.slice(0, 80)}"`
-    );
+    if (status === 'completed') {
+      throw new Error('Prediction completed without returning any output URLs');
+    }
+
+    await sleep(FLUX_POLL_INTERVAL_MS);
   }
+
+  throw new Error(
+    `Prediction timed out after ${(FLUX_POLL_TIMEOUT_MS / 1000).toFixed(0)}s`
+  );
 }
 
-// ─── OpenAI: DALL·E 3 ─────────────────────────────────────────────────────────
+// ─── Wavespeed FLUX ──────────────────────────────────────────────────────────
 
 /**
- * Generate an image using DALL·E 3 via the OpenAI images.generate endpoint.
- *
- * Endpoint: POST https://api.openai.com/v1/images/generations
- * Auth:     Authorization: Bearer <OPENAI_API_KEY>
- * Body (JSON):
- * {
- *   "model": "dall-e-3",
- *   "prompt": "...",
- *   "n": 1,
- *   "size": "1024x1024",
- *   "quality": "standard",
- *   "response_format": "url"
- * }
- * Response (JSON):
- * {
- *   "created": 1234567890,
- *   "data": [{ "url": "https://...", "revised_prompt": "..." }]
- * }
- *
- * The URL is a temporary CDN link valid for ~60 minutes — downloaded immediately.
- *
- * Docs: https://platform.openai.com/docs/api-reference/images/create
+ * Generate an image using Wavespeed FLUX and download the returned URL.
  *
  * @param {string} prompt
  * @param {number} [attempt]
- * @returns {Promise<Buffer>} - Raw PNG bytes (downloaded from CDN URL)
+ * @returns {Promise<Buffer>}
  */
-async function generateDALLE(prompt, attempt = 0) {
-  const { openaiKey } = getEnvKeys();
+async function generateFlux(prompt, attempt = 0) {
+  const { wavespeedKey } = getEnvKeys();
+  const fullPrompt = prompt + FLUX_STYLE_SUFFIX;
 
   const requestBody = {
-    model:           DALLE_MODEL,
-    prompt,
-    n:               1,
-    size:            DALLE_SIZE,
-    quality:         DALLE_QUALITY,
-    response_format: 'url',
+    prompt: fullPrompt,
+    size: FLUX_SIZE,
+    num_inference_steps: FLUX_INFERENCE_STEPS,
+    seed: -1,
+    guidance_scale: FLUX_GUIDANCE_SCALE,
+    num_images: FLUX_NUM_IMAGES,
+    output_format: FLUX_OUTPUT_FORMAT,
+    enable_base64_output: false,
+    enable_sync_mode: false,
   };
 
   try {
-    const response = await axios.post(OPENAI_IMAGES_URL, requestBody, {
+    const submitUrl = `${WAVESPEED_API_BASE}/${FLUX_MODEL}`;
+    const response = await axios.post(submitUrl, requestBody, {
       headers: {
-        Authorization:  `Bearer ${openaiKey}`,
+        Authorization: `Bearer ${wavespeedKey}`,
         'Content-Type': 'application/json',
       },
       timeout: 120000,
     });
 
-    const imageUrl = response.data?.data?.[0]?.url;
+    const prediction = response.data?.data ?? {};
+    const initialOutputs = Array.isArray(prediction.outputs) ? prediction.outputs : [];
+    const imageUrl = initialOutputs[0] || (prediction.urls?.get
+      ? await pollFluxResult(prediction.urls.get, wavespeedKey)
+      : prediction.id
+        ? await pollFluxResult(`${WAVESPEED_API_BASE}/predictions/${prediction.id}/result`, wavespeedKey)
+        : null);
+
     if (!imageUrl) {
       throw new Error(
-        'OpenAI response missing data[0].url. ' +
+        'Wavespeed response missing output URL and prediction result URL. ' +
         `Keys: [${Object.keys(response.data ?? {}).join(', ')}]`
       );
     }
 
-    // Download immediately before the temporary CDN URL expires
     const imgResponse = await axios.get(imageUrl, {
       responseType: 'arraybuffer',
-      timeout:      60000,
+      timeout: 60000,
     });
 
     return Buffer.from(imgResponse.data);
@@ -419,19 +469,19 @@ async function generateDALLE(prompt, attempt = 0) {
 
     if (!exhausted && retryable) {
       const backoffMs = Math.pow(2, attempt) * RETRY_BASE_MS;
-      const status    = error.response?.status;
-      const msg       = error.response?.data?.error?.message ?? error.message;
-      console.warn(`      ⚠  OpenAI DALL·E ${status ? `[HTTP ${status}]` : 'network'}: ${String(msg).slice(0, 120)}`);
-      console.log(`      ↺  Retrying DALL·E in ${(backoffMs / 1000).toFixed(1)}s...`);
+      const status = error.response?.status;
+      const msg = error.response?.data?.error?.message ?? error.response?.data?.error ?? error.message;
+      console.warn(`      ⚠  Wavespeed FLUX ${status ? `[HTTP ${status}]` : 'network'}: ${String(msg).slice(0, 120)}`);
+      console.log(`      ↺  Retrying FLUX in ${(backoffMs / 1000).toFixed(1)}s...`);
       await sleep(backoffMs);
-      return generateDALLE(prompt, attempt + 1);
+      return generateFlux(prompt, attempt + 1);
     }
 
     const status = error.response?.status;
-    const msg    = error.response?.data?.error?.message ?? error.message;
+    const msg = error.response?.data?.error?.message ?? error.response?.data?.error ?? error.message;
     throw new Error(
-      `DALL·E 3 failed${status ? ` [HTTP ${status}]` : ''}: ${msg}\n` +
-      `  prompt: "${prompt.slice(0, 80)}"`
+      `Wavespeed FLUX failed${status ? ` [HTTP ${status}]` : ''}: ${msg}\n` +
+      `  prompt: "${fullPrompt.slice(0, 80)}"`
     );
   }
 }
@@ -443,11 +493,11 @@ async function generateDALLE(prompt, attempt = 0) {
  *   1. Output file already on disk → reuse
  *   2. Reuse library entry matching reuseKey → copy
  *   3. Cache index entry matching MD5(prompt) → copy
- *   4. Generate via SD or DALL·E, write output + canonical cache copy
+ *   4. Generate via FLUX, write output + canonical cache copy
  *
  * @param {object} opts
  * @param {string}        opts.prompt      - Full generation prompt
- * @param {'sd'|'dalle'}  opts.model       - Which generator to use
+ * @param {'flux'}        opts.model       - Which generator to use
  * @param {string}        opts.outputPath  - Absolute path for the output file
  * @param {string|null}   [opts.reuseKey]  - Key to check in reuse library first
  * @param {object}        opts.cacheIndex  - Loaded cache index (mutated in place)
@@ -500,9 +550,7 @@ async function generateOrReuse(opts) {
   }
 
   // 4. Generate
-  const imageBuffer = model === 'dalle'
-    ? await generateDALLE(prompt)
-    : await generateSD(prompt);
+  const imageBuffer = await generateFlux(prompt);
 
   await fs.writeFile(outputPath, imageBuffer);
 
@@ -531,7 +579,7 @@ async function generateOrReuse(opts) {
     };
   }
 
-  const cost = model === 'dalle' ? COST_DALLE : COST_SD;
+  const cost = COST_FLUX;
   console.log(
     `      ✓ Generated [${model.toUpperCase()}]: ${path.basename(outputPath)}  ` +
     `(${imageBuffer.length} bytes, est. $${cost.toFixed(4)})`
@@ -636,8 +684,9 @@ async function processScript(scriptData, scriptPath, cacheIndex, reuseLib) {
       continue;
     }
 
-    // Build the generation prompt from available scene fields
+    // Build the generation prompt from explicit scene prompt or available scene fields
     const promptParts = [];
+    if (scene.image_prompt)      promptParts.push(scene.image_prompt);
     if (scene.text)             promptParts.push(scene.text);
     if (scene.visual_priority)  promptParts.push(`mood: ${scene.visual_priority}`);
     if (scene.stickman_emotion) promptParts.push(`emotion: ${scene.stickman_emotion}`);
@@ -646,6 +695,7 @@ async function processScript(scriptData, scriptPath, cacheIndex, reuseLib) {
     // Fallback: build from visual object if scene is flat
     const visual = scene.visual ?? {};
     if (promptParts.length === 0) {
+      if (scene.image_prompt)      promptParts.push(scene.image_prompt);
       if (visual.text)             promptParts.push(visual.text);
       if (visual.stickman_emotion) promptParts.push(`emotion: ${visual.stickman_emotion}`);
       if (visual.stickman_action)  promptParts.push(`action: ${visual.stickman_action}`);
@@ -703,14 +753,14 @@ async function processScript(scriptData, scriptPath, cacheIndex, reuseLib) {
 
   if (thumbPrompt) {
     console.log(
-      `    [thumbnail] DALL·E 3  ` +
+      `    [thumbnail] FLUX  ` +
       `"${thumbPrompt.slice(0, 60)}${thumbPrompt.length > 60 ? '…' : ''}"`
     );
 
     try {
       const result = await generateOrReuse({
         prompt:     thumbPrompt,
-        model:      'dalle',
+        model:      'flux',
         outputPath: thumbPath,
         reuseKey:   null,
         cacheIndex,
@@ -748,7 +798,7 @@ async function processScript(scriptData, scriptPath, cacheIndex, reuseLib) {
 }
 
 /**
- * Build a DALL·E 3 thumbnail prompt from the script's packaging block.
+ * Build a thumbnail prompt from the script's packaging block.
  * Returns null if no usable text is found.
  *
  * @param {object} pkg          - scriptData.packaging
@@ -825,8 +875,7 @@ async function runImageBatch(filePaths) {
   const divider = '═'.repeat(62);
   console.log(`\n${divider}`);
   console.log(`  english-made-fun / image_agent.js`);
-  console.log(`  SD model  : ${SD_MODEL} via Together AI`);
-  console.log(`  DL model  : ${DALLE_MODEL} via OpenAI`);
+  console.log(`  Image API : ${FLUX_MODEL} via Wavespeed`);
   console.log(`  Batch     : ${targets.length} script${targets.length !== 1 ? 's' : ''}`);
   console.log(`  Cache     : ${Object.keys(cacheIndex).length} entries`);
   console.log(`  Reuse lib : ${Object.keys(reuseLib).length} entries`);
@@ -858,14 +907,15 @@ async function runImageBatch(filePaths) {
       continue;
     }
 
-    const useImageCount = (scriptData.scenes ?? []).filter(s => s.use_image).length;
+    const preparedScriptData = prepareScriptForImages(scriptData);
+    const useImageCount = (preparedScriptData.scenes ?? []).filter(s => s.use_image).length;
     console.log(
-      `         title  : ${scriptData.video_title ?? scriptData.title ?? '(untitled)'}\n` +
-      `         scenes : ${(scriptData.scenes ?? []).length}  (${useImageCount} with use_image=true)`
+      `         title  : ${preparedScriptData.video_title ?? preparedScriptData.title ?? '(untitled)'}\n` +
+      `         scenes : ${(preparedScriptData.scenes ?? []).length}  (${useImageCount} with use_image=true)`
     );
 
     try {
-      const result = await processScript(scriptData, scriptPath, cacheIndex, reuseLib);
+      const result = await processScript(preparedScriptData, scriptPath, cacheIndex, reuseLib);
 
       // Flush after every script
       await Promise.all([saveCacheIndex(cacheIndex), saveReuseLibrary(reuseLib)]);
@@ -921,7 +971,7 @@ async function runImageBatch(filePaths) {
   }
 
   console.log(`    Est. cost     : $${summary.total_cost_estimate.toFixed(4)} USD`);
-  console.log(`      (DALL·E 3: $${COST_DALLE}/img  |  SD XL: $${COST_SD}/img)`);
+  console.log(`      (Wavespeed FLUX: $${COST_FLUX}/img estimate)`);
   console.log(`    Cache entries : ${Object.keys(cacheIndex).length}`);
   console.log(`    Reuse entries : ${Object.keys(reuseLib).length}`);
 
@@ -992,11 +1042,11 @@ module.exports = {
   runImageBatch,
   processScript,
   generateOrReuse,
-  generateSD,
-  generateDALLE,
+  generateFlux,
   initReuseLibrary,
   showCache,
   selectModel,
+  prepareScriptForImages,
   loadCacheIndex,
   saveCacheIndex,
   loadReuseLibrary,
@@ -1007,9 +1057,7 @@ module.exports = {
   APPROVED_DIR,
   CACHE_INDEX,
   REUSE_LIBRARY,
-  TOGETHER_INFERENCE_URL,
-  OPENAI_IMAGES_URL,
-  SD_MODEL,
-  DALLE_MODEL,
-  SD_STYLE_SUFFIX,
+  WAVESPEED_API_BASE,
+  FLUX_MODEL,
+  FLUX_STYLE_SUFFIX,
 };
