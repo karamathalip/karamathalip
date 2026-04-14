@@ -18,8 +18,9 @@
  *   4. Config files (local_config, topics_queue, sfx_library, voice_profiles)
  *   5. Live API connectivity (Anthropic, ElevenLabs, Together AI, Inworld, YouTube)
  *   6. FFmpeg binary availability
- *   7. Remotion bundle test (optional, slow)
- *   8. Starter batch files (day01–day07)
+ *   7. Optional Whisper CLI availability (caption fallback)
+ *   8. Remotion bundle test (optional, slow)
+ *   9. Starter batch files (day01–day07)
  */
 
 'use strict';
@@ -358,6 +359,7 @@ async function checkPipelineScripts() {
     'pipeline/scheduler.js',
     'pipeline/script_agent.js',
     'pipeline/viral_prediction_agent.js',
+    'pipeline/whisper_agent.js',
     'pipeline/voice_agent.js',
     'pipeline/sfx_agent.js',
     'pipeline/image_agent.js',
@@ -406,10 +408,37 @@ async function checkFFmpeg() {
   }
 }
 
-// ─── CHECK 7: LIVE API TESTS ──────────────────────────────────────────────────
+// ─── CHECK 7: OPTIONAL WHISPER CLI ──────────────────────────────────────────
+
+async function checkWhisperOptional() {
+  section('7. OPTIONAL WHISPER (CAPTION FALLBACK)');
+
+  const probes = [
+    { cmd: 'whisper --help', label: 'whisper' },
+    { cmd: 'python -m whisper --help', label: 'python -m whisper' },
+    { cmd: 'py -m whisper --help', label: 'py -m whisper' },
+  ];
+
+  for (const probe of probes) {
+    try {
+      execSync(probe.cmd, { timeout: 7000, stdio: 'pipe' });
+      ok('Whisper CLI', `detected via ${probe.label} (optional feature available)`);
+      return;
+    } catch {
+      // keep probing
+    }
+  }
+
+  warn(
+    'Whisper CLI not detected',
+    'Optional only. Install for caption fallback: pip install -U openai-whisper'
+  );
+}
+
+// ─── CHECK 8: LIVE API TESTS ──────────────────────────────────────────────────
 
 async function checkAPIs() {
-  section('7. LIVE API CONNECTIVITY');
+  section('8. LIVE API CONNECTIVITY');
 
   if (NO_API) {
     warn('API checks skipped', 'Run without --no-api to test live connectivity');
@@ -566,10 +595,10 @@ async function checkAPIs() {
   }
 }
 
-// ─── CHECK 8: REMOTION ────────────────────────────────────────────────────────
+// ─── CHECK 9: REMOTION ───────────────────────────────────────────────────────
 
 async function checkRemotion() {
-  section('8. REMOTION PROJECT');
+  section('9. REMOTION PROJECT');
 
   const remotionDirs = [
     'english-made-fun-remotion/src',
@@ -659,6 +688,7 @@ async function main() {
   await checkConfigFiles();
   await checkPipelineScripts();
   await checkFFmpeg();
+  await checkWhisperOptional();
   await checkAPIs();
   await checkRemotion();
 

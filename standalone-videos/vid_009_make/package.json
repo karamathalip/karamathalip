@@ -1,0 +1,26 @@
+{
+  "name": "vid-009-make-word-explosion",
+  "version": "1.0.0",
+  "description": "Remotion video: The word MAKE — 3 completely different meanings (YouTube Short)",
+  "scripts": {
+    "dev": "remotion studio",
+    "build": "remotion render MakeVideo output/vid_009_make.mp4",
+    "render": "node scripts/render.js",
+    "generate-voice": "node scripts/generate-voice.js"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.441",
+    "@remotion/google-fonts": "4.0.441",
+    "@remotion/media": "4.0.441",
+    "@remotion/renderer": "4.0.441",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.441",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.2"
+  }
+}

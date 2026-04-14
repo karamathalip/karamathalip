@@ -18,6 +18,7 @@
  *   STEP 5  image_agent        — generate scene images + thumbnails
  *   STEP 5b thumbnail_compositor— composite text overlays onto thumbnails
  *   STEP 6  voice_agent        — generate voice lines + combined track
+ *   STEP 6b whisper_agent      — optional Whisper captions fallback/QA
  *   STEP 7  sfx_agent          — generate sound effects (cached)
  *   STEP 8  render_agent       — render Remotion → MP4, merge audio
  *   STEP 9  upload_agent       — upload to YouTube with scheduling
@@ -549,6 +550,22 @@ async function run() {
       : async () => {
           const { runVoiceBatch } = loadAgent('./voice_agent');
           return runVoiceBatch();
+        },
+  });
+
+  // ── STEP 6.5: whisper_agent ──────────────────────────────────────────────
+  await runStep({
+    num:  6.5,
+    name: 'whisper_agent (optional caption fallback)',
+    fn: DRY_RUN
+      ? dryRunStub('whisper_agent', {
+          processed: 0,
+          skipped: topics.length,
+          failed: 0,
+        })
+      : async () => {
+          const { runWhisperBatch } = loadAgent('./whisper_agent');
+          return runWhisperBatch(undefined, { force: false, preferExisting: true });
         },
   });
 

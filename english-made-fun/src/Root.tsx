@@ -13,6 +13,7 @@ import { z } from "zod";
 
 import { VideoTemplate } from "../components/VideoTemplate";
 import { StickmanDemoCompositions } from "../components/Stickman";
+import { KiscoLearning } from "./compositions/KiscoLearning";
 
 // ─── Zod Schema ───────────────────────────────────────────────────────────────
 // Mirrors the VideoData / SceneData types in components/.
@@ -234,6 +235,17 @@ export const Root: React.FC = () => {
         schema={VideoTemplateSchema}
         defaultProps={defaultProps}
         calculateMetadata={calculateVideoMetadata}
+      />
+
+      {/* ── KISCO LEARNING: Landscape YouTube 1920×1080 ────────────────────── */}
+      {/* Total duration: 254s @ 30fps = 7620 frames                          */}
+      <Composition
+        id="KiscoLearning"
+        component={KiscoLearning}
+        durationInFrames={254 * 30}   // 7620 frames
+        fps={30}
+        width={1920}
+        height={1080}
       />
 
       {/* ── DEV: Stickman pose test reel ─────────────────────────────────── */}

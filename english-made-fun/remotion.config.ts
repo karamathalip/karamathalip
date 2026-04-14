@@ -67,13 +67,6 @@ Config.overrideWebpackConfig((currentConfig) => {
 
 // ── Codec defaults ────────────────────────────────────────────────────────────
 // H.264 is universally supported by YouTube and all major platforms.
+// Note: setVideoCrf and setConcurrency were removed in Remotion v4 —
+// pass --crf and --concurrency as CLI args or set them in renderMedia() calls.
 Config.setCodec("h264");
-
-// ── CRF (quality) ─────────────────────────────────────────────────────────────
-// Lower = better quality, larger file. 18 is visually lossless for 1080p.
-Config.setVideoCrf(18);
-
-// ── Concurrency ───────────────────────────────────────────────────────────────
-// Number of browser tabs used for parallel rendering.
-// Set to half the CPU count for a good balance of speed vs. system stability.
-Config.setConcurrency(4);
