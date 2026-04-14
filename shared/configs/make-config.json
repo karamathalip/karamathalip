@@ -1,0 +1,299 @@
+{
+  "videoId": "vid_009_make",
+  "format": "word_explosion",
+  "targetWord": "MAKE",
+  "topic": "The word MAKE and its three meanings",
+  "level": "B1",
+  "colors": {
+    "bg": "#0d0d1a",
+    "bgLight": "#141428",
+    "primary": "#00d4ff",
+    "text": "#ffffff",
+    "textDim": "#8888aa",
+    "hero": "#f7c948",
+    "stickman": "#ffffff",
+    "meanings": ["#ff2d78", "#ffe600", "#39ff14"]
+  },
+  "fps": 60,
+  "width": 1080,
+  "height": 1920,
+  "voiceDelayFrames": 12,
+  "meanings": [
+    {
+      "number": "1",
+      "label": "CREATE",
+      "color": "#ff2d78",
+      "example": "She made a plan.",
+      "examples": ["make a cake", "make a plan", "make a mistake"],
+      "wrongExample": { "text": "\"She made me cry\"", "reason": "that's FORCE" },
+      "stickmanPose": "painting",
+      "stickmanEmotion": "happy"
+    },
+    {
+      "number": "2",
+      "label": "FORCE / CAUSE",
+      "color": "#ffe600",
+      "example": "The movie made me cry.",
+      "examples": ["make me cry", "make me work late", "make him apologize"],
+      "wrongExample": { "text": "\"She makes $50k a year\"", "reason": "that's EARN" },
+      "stickmanPose": "shoving",
+      "stickmanEmotion": "excited"
+    },
+    {
+      "number": "3",
+      "label": "EARN",
+      "color": "#39ff14",
+      "example": "She makes good money.",
+      "examples": ["make a living", "make good money", "make a profit"],
+      "wrongExample": { "text": "\"He made a plan\"", "reason": "that's CREATE" },
+      "stickmanPose": "cash",
+      "stickmanEmotion": "victorious"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationFrames": 421,
+      "voiceLine": {
+        "text": "she made me a cake to make me cry so she could make money. wait. that sentence uses make three completely different ways.",
+        "audioFile": "audio/voice/01_hook.mp3",
+        "durationSec": 6.81
+      },
+      "sfxCues": [
+        { "cue": "typewriter_click", "offsetSec": 0.3 },
+        { "cue": "record_scratch", "offsetSec": 4.5 },
+        { "cue": "whoosh_slide", "offsetSec": 6.0 }
+      ],
+      "data": {
+        "type": "hook",
+        "accentColor": "#00d4ff",
+        "sentenceTokens": [
+          { "word": "she", "color": "#ffffff" },
+          { "word": "made", "color": "#ff2d78", "meaningLabel": "CREATE", "meaningIndex": 0 },
+          { "word": "me", "color": "#ffffff" },
+          { "word": "a", "color": "#ffffff" },
+          { "word": "cake", "color": "#ffffff" },
+          { "word": "to", "color": "#ffffff" },
+          { "word": "make", "color": "#ffe600", "meaningLabel": "FORCE", "meaningIndex": 1 },
+          { "word": "me", "color": "#ffffff" },
+          { "word": "cry", "color": "#ffffff" },
+          { "word": "so", "color": "#ffffff" },
+          { "word": "she", "color": "#ffffff" },
+          { "word": "could", "color": "#ffffff" },
+          { "word": "make", "color": "#39ff14", "meaningLabel": "EARN", "meaningIndex": 2 },
+          { "word": "money.", "color": "#ffffff" }
+        ],
+        "replacementMap": { "1": "CREATE", "6": "FORCE", "12": "EARN" },
+        "slamText": "WAIT.",
+        "slamColor": "#f7c948",
+        "stickmanTransitions": [
+          { "timeSec": 0, "pose": "idle", "emotion": "neutral" },
+          { "timeSec": 1.5, "pose": "confused", "emotion": "confused" },
+          { "timeSec": 3.0, "pose": "shocked", "emotion": "wow" },
+          { "timeSec": 5.0, "pose": "tracking", "emotion": "wide_eyes" }
+        ]
+      }
+    },
+    {
+      "id": "meaning_1",
+      "type": "meaning",
+      "durationFrames": 473,
+      "voiceLine": {
+        "text": "make number one. to create. you make a cake. you make a plan. you make a mistake. you're building something that didn't exist.",
+        "audioFile": "audio/voice/02_meaning_1.mp3",
+        "durationSec": 7.67
+      },
+      "sfxCues": [
+        { "cue": "sparkle_pop", "offsetSec": 0.3 },
+        { "cue": "wrong_buzz", "offsetSec": 2.0 },
+        { "cue": "correct_ding", "offsetSec": 4.0 },
+        { "cue": "chip_reveal", "offsetSec": 5.5 }
+      ],
+      "data": {
+        "type": "meaning",
+        "targetWord": "MAKE",
+        "meaning": {
+          "number": "1",
+          "label": "CREATE",
+          "color": "#ff2d78",
+          "example": "She made a plan.",
+          "examples": ["make a cake", "make a plan", "make a mistake"],
+          "wrongExample": { "text": "\"She made me cry\"", "reason": "that's FORCE" }
+        },
+        "stickmanPose": "painting",
+        "stickmanEmotion": "happy"
+      }
+    },
+    {
+      "id": "meaning_2",
+      "type": "meaning",
+      "durationFrames": 526,
+      "voiceLine": {
+        "text": "make number two. to force. the movie made me cry. my boss makes me work late. nobody built anything. somebody got forced.",
+        "audioFile": "audio/voice/03_meaning_2.mp3",
+        "durationSec": 8.56
+      },
+      "sfxCues": [
+        { "cue": "thud_impact", "offsetSec": 0.3 },
+        { "cue": "wrong_buzz", "offsetSec": 2.0 },
+        { "cue": "correct_ding", "offsetSec": 4.0 },
+        { "cue": "chip_reveal", "offsetSec": 5.5 }
+      ],
+      "data": {
+        "type": "meaning",
+        "targetWord": "MAKE",
+        "meaning": {
+          "number": "2",
+          "label": "FORCE / CAUSE",
+          "color": "#ffe600",
+          "example": "The movie made me cry.",
+          "examples": ["make me cry", "make me work late", "make him apologize"],
+          "wrongExample": { "text": "\"She makes $50k a year\"", "reason": "that's EARN" }
+        },
+        "stickmanPose": "shoving",
+        "stickmanEmotion": "excited",
+        "stickmanX": 440
+      }
+    },
+    {
+      "id": "meaning_3",
+      "type": "meaning",
+      "durationFrames": 440,
+      "voiceLine": {
+        "text": "make number three. to earn. she makes fifty thousand a year. he makes good money. this is the one about getting paid.",
+        "audioFile": "audio/voice/04_meaning_3.mp3",
+        "durationSec": 7.13
+      },
+      "sfxCues": [
+        { "cue": "cash_register", "offsetSec": 0.3 },
+        { "cue": "wrong_buzz", "offsetSec": 2.0 },
+        { "cue": "correct_ding", "offsetSec": 4.0 },
+        { "cue": "chip_reveal", "offsetSec": 5.5 }
+      ],
+      "data": {
+        "type": "meaning",
+        "targetWord": "MAKE",
+        "meaning": {
+          "number": "3",
+          "label": "EARN",
+          "color": "#39ff14",
+          "example": "She makes good money.",
+          "examples": ["make a living", "make good money", "make a profit"],
+          "wrongExample": { "text": "\"He made a plan\"", "reason": "that's CREATE" }
+        },
+        "stickmanPose": "cash",
+        "stickmanEmotion": "victorious"
+      }
+    },
+    {
+      "id": "explosion_reveal",
+      "type": "explosion_reveal",
+      "durationFrames": 422,
+      "voiceLine": {
+        "text": "create. force. earn. one tiny word doing three completely different jobs.",
+        "audioFile": "audio/voice/05_explosion.mp3",
+        "durationSec": 6.83
+      },
+      "sfxCues": [
+        { "cue": "explode_pop", "offsetSec": 0.1 },
+        { "cue": "constellation_draw", "offsetSec": 2.0 },
+        { "cue": "glory_shimmer", "offsetSec": 5.0 }
+      ],
+      "data": {
+        "type": "explosion_reveal",
+        "targetWord": "MAKE",
+        "accentColor": "#00d4ff",
+        "meanings": [
+          { "text": "CREATE", "color": "#ff2d78", "x": 200, "y": 500 },
+          { "text": "FORCE", "color": "#ffe600", "x": 880, "y": 500 },
+          { "text": "EARN", "color": "#39ff14", "x": 540, "y": 300 }
+        ],
+        "centerPosition": { "x": 540, "y": 680 },
+        "stickmanPose": "cheering",
+        "stickmanEmotion": "victorious"
+      }
+    },
+    {
+      "id": "mini_story",
+      "type": "mini_story",
+      "durationFrames": 439,
+      "voiceLine": {
+        "text": "watch all three in one sentence. she makes great money making youtube videos which makes her followers happy.",
+        "audioFile": "audio/voice/06_mini_story.mp3",
+        "durationSec": 7.11
+      },
+      "sfxCues": [
+        { "cue": "color_flash", "offsetSec": 1.0 },
+        { "cue": "color_flash", "offsetSec": 3.0 },
+        { "cue": "color_flash", "offsetSec": 5.0 }
+      ],
+      "data": {
+        "type": "mini_story",
+        "title": "ALL 3 IN ONE SENTENCE:",
+        "bgAccent": "#6644aa",
+        "wordTokens": [
+          { "word": "She" },
+          { "word": "makes", "color": "#39ff14", "label": "EARN" },
+          { "word": "great" },
+          { "word": "money" },
+          { "word": "making", "color": "#ff2d78", "label": "CREATE" },
+          { "word": "YouTube" },
+          { "word": "videos" },
+          { "word": "which" },
+          { "word": "makes", "color": "#ffe600", "label": "CAUSE" },
+          { "word": "her" },
+          { "word": "followers" },
+          { "word": "happy." }
+        ],
+        "stickmanPose": "nodding",
+        "stickmanEmotion": "happy"
+      }
+    },
+    {
+      "id": "loop_back",
+      "type": "loop_back",
+      "durationFrames": 354,
+      "voiceLine": {
+        "text": "okay one more. he made it after she made him make her a cake. how many makes is that? count again.",
+        "audioFile": "audio/voice/07_loop_back.mp3",
+        "durationSec": 5.69
+      },
+      "sfxCues": [
+        { "cue": "typewriter_click", "offsetSec": 0.3 },
+        { "cue": "question_ping", "offsetSec": 4.0 },
+        { "cue": "bass_drop", "offsetSec": 5.4 }
+      ],
+      "data": {
+        "type": "loop_back",
+        "title": "ONE MORE.",
+        "titleColor": "#f7c948",
+        "accentColor": "#00d4ff",
+        "sentenceTokens": [
+          { "word": "He", "color": "#ffffff" },
+          { "word": "made", "color": "#39ff14" },
+          { "word": "it", "color": "#ffffff" },
+          { "word": "after", "color": "#ffffff" },
+          { "word": "she", "color": "#ffffff" },
+          { "word": "made", "color": "#ffe600" },
+          { "word": "him", "color": "#ffffff" },
+          { "word": "make", "color": "#ff2d78" },
+          { "word": "her", "color": "#ffffff" },
+          { "word": "a", "color": "#ffffff" },
+          { "word": "cake.", "color": "#ffffff" }
+        ],
+        "questionText": "HOW MANY MAKEs?",
+        "challengeText": "COUNT AGAIN.",
+        "challengeColor": "#f7c948",
+        "stickmanPose": "pointing_up",
+        "stickmanEmotionBefore": "wide_eyes",
+        "stickmanEmotionAfter": "excited"
+      }
+    }
+  ],
+  "youtube": {
+    "title": "MAKE Has 3 HIDDEN Meanings (Most English Learners Miss #2)",
+    "description": "Did you know the word MAKE has THREE completely different meanings? In this short, we break them down with examples you'll actually remember.",
+    "tags": ["english", "vocabulary", "make", "learn english", "esl", "english grammar", "word meanings"]
+  }
+}

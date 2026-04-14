@@ -1,0 +1,255 @@
+{
+  "videoId": "vid_010_break",
+  "format": "word_explosion",
+  "targetWord": "BREAK",
+  "topic": "The word BREAK and its four meanings",
+  "level": "B1",
+  "colors": {
+    "bg": "#0d0d1a",
+    "bgLight": "#141428",
+    "primary": "#ff6600",
+    "text": "#ffffff",
+    "textDim": "#8888aa",
+    "hero": "#f7c948",
+    "stickman": "#ffffff",
+    "meanings": ["#ff2d78", "#00d4ff", "#39ff14", "#cc44ff"]
+  },
+  "fps": 60,
+  "width": 1080,
+  "height": 1920,
+  "voiceDelayFrames": 12,
+  "meanings": [
+    {
+      "number": "1",
+      "label": "DESTROY",
+      "color": "#ff2d78",
+      "example": "He broke the glass.",
+      "examples": ["break a window", "break your phone", "break a rule"],
+      "wrongExample": { "text": "\"She broke the news\"", "reason": "that's REVEAL" },
+      "stickmanPose": "shoving",
+      "stickmanEmotion": "excited"
+    },
+    {
+      "number": "2",
+      "label": "REST / PAUSE",
+      "color": "#00d4ff",
+      "example": "Let's take a break.",
+      "examples": ["coffee break", "lunch break", "break time"],
+      "wrongExample": { "text": "\"He broke the record\"", "reason": "that's SURPASS" },
+      "stickmanPose": "sitting",
+      "stickmanEmotion": "happy"
+    },
+    {
+      "number": "3",
+      "label": "REVEAL / TELL",
+      "color": "#39ff14",
+      "example": "She broke the news gently.",
+      "examples": ["break the news", "break the silence", "break a story"],
+      "wrongExample": { "text": "\"Take a break\"", "reason": "that's REST" },
+      "stickmanPose": "storytelling_pose",
+      "stickmanEmotion": "wow"
+    },
+    {
+      "number": "4",
+      "label": "SURPASS",
+      "color": "#cc44ff",
+      "example": "She broke the world record.",
+      "examples": ["break a record", "break the mold", "break barriers"],
+      "wrongExample": { "text": "\"He broke the window\"", "reason": "that's DESTROY" },
+      "stickmanPose": "epic_win",
+      "stickmanEmotion": "victorious"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationFrames": 420,
+      "sfxCues": [
+        { "cue": "typewriter_click", "offsetSec": 0.3 },
+        { "cue": "record_scratch", "offsetSec": 4.5 }
+      ],
+      "data": {
+        "type": "hook",
+        "accentColor": "#ff6600",
+        "sentenceTokens": [
+          { "word": "she", "color": "#ffffff" },
+          { "word": "broke", "color": "#ff2d78", "meaningLabel": "DESTROY", "meaningIndex": 0 },
+          { "word": "her", "color": "#ffffff" },
+          { "word": "phone", "color": "#ffffff" },
+          { "word": "during", "color": "#ffffff" },
+          { "word": "break", "color": "#00d4ff", "meaningLabel": "REST", "meaningIndex": 1 },
+          { "word": "then", "color": "#ffffff" },
+          { "word": "broke", "color": "#39ff14", "meaningLabel": "REVEAL", "meaningIndex": 2 },
+          { "word": "the", "color": "#ffffff" },
+          { "word": "news", "color": "#ffffff" },
+          { "word": "and", "color": "#ffffff" },
+          { "word": "broke", "color": "#cc44ff", "meaningLabel": "SURPASS", "meaningIndex": 3 },
+          { "word": "a", "color": "#ffffff" },
+          { "word": "record.", "color": "#ffffff" }
+        ],
+        "replacementMap": { "1": "DESTROY", "5": "REST", "7": "REVEAL", "11": "SURPASS" },
+        "slamText": "WAIT.",
+        "slamColor": "#f7c948",
+        "stickmanTransitions": [
+          { "timeSec": 0, "pose": "idle", "emotion": "neutral" },
+          { "timeSec": 1.5, "pose": "confused", "emotion": "confused" },
+          { "timeSec": 3.0, "pose": "shocked", "emotion": "wow" },
+          { "timeSec": 5.0, "pose": "mind_blown", "emotion": "wow" }
+        ]
+      }
+    },
+    {
+      "id": "meaning_1",
+      "type": "meaning",
+      "durationFrames": 460,
+      "data": {
+        "type": "meaning",
+        "targetWord": "BREAK",
+        "meaning": {
+          "number": "1", "label": "DESTROY", "color": "#ff2d78",
+          "example": "He broke the glass.",
+          "examples": ["break a window", "break your phone", "break a rule"],
+          "wrongExample": { "text": "\"She broke the news\"", "reason": "that's REVEAL" }
+        },
+        "stickmanPose": "shoving",
+        "stickmanEmotion": "excited"
+      }
+    },
+    {
+      "id": "meaning_2",
+      "type": "meaning",
+      "durationFrames": 460,
+      "data": {
+        "type": "meaning",
+        "targetWord": "BREAK",
+        "meaning": {
+          "number": "2", "label": "REST / PAUSE", "color": "#00d4ff",
+          "example": "Let's take a break.",
+          "examples": ["coffee break", "lunch break", "break time"],
+          "wrongExample": { "text": "\"He broke the record\"", "reason": "that's SURPASS" }
+        },
+        "stickmanPose": "sitting",
+        "stickmanEmotion": "happy"
+      }
+    },
+    {
+      "id": "meaning_3",
+      "type": "meaning",
+      "durationFrames": 460,
+      "data": {
+        "type": "meaning",
+        "targetWord": "BREAK",
+        "meaning": {
+          "number": "3", "label": "REVEAL / TELL", "color": "#39ff14",
+          "example": "She broke the news gently.",
+          "examples": ["break the news", "break the silence", "break a story"],
+          "wrongExample": { "text": "\"Take a break\"", "reason": "that's REST" }
+        },
+        "stickmanPose": "storytelling_pose",
+        "stickmanEmotion": "wow"
+      }
+    },
+    {
+      "id": "meaning_4",
+      "type": "meaning",
+      "durationFrames": 460,
+      "data": {
+        "type": "meaning",
+        "targetWord": "BREAK",
+        "meaning": {
+          "number": "4", "label": "SURPASS", "color": "#cc44ff",
+          "example": "She broke the world record.",
+          "examples": ["break a record", "break the mold", "break barriers"],
+          "wrongExample": { "text": "\"He broke the window\"", "reason": "that's DESTROY" }
+        },
+        "stickmanPose": "epic_win",
+        "stickmanEmotion": "victorious"
+      }
+    },
+    {
+      "id": "explosion_reveal",
+      "type": "explosion_reveal",
+      "durationFrames": 420,
+      "data": {
+        "type": "explosion_reveal",
+        "targetWord": "BREAK",
+        "accentColor": "#ff6600",
+        "meanings": [
+          { "text": "DESTROY", "color": "#ff2d78", "x": 200, "y": 400 },
+          { "text": "REST", "color": "#00d4ff", "x": 880, "y": 400 },
+          { "text": "REVEAL", "color": "#39ff14", "x": 200, "y": 700 },
+          { "text": "SURPASS", "color": "#cc44ff", "x": 880, "y": 700 }
+        ],
+        "centerPosition": { "x": 540, "y": 550 },
+        "stickmanPose": "cheering",
+        "stickmanEmotion": "victorious"
+      }
+    },
+    {
+      "id": "mini_story",
+      "type": "mini_story",
+      "durationFrames": 440,
+      "data": {
+        "type": "mini_story",
+        "title": "ALL 4 IN ONE SENTENCE:",
+        "bgAccent": "#6644aa",
+        "wordTokens": [
+          { "word": "She" },
+          { "word": "broke", "color": "#ff2d78", "label": "DESTROY" },
+          { "word": "her" },
+          { "word": "record" },
+          { "word": "breaking", "color": "#cc44ff", "label": "SURPASS" },
+          { "word": "the" },
+          { "word": "news" },
+          { "word": "during" },
+          { "word": "break", "color": "#00d4ff", "label": "REST" },
+          { "word": "which" },
+          { "word": "broke", "color": "#39ff14", "label": "REVEAL" },
+          { "word": "everyone's" },
+          { "word": "hearts." }
+        ],
+        "stickmanPose": "nodding",
+        "stickmanEmotion": "happy"
+      }
+    },
+    {
+      "id": "loop_back",
+      "type": "loop_back",
+      "durationFrames": 360,
+      "data": {
+        "type": "loop_back",
+        "title": "ONE MORE.",
+        "titleColor": "#f7c948",
+        "accentColor": "#ff6600",
+        "sentenceTokens": [
+          { "word": "She", "color": "#ffffff" },
+          { "word": "broke", "color": "#39ff14" },
+          { "word": "the", "color": "#ffffff" },
+          { "word": "story", "color": "#ffffff" },
+          { "word": "about", "color": "#ffffff" },
+          { "word": "breaking", "color": "#cc44ff" },
+          { "word": "records", "color": "#ffffff" },
+          { "word": "during", "color": "#ffffff" },
+          { "word": "her", "color": "#ffffff" },
+          { "word": "break", "color": "#00d4ff" },
+          { "word": "after", "color": "#ffffff" },
+          { "word": "breaking", "color": "#ff2d78" },
+          { "word": "her", "color": "#ffffff" },
+          { "word": "phone.", "color": "#ffffff" }
+        ],
+        "questionText": "HOW MANY BREAKs?",
+        "challengeText": "COUNT AGAIN.",
+        "challengeColor": "#f7c948",
+        "stickmanPose": "pointing_up",
+        "stickmanEmotionBefore": "wide_eyes",
+        "stickmanEmotionAfter": "excited"
+      }
+    }
+  ],
+  "youtube": {
+    "title": "BREAK Has 4 HIDDEN Meanings (Most English Learners Miss #3)",
+    "description": "Did you know BREAK has FOUR completely different meanings? Destroy, rest, reveal, and surpass. Watch this 60-second breakdown!",
+    "tags": ["english", "vocabulary", "break", "learn english", "esl", "word meanings"]
+  }
+}
